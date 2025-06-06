@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
+import { Link, useNavigate } from 'react-router-dom';
+import logoSolid from '../utils/logo_solid.png';
+import { useCart } from '../hooks/useCart';
 
 const Nav = styled(motion.nav)<{ scrolled: boolean }>`
   position: fixed;
@@ -23,7 +25,7 @@ const NavContainer = styled.div`
   align-items: center;
 `;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -52,7 +54,7 @@ const NavLinks = styled.ul`
   }
 `;
 
-const NavLink = styled.li`
+const NavLink = styled(Link)`
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -61,6 +63,38 @@ const NavLink = styled.li`
   &:hover {
     opacity: 0.7;
   }
+`;
+
+const NavActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+`;
+
+const CartButton = styled(motion.button)`
+  position: relative;
+  background: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+const CartBadge = styled(motion.span)`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff3b30;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.4rem;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
 `;
 
 const CTAButton = styled(motion.button)`
@@ -92,6 +126,9 @@ const MobileMenuButton = styled.button`
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { getTotalItems } = useCart();
+  const cartItemsCount = getTotalItems();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -110,23 +147,44 @@ const Navbar: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       <NavContainer>
-        <Logo>
+        <Logo to="/">
           <LogoImg src={logoSolid} alt="Aerilux Logo" />
           <LogoText>AERILUX</LogoText>
         </Logo>
         
         <NavLinks>
-          <NavLink>Features</NavLink>
-          <NavLink>Technology</NavLink>
-          <NavLink>Product</NavLink>
-          <NavLink>Pricing</NavLink>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/product">Product</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
+        </NavLinks>
+
+        <NavActions>
+          <CartButton
+            onClick={() => navigate('/cart')}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            🛒
+            {cartItemsCount > 0 && (
+              <CartBadge
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+              >
+                {cartItemsCount}
+              </CartBadge>
+            )}
+          </CartButton>
+          
           <CTAButton
+            onClick={() => navigate('/product')}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Order Now
           </CTAButton>
-        </NavLinks>
+        </NavActions>
         
         <MobileMenuButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           ☰

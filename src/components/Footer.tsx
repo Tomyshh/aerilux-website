@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
+import { Link } from 'react-router-dom';
+import logoSolid from '../utils/logo_solid.png';
 
 const FooterSection = styled.footer`
   padding: 4rem 2rem 2rem;
@@ -29,7 +30,7 @@ const FooterContent = styled.div`
 
 const BrandSection = styled.div``;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -90,7 +91,7 @@ const ColumnLink = styled.li`
   margin-bottom: 0.75rem;
 `;
 
-const Link = styled.a`
+const StyledLink = styled(Link)`
   color: #999999;
   transition: color 0.3s ease;
   font-size: 0.9rem;
@@ -131,28 +132,34 @@ const Footer: React.FC = () => {
       <Container>
         <FooterContent>
           <BrandSection>
-            <Logo>
+            <Logo to="/">
               <LogoImg src={logoSolid} alt="Aerilux Logo" />
               <LogoText>AERILUX</LogoText>
             </Logo>
             <BrandTagline>Keep It Clean</BrandTagline>
             <SocialLinks>
               <SocialLink
-                href="#"
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
                 𝕏
               </SocialLink>
               <SocialLink
-                href="#"
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
                 in
               </SocialLink>
               <SocialLink
-                href="#"
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -165,16 +172,16 @@ const Footer: React.FC = () => {
             <ColumnTitle>Product</ColumnTitle>
             <ColumnLinks>
               <ColumnLink>
-                <Link href="#features">Features</Link>
+                <StyledLink to="/product">Aerilux Pro</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#technology">Technology</Link>
+                <StyledLink to="/product#features">Features</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#pricing">Pricing</Link>
+                <StyledLink to="/product#specs">Specifications</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#">Specifications</Link>
+                <StyledLink to="/#pricing">Pricing</StyledLink>
               </ColumnLink>
             </ColumnLinks>
           </FooterColumn>
@@ -183,16 +190,16 @@ const Footer: React.FC = () => {
             <ColumnTitle>Support</ColumnTitle>
             <ColumnLinks>
               <ColumnLink>
-                <Link href="#">Documentation</Link>
+                <StyledLink to="/contact">Contact Us</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#">Installation Guide</Link>
+                <StyledLink to="/contact">FAQ</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#">FAQ</Link>
+                <StyledLink to="/contact">Installation Guide</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#">Contact</Link>
+                <StyledLink to="/contact">Warranty</StyledLink>
               </ColumnLink>
             </ColumnLinks>
           </FooterColumn>
@@ -201,16 +208,16 @@ const Footer: React.FC = () => {
             <ColumnTitle>Company</ColumnTitle>
             <ColumnLinks>
               <ColumnLink>
-                <Link href="#">About Us</Link>
+                <StyledLink to="/about">About Us</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#">Patents</Link>
+                <StyledLink to="/about#team">Our Team</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#">Press</Link>
+                <StyledLink to="/about#mission">Mission</StyledLink>
               </ColumnLink>
               <ColumnLink>
-                <Link href="#">Careers</Link>
+                <StyledLink to="/contact">Careers</StyledLink>
               </ColumnLink>
             </ColumnLinks>
           </FooterColumn>
@@ -221,8 +228,8 @@ const Footer: React.FC = () => {
             © {currentYear} Aerilux. All rights reserved.
           </Copyright>
           <LegalLinks>
-            <Link href="#">Privacy Policy</Link>
-            <Link href="#">Terms of Service</Link>
+            <StyledLink to="/privacy">Privacy Policy</StyledLink>
+            <StyledLink to="/terms">Terms of Service</StyledLink>
           </LegalLinks>
         </FooterBottom>
       </Container>
