@@ -79,10 +79,32 @@ const ProductSubtitle = styled.p`
   margin-bottom: 2rem;
 `;
 
-const Price = styled.div`
-  font-size: 2.5rem;
-  font-weight: 700;
+const PricingSection = styled.div`
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 2rem;
   margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const PricingTitle = styled.h3`
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+`;
+
+const PricingHighlight = styled.div`
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+`;
+
+const PricingDescription = styled.p`
+  font-size: 1rem;
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 1rem;
 `;
 
 const Description = styled.p`
@@ -288,7 +310,20 @@ const ProductPage: React.FC = () => {
           <ProductInfo>
             <ProductTitle>Aerilux Pro</ProductTitle>
             <ProductSubtitle>Revolutionary AI-Powered Pigeon Deterrent</ProductSubtitle>
-            <Price>$499</Price>
+            
+            <PricingSection>
+              <PricingTitle>Custom Enterprise Solution</PricingTitle>
+              <PricingHighlight>Starting from $499</PricingHighlight>
+              <PricingDescription>
+                Every Aerilux system is completely customized to meet your specific business needs. 
+                Our team works closely with you to design the perfect solution for your property, 
+                industry requirements, and operational goals.
+              </PricingDescription>
+              <PricingDescription>
+                Final pricing depends on system complexity, number of units, installation requirements, 
+                and ongoing support needs. Contact our sales team for a personalized quote.
+              </PricingDescription>
+            </PricingSection>
             
             <Description>
               The Aerilux Pro is the world's most advanced pigeon deterrent system, 
@@ -299,18 +334,18 @@ const ProductPage: React.FC = () => {
 
             <ActionButtons>
               <AddToCartButton
-                onClick={handleAddToCart}
+                onClick={() => navigate('/contact')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Add to Cart
+                Get Custom Quote
               </AddToCartButton>
               <BuyNowButton
-                onClick={handleBuyNow}
+                onClick={() => navigate('/contact')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Buy Now
+                Contact Sales
               </BuyNowButton>
             </ActionButtons>
 

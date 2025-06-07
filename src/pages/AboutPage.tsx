@@ -166,9 +166,9 @@ const AboutPage: React.FC = () => {
   ];
 
   const team = [
-    { name: 'Dr. Sarah Chen', role: 'CEO & Founder', emoji: '👩‍🔬' },
-    { name: 'Mark Johnson', role: 'CTO', emoji: '👨‍💻' },
-    { name: 'Emily Rodriguez', role: 'Head of AI', emoji: '👩‍🎓' },
+    { name: 'Maalon Szuman', role: 'Founder & CTO', emoji: '👩‍🔬' },
+    { name: 'Tom Jami', role: 'Founder & CPO', emoji: '👨‍💻' },
+    { name: 'Gabriel Azaria', role: 'Founder & COO', emoji: '👩‍🎓' },
   ];
 
   const containerVariants = {
@@ -225,7 +225,7 @@ const AboutPage: React.FC = () => {
                 Our mission is to provide innovative, humane solutions to urban bird control challenges.
               </SectionText>
               <SectionText>
-                Founded in 2020, we've combined cutting-edge AI technology with environmental 
+                Founded in 2025, we've combined cutting-edge AI technology with environmental 
                 consciousness to create products that protect properties while respecting wildlife.
               </SectionText>
             </SectionContent>

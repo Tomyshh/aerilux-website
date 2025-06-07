@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import logoSolid from '../utils/logo_solid.png';
+import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 import { useCart } from '../hooks/useCart';
 
 const Nav = styled(motion.nav)<{ scrolled: boolean }>`

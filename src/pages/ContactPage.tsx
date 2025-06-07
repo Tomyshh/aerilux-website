@@ -337,21 +337,14 @@ const ContactPage: React.FC = () => {
                 <InfoIcon>📧</InfoIcon>
                 <InfoText>
                   <InfoLabel>Email</InfoLabel>
-                  <InfoValue>support@aerilux.com</InfoValue>
-                </InfoText>
-              </InfoItem>
-              <InfoItem>
-                <InfoIcon>📞</InfoIcon>
-                <InfoText>
-                  <InfoLabel>Phone</InfoLabel>
-                  <InfoValue>+1 (555) 123-4567</InfoValue>
+                  <InfoValue>sales@aerilux.io</InfoValue>
                 </InfoText>
               </InfoItem>
               <InfoItem>
                 <InfoIcon>📍</InfoIcon>
                 <InfoText>
                   <InfoLabel>Address</InfoLabel>
-                  <InfoValue>123 Innovation Drive<br />San Francisco, CA 94105</InfoValue>
+                  <InfoValue>Chicago 136<br />Haifa, Israel</InfoValue>
                 </InfoText>
               </InfoItem>
             </InfoSection>
@@ -360,16 +353,8 @@ const ContactPage: React.FC = () => {
               <InfoTitle>Support Hours</InfoTitle>
               <HoursGrid>
                 <HourItem>
-                  <Day>Monday - Friday</Day>
+                  <Day>Sunday - Thursday</Day>
                   <Time>9:00 AM - 6:00 PM</Time>
-                </HourItem>
-                <HourItem>
-                  <Day>Saturday</Day>
-                  <Time>10:00 AM - 4:00 PM</Time>
-                </HourItem>
-                <HourItem>
-                  <Day>Sunday</Day>
-                  <Time>Closed</Time>
                 </HourItem>
                 <HourItem>
                   <Day>Emergency</Day>

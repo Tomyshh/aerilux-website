@@ -34,10 +34,9 @@ const SectionSubtitle = styled(motion.p)`
 `;
 
 const PricingGrid = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 900px;
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
   margin: 0 auto;
 `;
 
@@ -131,42 +130,21 @@ const PurchaseButton = styled(motion.button)<{ featured?: boolean }>`
 
 const plans = [
   {
-    name: 'Starter',
-    price: '$299',
-    period: 'one-time purchase',
-    features: [
-      'Aerilux Pro Device',
-      'Basic AI Model',
-      '1 Year Warranty',
-      'Email Support',
-      'Setup Guide',
-    ],
-  },
-  {
-    name: 'Professional',
-    price: '$499',
-    period: 'one-time purchase',
+    name: 'Enterprise Solution',
+    price: 'Custom',
+    period: 'tailored to your business',
     featured: true,
     features: [
-      'Aerilux Pro Device',
-      'Advanced AI Model',
-      '2 Year Warranty',
-      'Priority Support',
-      'Professional Installation',
-      'Mobile App Access',
-    ],
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    period: 'contact us',
-    features: [
-      'Multiple Devices',
-      'Custom AI Training',
-      'Lifetime Warranty',
-      'Dedicated Support',
-      'Full Installation',
-      'API Access',
+      'Custom Aerilux System Configuration',
+      'Tailored AI Model for Your Industry',
+      'Complete Installation & Setup',
+      'Dedicated Account Manager',
+      'Priority Technical Support',
+      'Custom Integration & API Access',
+      'Comprehensive Training Program',
+      'Ongoing Maintenance & Updates',
+      'Performance Analytics Dashboard',
+      'Scalable Multi-Location Support',
     ],
   },
 ];
@@ -213,14 +191,14 @@ const Pricing: React.FC = () => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
-            Choose Your Plan
+            Enterprise Solution
           </SectionTitle>
           <SectionSubtitle
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Invest in cleanliness and save on maintenance costs
+            A fully customized cleaning solution designed specifically for your business needs
           </SectionSubtitle>
         </SectionHeader>
 

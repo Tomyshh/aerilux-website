@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import logoSolid from '../utils/logo_solid.png';
+import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 
 const FooterSection = styled.footer`
   padding: 4rem 2rem 2rem;

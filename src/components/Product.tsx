@@ -114,6 +114,34 @@ const SpecValue = styled.p`
   color: #999999;
 `;
 
+const PricingInfo = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const PricingTitle = styled.h3`
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+`;
+
+const PricingDescription = styled.p`
+  font-size: 1rem;
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+`;
+
+const PricingHighlight = styled.p`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+`;
+
 const CTAButton = styled(motion.button)`
   background-color: #ffffff;
   color: #000000;
@@ -217,12 +245,26 @@ const Product: React.FC = () => {
               ))}
             </SpecsList>
 
+            <PricingInfo variants={itemVariants}>
+              <PricingTitle>Custom Enterprise Solution</PricingTitle>
+              <PricingDescription>
+                Every Aerilux system is completely customized to meet your specific business needs. 
+                Our team works closely with you to design the perfect solution for your property, 
+                industry requirements, and operational goals.
+              </PricingDescription>
+              <PricingHighlight>Starting from $499</PricingHighlight>
+              <PricingDescription>
+                Final pricing depends on system complexity, number of units, installation requirements, 
+                and ongoing support needs. Contact our sales team for a personalized quote.
+              </PricingDescription>
+            </PricingInfo>
+
             <motion.div variants={itemVariants}>
               <CTAButton
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                View Specifications
+                Get Custom Quote
               </CTAButton>
             </motion.div>
           </ProductContent>
