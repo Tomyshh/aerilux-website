@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 
 const ContactContainer = styled.div`
   min-height: 100vh;
@@ -223,15 +224,87 @@ const ContactPage: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      // Vérifier si le contact existe déjà
+      const { data: existingContact } = await supabase
+        .from('contacts')
+        .select('id')
+        .eq('email', formData.email)
+        .single();
 
-    setIsSubmitting(false);
-    setShowSuccess(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+      let contactId = existingContact?.id;
 
-    // Hide success message after 5 seconds
-    setTimeout(() => setShowSuccess(false), 5000);
+      // Si le contact n'existe pas, le créer
+      if (!contactId) {
+        const names = formData.name.split(' ');
+        const firstName = names[0] || '';
+        const lastName = names.slice(1).join(' ') || '';
+
+        const { data: newContact, error: contactError } = await supabase
+          .from('contacts')
+          .insert([
+            {
+              first_name: firstName,
+              last_name: lastName,
+              email: formData.email
+            }
+          ])
+          .select('id')
+          .single();
+
+        if (contactError) {
+          console.error('Erreur lors de la création du contact:', contactError);
+        } else {
+          contactId = newContact?.id;
+        }
+      }
+
+      // Envoyer le message à Supabase
+      const { data, error } = await supabase
+        .from('messages')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            subject: formData.subject,
+            message: formData.message,
+            status: 'new',
+            contact_id: contactId
+          }
+        ])
+        .select();
+
+      if (error) {
+        console.error('Erreur lors de l\'envoi du message:', error);
+        alert('Une erreur est survenue. Veuillez réessayer.');
+      } else {
+        console.log('Message envoyé avec succès:', data);
+        
+        // Créer une interaction dans l'historique
+        if (contactId) {
+          await supabase
+            .from('interactions')
+            .insert([
+              {
+                contact_id: contactId,
+                type: 'site_message',
+                content: `Subject: ${formData.subject}\n\n${formData.message}`
+              }
+            ]);
+        }
+        
+        setShowSuccess(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => setShowSuccess(false), 5000);
+      }
+    } catch (error) {
+      console.error('Erreur inattendue:', error);
+      alert('Une erreur est survenue. Veuillez réessayer.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
