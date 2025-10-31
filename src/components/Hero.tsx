@@ -11,13 +11,29 @@ const HeroSection = styled.section`
   position: relative;
   overflow: hidden;
   padding: 0 2rem;
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+  }
 `;
 
 const HeroContent = styled.div`
   max-width: 1200px;
   width: 100%;
   text-align: center;
-  z-index: 2;
+  z-index: 3;
+  position: relative;
 `;
 
 const Tagline = styled(motion.p)`
@@ -95,7 +111,8 @@ const BackgroundAnimation = styled(motion.div)`
   transform: translate(-50%, -50%);
   width: 150%;
   height: 150%;
-  opacity: 0.1;
+  opacity: 0.15;
+  z-index: 1;
   
   &::before {
     content: '';
