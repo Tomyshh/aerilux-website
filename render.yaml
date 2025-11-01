@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: aerilux-website
+    buildCommand: npm install && npm run build
+    startCommand: npx serve -s build -l 10000
+    envVars:
+      - key: NODE_VERSION
+        value: 22.14.0
+
