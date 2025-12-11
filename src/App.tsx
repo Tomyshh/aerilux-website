@@ -1,9 +1,17 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import PatternLock from './components/PatternLock';
+import { 
+  CustomCursor, 
+  SmoothScroll, 
+  PageTransition,
+  ScrollProgress,
+  ParticleBackground 
+} from './components/effects';
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -15,15 +23,6 @@ const CartPage = lazy(() => import('./pages/CartPage'));
 const OrderConfirmationPage = lazy(() => import('./pages/OrderConfirmationPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
-
-// Effects
-import { 
-  CustomCursor, 
-  SmoothScroll, 
-  PageTransition,
-  ScrollProgress,
-  ParticleBackground 
-} from './components/effects';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -107,6 +106,28 @@ const AnimatedRoutes: React.FC = () => {
 };
 
 function App() {
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
+    // Vérifier si le site a déjà été déverrouillé dans cette session
+    const unlocked = sessionStorage.getItem('aerilux_unlocked');
+    return unlocked === 'true';
+  });
+
+  useEffect(() => {
+    // Si déverrouillé, sauvegarder dans sessionStorage
+    if (isUnlocked) {
+      sessionStorage.setItem('aerilux_unlocked', 'true');
+    }
+  }, [isUnlocked]);
+
+  const handlePatternSuccess = () => {
+    setIsUnlocked(true);
+  };
+
+  // Si le site n'est pas déverrouillé, afficher le PatternLock
+  if (!isUnlocked) {
+    return <PatternLock onSuccess={handlePatternSuccess} />;
+  }
+
   return (
     <Router>
       <SmoothScroll>
