@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import AnimatedText from './effects/AnimatedText';
 import MagneticButton from './effects/MagneticButton';
+import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 
 const HeroSection = styled.section`
   min-height: 100vh;
@@ -14,27 +15,7 @@ const HeroSection = styled.section`
   position: relative;
   overflow: hidden;
   padding: 0 2rem;
-  background-image: url('/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.6) 100%
-    );
-    z-index: 2;
-  }
+  background: #000000;
 `;
 
 const HeroContent = styled.div`
@@ -45,31 +26,51 @@ const HeroContent = styled.div`
   position: relative;
 `;
 
-const Tagline = styled(motion.p)`
-  font-size: 1.1rem;
-  color: #999999;
-  margin-bottom: 1rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+const LogoContainer = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+const HeroLogo = styled(motion.img)`
+  width: 80px;
+  height: 80px;
+  
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const HeroTitleWrapper = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 `;
 
 const HeroTitle = styled.h1`
-  font-size: clamp(3rem, 10vw, 8rem);
+  font-size: clamp(4rem, 12vw, 10rem);
   font-weight: 900;
   line-height: 1;
-  background: linear-gradient(180deg, #ffffff 0%, #666666 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: 0.05em;
+`;
+
+const Slogan = styled(motion.p)`
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: #666666;
+  margin-bottom: 2rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 `;
 
 const HeroSubtitle = styled(motion.p)`
-  font-size: 1.5rem;
-  color: #cccccc;
+  font-size: 1.3rem;
+  color: #999999;
   margin-bottom: 3rem;
   max-width: 700px;
   margin-left: auto;
@@ -214,7 +215,7 @@ const Hero: React.FC = React.memo(() => {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.5,
+        delayChildren: 0.3,
       },
     },
   }), []);
@@ -226,6 +227,19 @@ const Hero: React.FC = React.memo(() => {
       y: 0,
       transition: {
         duration: 0.8,
+        ease: [0.6, -0.05, 0.01, 0.99],
+      },
+    },
+  }), []);
+
+  const logoVariants = useMemo(() => ({
+    hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
+      transition: {
+        duration: 1,
         ease: [0.6, -0.05, 0.01, 0.99],
       },
     },
@@ -303,15 +317,30 @@ const Hero: React.FC = React.memo(() => {
           animate={inView ? 'visible' : 'hidden'}
           style={{ y: smoothY, opacity: smoothOpacity, scale: smoothScale }}
         >
-          <Tagline variants={itemVariants}>
-            Revolutionary AI Technology
-          </Tagline>
+          <LogoContainer variants={logoVariants}>
+            <HeroLogo 
+              src={logoSolid} 
+              alt="Aerilux Logo"
+              animate={{
+                filter: ['drop-shadow(0 0 20px rgba(255,255,255,0.3))', 'drop-shadow(0 0 40px rgba(255,255,255,0.6))', 'drop-shadow(0 0 20px rgba(255,255,255,0.3))'],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          </LogoContainer>
           
           <HeroTitleWrapper>
             <HeroTitle>
-              <AnimatedText text="KEEP IT CLEAN" type="letter" delay={5} />
+              <AnimatedText text="AERILUX" type="letter" delay={3} />
             </HeroTitle>
           </HeroTitleWrapper>
+          
+          <Slogan variants={itemVariants}>
+            Keep It Clean
+          </Slogan>
           
           <HeroSubtitle variants={itemVariants}>
             The world's first AI-powered pigeon deterrent system. 
