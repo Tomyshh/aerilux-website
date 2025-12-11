@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
 const net = require('net');
+const path = require('path');
 
 /**
  * Vérifie si un port est disponible
@@ -45,12 +46,17 @@ async function startServer() {
   const env = {
     ...process.env,
     PORT: port.toString(),
+    ESLINT_NO_DEV_ERRORS: 'true',
   };
   
-  const reactScripts = spawn('npx', ['react-scripts', 'start'], {
+  // Utiliser directement react-scripts depuis node_modules pour éviter les conflits npx
+  const reactScriptsPath = path.join(__dirname, '..', 'node_modules', '.bin', 'react-scripts');
+  
+  const reactScripts = spawn(reactScriptsPath, ['start'], {
     env,
     stdio: 'inherit',
     shell: true,
+    cwd: path.join(__dirname, '..'),
   });
   
   reactScripts.on('error', (error) => {
@@ -68,4 +74,3 @@ startServer().catch((error) => {
   console.error('Erreur:', error);
   process.exit(1);
 });
-

@@ -1,35 +1,35 @@
 #!/bin/bash
 
 echo "==================================="
-echo "Aerilux Website - Installation Guide"
+echo "Aerilux Website - Démarrage"
 echo "==================================="
 echo ""
-echo "Due to npm permission issues, please run the following commands manually:"
+
+# Vérifier si node_modules existe
+if [ ! -d "node_modules" ]; then
+    echo "Installation des dépendances..."
+    npm install
+    if [ $? -ne 0 ]; then
+        echo "Erreur lors de l'installation des dépendances."
+        exit 1
+    fi
+    echo ""
+fi
+
+# Vérifier si .env existe
+if [ ! -f ".env" ]; then
+    echo "Création du fichier .env à partir de env.example..."
+    cp env.example .env
+    echo "Fichier .env créé. Veuillez le configurer si nécessaire."
+    echo ""
+fi
+
+echo "Démarrage du serveur de développement..."
+echo "Le site sera accessible sur http://localhost:3000"
 echo ""
-echo "1. Fix npm permissions (run once):"
-echo "   sudo chown -R $(whoami) ~/.npm"
-echo ""
-echo "2. Install dependencies:"
-echo "   npm install"
-echo ""
-echo "3. Start the development server:"
-echo "   npm start"
-echo ""
-echo "The website will open automatically at http://localhost:"
-echo ""
+echo "Appuyez sur Ctrl+C pour arrêter le serveur"
 echo "==================================="
-echo "Backend API Information:"
-echo "==================================="
 echo ""
-echo "The frontend is prepared to connect to a backend API at:"
-echo "- Development: http://localhost:3001/api"
-echo "- Production: Set REACT_APP_API_URL environment variable"
-echo ""
-echo "Backend endpoints prepared:"
-echo "- Products management"
-echo "- Order processing"
-echo "- Inventory tracking"
-echo "- Payment processing"
-echo "- User management"
-echo ""
-echo "===================================" 
+
+# Démarrer le serveur
+npm start

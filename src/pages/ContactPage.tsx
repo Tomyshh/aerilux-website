@@ -203,6 +203,68 @@ const SuccessMessage = styled(motion.div)`
   text-align: center;
 `;
 
+const Section = styled.section`
+  margin: 6rem 0;
+  padding: 4rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const SectionTitle = styled(motion.h2)`
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #999999 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+`;
+
+const SectionContent = styled(motion.div)`
+  color: #cccccc;
+  line-height: 1.8;
+  font-size: 1.1rem;
+`;
+
+const FAQItem = styled(motion.div)`
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+`;
+
+const FAQQuestion = styled.h4`
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ffffff;
+`;
+
+const FAQAnswer = styled.p`
+  color: #cccccc;
+  line-height: 1.8;
+`;
+
+const List = styled.ul`
+  list-style: none;
+  padding-left: 0;
+  margin: 1.5rem 0;
+`;
+
+const ListItem = styled.li`
+  padding: 0.75rem 0;
+  padding-left: 2rem;
+  position: relative;
+  color: #cccccc;
+  
+  &::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #34c759;
+    font-weight: 700;
+  }
+`;
+
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -437,6 +499,157 @@ const ContactPage: React.FC = () => {
             </SupportHours>
           </ContactInfo>
         </ContactGrid>
+
+        {/* FAQ Section */}
+        <Section id="faq">
+          <SectionTitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Frequently Asked Questions
+          </SectionTitle>
+          <SectionContent
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <FAQItem>
+              <FAQQuestion>How does the Aerilux Pro detect pigeons?</FAQQuestion>
+              <FAQAnswer>
+                The Aerilux Pro uses advanced AI algorithms and computer vision to identify pigeons with 99.9% accuracy. 
+                The system continuously learns and adapts to local bird behaviors for maximum effectiveness.
+              </FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>Is the system harmful to birds?</FAQQuestion>
+              <FAQAnswer>
+                No, the Aerilux Pro is completely humane. It uses sound and light patterns to deter pigeons without 
+                causing any harm to birds or humans.
+              </FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>What is the coverage area of one unit?</FAQQuestion>
+              <FAQAnswer>
+                Each Aerilux Pro unit provides 360° coverage with a 50ft (15m) radius, making it ideal for most 
+                commercial and residential properties.
+              </FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>How long does the battery last?</FAQQuestion>
+              <FAQAnswer>
+                The system is solar-powered with a 30-day battery backup. In most conditions, the solar panel 
+                provides sufficient power for continuous operation.
+              </FAQAnswer>
+            </FAQItem>
+            <FAQItem>
+              <FAQQuestion>Can I control the system remotely?</FAQQuestion>
+              <FAQAnswer>
+                Yes, the Aerilux Pro comes with a mobile app that allows you to monitor and control your device 
+                remotely, receive real-time notifications, and adjust settings from anywhere.
+              </FAQAnswer>
+            </FAQItem>
+          </SectionContent>
+        </Section>
+
+        {/* Installation Guide Section */}
+        <Section id="installation">
+          <SectionTitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Installation Guide
+          </SectionTitle>
+          <SectionContent
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <p>
+              Installing your Aerilux Pro is simple and requires no wiring. Follow these steps:
+            </p>
+            <List>
+              <ListItem>Choose an optimal location with good visibility and sunlight exposure</ListItem>
+              <ListItem>Mount the device using the included mounting bracket (screws provided)</ListItem>
+              <ListItem>Ensure the solar panel faces south (in Northern Hemisphere) for maximum efficiency</ListItem>
+              <ListItem>Download the Aerilux mobile app and pair your device</ListItem>
+              <ListItem>Configure detection zones and sensitivity settings via the app</ListItem>
+              <ListItem>Test the system to ensure proper operation</ListItem>
+            </List>
+            <p style={{ marginTop: '2rem' }}>
+              For professional installation services, please contact our support team. We offer installation 
+              services for commercial properties and can provide custom mounting solutions for unique requirements.
+            </p>
+          </SectionContent>
+        </Section>
+
+        {/* Warranty Section */}
+        <Section id="warranty">
+          <SectionTitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Warranty & Support
+          </SectionTitle>
+          <SectionContent
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <p>
+              Every Aerilux Pro comes with a comprehensive 2-year warranty covering:
+            </p>
+            <List>
+              <ListItem>Manufacturing defects and component failures</ListItem>
+              <ListItem>Weather-related damage (IP67 rated for all conditions)</ListItem>
+              <ListItem>Software updates and technical support</ListItem>
+              <ListItem>Replacement parts and repair services</ListItem>
+            </List>
+            <p style={{ marginTop: '2rem' }}>
+              Our warranty includes 24/7 technical support and remote diagnostics. Extended warranty options 
+              are available for commercial installations. For warranty claims or support, contact our team 
+              through the form above or email support@aerilux.io.
+            </p>
+          </SectionContent>
+        </Section>
+
+        {/* Careers Section */}
+        <Section id="careers">
+          <SectionTitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Join Our Team
+          </SectionTitle>
+          <SectionContent
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <p>
+              At Aerilux, we're building the future of urban cleanliness through innovative AI technology. 
+              We're always looking for talented individuals to join our mission.
+            </p>
+            <p style={{ marginTop: '1.5rem' }}>
+              We're currently hiring for positions in:
+            </p>
+            <List>
+              <ListItem>AI/ML Engineers</ListItem>
+              <ListItem>Software Developers</ListItem>
+              <ListItem>Sales & Business Development</ListItem>
+              <ListItem>Customer Success Specialists</ListItem>
+              <ListItem>Product Designers</ListItem>
+            </List>
+            <p style={{ marginTop: '2rem' }}>
+              To apply, please send your resume and cover letter to careers@aerilux.io or use the contact 
+              form above with the subject "Career Application". We review all applications and will reach 
+              out to qualified candidates.
+            </p>
+          </SectionContent>
+        </Section>
       </Container>
     </ContactContainer>
   );

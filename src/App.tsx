@@ -1,17 +1,29 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import ProductPage from './pages/ProductPage';
-import CheckoutPage from './pages/CheckoutPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import CartPage from './pages/CartPage';
-import OrderConfirmationPage from './pages/OrderConfirmationPage';
-import PrivacyPage from './pages/PrivacyPage';
-import TermsPage from './pages/TermsPage';
+
+// Lazy load pages for code splitting
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ProductPage = lazy(() => import('./pages/ProductPage'));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const CartPage = lazy(() => import('./pages/CartPage'));
+const OrderConfirmationPage = lazy(() => import('./pages/OrderConfirmationPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+
+// Effects
+import { 
+  CustomCursor, 
+  SmoothScroll, 
+  PageTransition,
+  ScrollProgress,
+  ParticleBackground 
+} from './components/effects';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -19,20 +31,65 @@ const AppContainer = styled.div`
   color: #ffffff;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
 `;
 
 const MainContent = styled.main`
   flex: 1;
-  padding-top: 80px; // Space for fixed navbar
+  padding-top: 80px;
+  position: relative;
+  z-index: 1;
 `;
 
-function App() {
+const LoadingFallback = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #ffffff;
+  font-size: 1.2rem;
+`;
+
+// Animated Routes component for page transitions
+const AnimatedRoutes: React.FC = () => {
+  const location = useLocation();
+
+  // Handle scroll to anchor on page load or route change
+  useEffect(() => {
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+      // Wait for page to render, then scroll to anchor
+      const scrollToHash = () => {
+        const element = document.getElementById(hash);
+        if (element) {
+          const offset = 100; // Offset for fixed navbar
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth',
+          });
+        }
+      };
+
+      // Try multiple times with increasing delays
+      const attempts = [100, 300, 500, 1000];
+      attempts.forEach((delay) => {
+        setTimeout(scrollToHash, delay);
+      });
+    } else {
+      // Scroll to top if no hash
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location.pathname, location.hash]);
+
   return (
-    <Router>
-      <AppContainer>
-        <Navbar />
-        <MainContent>
-          <Routes>
+    <AnimatePresence mode="wait">
+      <PageTransition key={location.pathname}>
+        <Suspense fallback={<LoadingFallback>Chargement...</LoadingFallback>}>
+          <Routes location={location}>
             <Route path="/" element={<HomePage />} />
             <Route path="/product" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
@@ -43,11 +100,35 @@ function App() {
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
           </Routes>
-        </MainContent>
-        <Footer />
-      </AppContainer>
+        </Suspense>
+      </PageTransition>
+    </AnimatePresence>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <SmoothScroll>
+        <AppContainer>
+          {/* Custom cursor effect */}
+          <CustomCursor />
+          
+          {/* Scroll progress indicator */}
+          <ScrollProgress />
+          
+          {/* Particle background */}
+          <ParticleBackground variant="connections" />
+          
+          <Navbar />
+          <MainContent>
+            <AnimatedRoutes />
+          </MainContent>
+          <Footer />
+        </AppContainer>
+      </SmoothScroll>
     </Router>
   );
 }
 
-export default App; 
+export default App;

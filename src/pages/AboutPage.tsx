@@ -77,6 +77,39 @@ const ImagePlaceholder = styled(motion.div)`
   font-size: 1.5rem;
   color: #333333;
   font-weight: 600;
+  overflow: hidden;
+`;
+
+const ImageWrapper = styled(motion.div)`
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.05) 100%
+    );
+    pointer-events: none;
+  }
+`;
+
+const StyledImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 `;
 
 const Stats = styled.div`
@@ -130,16 +163,37 @@ const TeamGrid = styled.div`
 
 const TeamMember = styled(motion.div)``;
 
-const MemberImage = styled.div`
+const MemberImage = styled(motion.div)`
   width: 200px;
   height: 200px;
   margin: 0 auto 1.5rem;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 122, 255, 0.1) 0%,
+      rgba(52, 199, 89, 0.1) 100%
+    );
+    pointer-events: none;
+  }
+`;
+
+const MemberPhoto = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 `;
 
 const MemberName = styled.h4`
@@ -166,20 +220,10 @@ const AboutPage: React.FC = () => {
   ];
 
   const team = [
-    { name: 'Maalon Szuman', role: 'Founder & CTO', emoji: '👩‍🔬' },
-    { name: 'Tom Jami', role: 'Founder & CPO', emoji: '👨‍💻' },
-    { name: 'Gabriel Azaria', role: 'Founder & COO', emoji: '👩‍🎓' },
+    { name: 'Maalon Szuman', role: 'Founder & CTO', image: '/avatar/maalon.jpeg' },
+    { name: 'Tom Jami', role: 'Founder & CPO', image: '/avatar/tom.jpeg' },
+    { name: 'Gabriel Azaria', role: 'Founder & COO', image: '/avatar/gabriel.jpeg' },
   ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -212,7 +256,7 @@ const AboutPage: React.FC = () => {
           </Subtitle>
         </Hero>
 
-        <Section ref={ref}>
+        <Section id="mission" ref={ref}>
           <SectionGrid>
             <SectionContent
               initial={{ opacity: 0, x: -50 }}
@@ -229,14 +273,14 @@ const AboutPage: React.FC = () => {
                 consciousness to create products that protect properties while respecting wildlife.
               </SectionText>
             </SectionContent>
-            <ImagePlaceholder
-              initial={{ opacity: 0, scale: 0.8 }}
+            <ImageWrapper
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8 }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.02 }}
             >
-              MISSION IMAGE
-            </ImagePlaceholder>
+              <StyledImage src="/vision.jpeg" alt="Aerilux Vision - AI Technology" loading="lazy" />
+            </ImageWrapper>
           </SectionGrid>
         </Section>
 
@@ -257,14 +301,14 @@ const AboutPage: React.FC = () => {
 
         <Section>
           <SectionGrid>
-            <ImagePlaceholder
-              initial={{ opacity: 0, scale: 0.8 }}
+            <ImageWrapper
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8 }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.02 }}
             >
-              TECHNOLOGY IMAGE
-            </ImagePlaceholder>
+              <StyledImage src="/algo.jpeg" alt="Aerilux AI Algorithm Technology" loading="lazy" />
+            </ImageWrapper>
             <SectionContent
               initial={{ opacity: 0, x: 50 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -284,7 +328,7 @@ const AboutPage: React.FC = () => {
           </SectionGrid>
         </Section>
 
-        <Team>
+        <Team id="team">
           <SectionTitle>Meet Our Team</SectionTitle>
           <TeamGrid>
             {team.map((member, index) => (
@@ -295,7 +339,12 @@ const AboutPage: React.FC = () => {
                 animate={inView ? 'visible' : 'hidden'}
                 whileHover={{ y: -10 }}
               >
-                <MemberImage>{member.emoji}</MemberImage>
+                <MemberImage
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <MemberPhoto src={member.image} alt={member.name} />
+                </MemberImage>
                 <MemberName>{member.name}</MemberName>
                 <MemberRole>{member.role}</MemberRole>
               </TeamMember>

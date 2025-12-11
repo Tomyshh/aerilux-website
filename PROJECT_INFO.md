@@ -38,10 +38,23 @@ The frontend is ready to connect to a backend API with the following services:
 - Modern typography (Inter font)
 
 ## To Run the Project
-1. Fix npm permissions: `sudo chown -R $(whoami) ~/.npm`
-2. Install dependencies: `npm install`
-3. Copy `env.example` to `.env` and update values
-4. Start development server: `npm start`
+
+### Méthode rapide (recommandée)
+```bash
+./start.sh
+```
+
+Le script `start.sh` va automatiquement :
+- Installer les dépendances si nécessaire
+- Créer le fichier `.env` à partir de `env.example`
+- Démarrer le serveur de développement
+
+### Méthode manuelle
+1. Installer les dépendances: `npm install`
+2. Copier `env.example` vers `.env` et mettre à jour les valeurs si nécessaire
+3. Démarrer le serveur: `npm start`
+
+Le site sera accessible sur http://localhost:3000 (ou le prochain port disponible)
 
 ## Folder Structure
 ```

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../hooks/useCart';
 
 const ProductPageContainer = styled.div`
   min-height: 100vh;
@@ -238,25 +237,24 @@ const ShippingText = styled.div`
 const ProductPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const navigate = useNavigate();
-  const { addToCart } = useCart();
 
-  const images = [
+  const images = useMemo(() => [
     'MAIN IMAGE',
     'ANGLE 1',
     'ANGLE 2',
     'ANGLE 3',
-  ];
+  ], []);
 
-  const specs = [
+  const specs = useMemo(() => [
     { label: 'Dimensions', value: '12" x 8" x 4"' },
     { label: 'Weight', value: '2.5 lbs (1.1 kg)' },
     { label: 'Power', value: 'Solar + Battery' },
     { label: 'Coverage', value: '360° / 50ft radius' },
     { label: 'Weather Rating', value: 'IP67' },
     { label: 'Warranty', value: '2 Years' },
-  ];
+  ], []);
 
-  const features = [
+  const features = useMemo(() => [
     'AI-powered pigeon detection with 99.9% accuracy',
     'Humane deterrent using sound and light patterns',
     'Solar-powered with 30-day battery backup',
@@ -265,21 +263,15 @@ const ProductPage: React.FC = () => {
     'Easy installation - no wiring required',
     'Silent operation mode available',
     'Automatic learning and adaptation to local bird behavior',
-  ];
+  ], []);
 
-  const handleAddToCart = () => {
-    addToCart({
-      planId: 'aerilux-pro',
-      planName: 'Aerilux Pro Device',
-      price: 499,
-    });
-    // Show success notification
-  };
+  const handleImageSelect = useCallback((index: number) => {
+    setSelectedImage(index);
+  }, []);
 
-  const handleBuyNow = () => {
-    handleAddToCart();
-    navigate('/checkout');
-  };
+  const handleNavigateToContact = useCallback(() => {
+    navigate('/contact');
+  }, [navigate]);
 
   return (
     <ProductPageContainer>
@@ -297,7 +289,7 @@ const ProductPage: React.FC = () => {
                 <Thumbnail
                   key={index}
                   active={selectedImage === index}
-                  onClick={() => setSelectedImage(index)}
+                  onClick={() => handleImageSelect(index)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -313,7 +305,7 @@ const ProductPage: React.FC = () => {
             
             <PricingSection>
               <PricingTitle>Custom Enterprise Solution</PricingTitle>
-              <PricingHighlight>Starting from $499</PricingHighlight>
+              <PricingHighlight>Starting from $1299</PricingHighlight>
               <PricingDescription>
                 Every Aerilux system is completely customized to meet your specific business needs. 
                 Our team works closely with you to design the perfect solution for your property, 
@@ -334,14 +326,14 @@ const ProductPage: React.FC = () => {
 
             <ActionButtons>
               <AddToCartButton
-                onClick={() => navigate('/contact')}
+                onClick={handleNavigateToContact}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 Get Custom Quote
               </AddToCartButton>
               <BuyNowButton
-                onClick={() => navigate('/contact')}
+                onClick={handleNavigateToContact}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -364,7 +356,7 @@ const ProductPage: React.FC = () => {
               </ShippingItem>
             </ShippingInfo>
 
-            <SpecsSection>
+            <SpecsSection id="specs">
               <SpecsTitle>Technical Specifications</SpecsTitle>
               <SpecsList>
                 {specs.map((spec, index) => (
@@ -376,7 +368,7 @@ const ProductPage: React.FC = () => {
               </SpecsList>
             </SpecsSection>
 
-            <FeaturesSection>
+            <FeaturesSection id="features">
               <SpecsTitle>Key Features</SpecsTitle>
               <FeaturesList>
                 {features.map((feature, index) => (
