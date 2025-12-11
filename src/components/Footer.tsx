@@ -137,31 +137,6 @@ const BrandTagline = styled.p`
   line-height: 1.7;
 `;
 
-const SocialLinks = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const SocialLink = styled(motion.a)`
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
-    border-color: transparent;
-    transform: translateY(-3px);
-  }
-`;
-
 const FooterColumn = styled(motion.div)``;
 
 const ColumnTitle = styled.h4`
@@ -411,44 +386,6 @@ const Footer: React.FC = React.memo(() => {
               Pioneering AI-powered solutions for a cleaner, pigeon-free future. 
               Keep it clean with Aerilux.
             </BrandTagline>
-            <SocialLinks>
-              <SocialLink
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                𝕏
-              </SocialLink>
-              <SocialLink
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                in
-              </SocialLink>
-              <SocialLink
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                f
-              </SocialLink>
-              <SocialLink
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                📷
-              </SocialLink>
-            </SocialLinks>
           </BrandSection>
 
           <FooterColumn variants={itemVariants}>
