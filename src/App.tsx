@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import PatternLock from './components/PatternLock';
+import PinLock from './components/PinLock';
 import { 
   CustomCursor, 
   SmoothScroll, 
@@ -119,13 +119,13 @@ function App() {
     }
   }, [isUnlocked]);
 
-  const handlePatternSuccess = () => {
+  const handleUnlock = () => {
     setIsUnlocked(true);
   };
 
-  // Si le site n'est pas déverrouillé, afficher le PatternLock
+  // Si le site n'est pas déverrouillé, afficher le PinLock
   if (!isUnlocked) {
-    return <PatternLock onSuccess={handlePatternSuccess} />;
+    return <PinLock onSuccess={handleUnlock} />;
   }
 
   return (
