@@ -21,6 +21,7 @@ const BackgroundGradient = styled(motion.div)`
   filter: blur(120px);
   opacity: 0.3;
   z-index: 0;
+  will-change: transform;
 `;
 
 const Container = styled.div`

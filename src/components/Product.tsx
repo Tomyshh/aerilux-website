@@ -22,6 +22,7 @@ const GlowBackground = styled(motion.div)`
   background: radial-gradient(circle, rgba(0, 122, 255, 0.1) 0%, transparent 60%);
   filter: blur(80px);
   z-index: 0;
+  will-change: transform, opacity;
 `;
 
 const Container = styled.div`

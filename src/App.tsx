@@ -56,7 +56,9 @@ const AnimatedRoutes: React.FC = () => {
 
   // Handle scroll to anchor on page load or route change
   useEffect(() => {
+    const timeoutIds: NodeJS.Timeout[] = [];
     const hash = location.hash.replace('#', '');
+    
     if (hash) {
       // Wait for page to render, then scroll to anchor
       const scrollToHash = () => {
@@ -76,12 +78,18 @@ const AnimatedRoutes: React.FC = () => {
       // Try multiple times with increasing delays
       const attempts = [100, 300, 500, 1000];
       attempts.forEach((delay) => {
-        setTimeout(scrollToHash, delay);
+        const timeoutId = setTimeout(scrollToHash, delay);
+        timeoutIds.push(timeoutId);
       });
     } else {
       // Scroll to top if no hash
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Cleanup timeouts on unmount or route change
+    return () => {
+      timeoutIds.forEach((id) => clearTimeout(id));
+    };
   }, [location.pathname, location.hash]);
 
   return (

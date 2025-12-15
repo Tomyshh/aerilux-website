@@ -1,0 +1,404 @@
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { RevealText } from './effects/AnimatedText';
+
+const InActionSection = styled.section`
+  padding: 6rem 2rem;
+  background: linear-gradient(180deg, #f0f0f5 0%, #0a0a0a 100%);
+  position: relative;
+  overflow: hidden;
+`;
+
+const Container = styled.div`
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+`;
+
+const SectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: 2.5rem;
+`;
+
+const SectionTag = styled(motion.span)`
+  display: inline-block;
+  font-size: 0.85rem;
+  color: #007AFF;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 122, 255, 0.1);
+  border-radius: 50px;
+  border: 1px solid rgba(0, 122, 255, 0.3);
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2.8rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #000000 0%, #333333 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+`;
+
+const SectionSubtitle = styled(motion.p)`
+  font-size: 1.1rem;
+  color: #666666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+`;
+
+const ImageContainer = styled(motion.div)`
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 
+    0 40px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  will-change: transform, opacity;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  @media (max-width: 768px) {
+    border-radius: 16px;
+  }
+`;
+
+const ActionImage = styled(motion.img)`
+  width: 100%;
+  height: auto;
+  display: block;
+`;
+
+const ImageOverlay = styled(motion.div)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+const OverlayTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  max-width: 400px;
+  line-height: 1.3;
+  
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+`;
+
+const StatsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+`;
+
+const StatItem = styled(motion.div)`
+  text-align: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+`;
+
+const StatValue = styled.span`
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+  
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
+`;
+
+const StatLabel = styled.span`
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+`;
+
+const GlowEffect = styled(motion.div)`
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 122, 255, 0.4) 0%, transparent 60%);
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+`;
+
+const FeaturesList = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const FeatureItem = styled(motion.div)`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const FeatureIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+`;
+
+const FeatureText = styled.div``;
+
+const FeatureTitle = styled.h4`
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+`;
+
+const FeatureDescription = styled.p`
+  font-size: 0.9rem;
+  color: #999999;
+  line-height: 1.6;
+`;
+
+const actionFeatures = [
+  {
+    icon: '🎯',
+    title: 'Ciblage Précis',
+    description: 'Détection IA et jet d\'eau ciblé uniquement sur les oiseaux nuisibles.',
+  },
+  {
+    icon: '💧',
+    title: 'Solution Écologique',
+    description: 'Utilise uniquement de l\'eau - sans produits chimiques ni substances nocives.',
+  },
+  {
+    icon: '🔄',
+    title: '360° de Couverture',
+    description: 'Rotation complète pour protéger toute votre propriété.',
+  },
+];
+
+const InAction: React.FC = React.memo(() => {
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
+
+  const containerVariants = useMemo(() => ({
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  }), []);
+
+  const itemVariants = useMemo(() => ({
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.6, -0.05, 0.01, 0.99],
+      },
+    },
+  }), []);
+
+  return (
+    <InActionSection id="in-action" ref={ref}>
+      <GlowEffect
+        style={{ top: '20%', left: '-10%' }}
+        animate={inView ? {
+          scale: [1, 1.2, 1],
+          opacity: [0.5, 0.8, 0.5],
+        } : { scale: 1, opacity: 0.5 }}
+        transition={{
+          duration: 6,
+          repeat: inView ? Infinity : 0,
+          ease: 'easeInOut',
+        }}
+      />
+      <GlowEffect
+        style={{ bottom: '10%', right: '-5%' }}
+        animate={inView ? {
+          scale: [1.2, 1, 1.2],
+          opacity: [0.6, 0.4, 0.6],
+        } : { scale: 1.2, opacity: 0.6 }}
+        transition={{
+          duration: 8,
+          repeat: inView ? Infinity : 0,
+          ease: 'easeInOut',
+        }}
+      />
+
+      <Container>
+        <SectionHeader>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+          >
+            <SectionTag variants={itemVariants}>En Action</SectionTag>
+            <RevealText delay={0.2}>
+              <SectionTitle>Protection Intelligente en Temps Réel</SectionTitle>
+            </RevealText>
+            <SectionSubtitle variants={itemVariants}>
+              Découvrez comment Aerilux détecte et repousse les pigeons instantanément 
+              grâce à son système de jet d'eau intelligent et son IA de pointe.
+            </SectionSubtitle>
+          </motion.div>
+        </SectionHeader>
+
+        <ImageContainer
+          initial={{ opacity: 0, y: 50, scale: 0.95 }}
+          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.6, -0.05, 0.01, 0.99] }}
+          whileHover={{ scale: 1.01 }}
+        >
+          <ActionImage
+            src="/image_pres.jpeg"
+            alt="Aerilux en action - Système de répulsion des pigeons par jet d'eau"
+            loading="lazy"
+          />
+          <ImageOverlay
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <OverlayTitle>
+              Détection instantanée. Réponse immédiate.
+            </OverlayTitle>
+            <StatsContainer>
+              <StatItem
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <StatValue>&lt;0.5s</StatValue>
+                <StatLabel>Temps de réaction</StatLabel>
+              </StatItem>
+              <StatItem
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <StatValue>99.9%</StatValue>
+                <StatLabel>Précision</StatLabel>
+              </StatItem>
+              <StatItem
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <StatValue>15m</StatValue>
+                <StatLabel>Portée</StatLabel>
+              </StatItem>
+            </StatsContainer>
+          </ImageOverlay>
+        </ImageContainer>
+
+        <FeaturesList
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+        >
+          {actionFeatures.map((feature, index) => (
+            <FeatureItem
+              key={index}
+              variants={itemVariants}
+              whileHover={{ 
+                scale: 1.02, 
+                borderColor: 'rgba(0, 122, 255, 0.5)',
+                transition: { duration: 0.2 }
+              }}
+            >
+              <FeatureIcon>{feature.icon}</FeatureIcon>
+              <FeatureText>
+                <FeatureTitle>{feature.title}</FeatureTitle>
+                <FeatureDescription>{feature.description}</FeatureDescription>
+              </FeatureText>
+            </FeatureItem>
+          ))}
+        </FeaturesList>
+      </Container>
+    </InActionSection>
+  );
+});
+
+InAction.displayName = 'InAction';
+
+export default InAction;

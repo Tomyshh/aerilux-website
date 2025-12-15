@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -22,6 +22,7 @@ const AnimatedBackground = styled(motion.div)`
     radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 80% 70%, rgba(52, 199, 89, 0.05) 0%, transparent 50%);
   z-index: 0;
+  will-change: opacity;
 `;
 
 const Container = styled.div`
@@ -287,7 +288,7 @@ const stats = [
   { icon: '✅', number: '0', label: 'False Positives' },
 ];
 
-const Technology: React.FC = () => {
+const Technology: React.FC = React.memo(() => {
   const sectionRef = useRef<HTMLElement>(null);
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -302,7 +303,7 @@ const Technology: React.FC = () => {
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
   const smoothRotate = useSpring(rotate, { damping: 50, stiffness: 100 });
 
-  const containerVariants = {
+  const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -310,9 +311,9 @@ const Technology: React.FC = () => {
         staggerChildren: 0.15,
       },
     },
-  };
+  }), []);
 
-  const itemVariants = {
+  const itemVariants = useMemo(() => ({
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
@@ -322,17 +323,17 @@ const Technology: React.FC = () => {
         ease: [0.6, -0.05, 0.01, 0.99],
       },
     },
-  };
+  }), []);
 
   return (
     <TechnologySection id="technology" ref={sectionRef}>
       <AnimatedBackground
-        animate={{
+        animate={inView ? {
           opacity: [0.5, 1, 0.5],
-        }}
+        } : { opacity: 0.5 }}
         transition={{
           duration: 10,
-          repeat: Infinity,
+          repeat: inView ? Infinity : 0,
           ease: 'easeInOut',
         }}
       />
@@ -401,14 +402,14 @@ const Technology: React.FC = () => {
             <VisualizationContent>
               <AIBrain
                 style={{ rotate: smoothRotate }}
-                animate={{
+                animate={inView ? {
                   boxShadow: [
                     '0 0 60px rgba(0, 122, 255, 0.5)',
                     '0 0 100px rgba(0, 122, 255, 0.8)',
                     '0 0 60px rgba(0, 122, 255, 0.5)',
                   ],
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
+                } : { boxShadow: '0 0 60px rgba(0, 122, 255, 0.5)' }}
+                transition={{ duration: 3, repeat: inView ? Infinity : 0 }}
               >
                 🧠
               </AIBrain>
@@ -454,14 +455,14 @@ const Technology: React.FC = () => {
               }}
             >
               <StatIconWrapper
-                animate={{ 
+                animate={inView ? { 
                   y: [0, -5, 0],
                   rotate: [0, 5, -5, 0],
-                }}
+                } : { y: 0, rotate: 0 }}
                 transition={{ 
                   duration: 3,
                   delay: index * 0.2,
-                  repeat: Infinity,
+                  repeat: inView ? Infinity : 0,
                 }}
               >
                 {stat.icon}
@@ -474,6 +475,8 @@ const Technology: React.FC = () => {
       </Container>
     </TechnologySection>
   );
-};
+});
+
+Technology.displayName = 'Technology';
 
 export default Technology;

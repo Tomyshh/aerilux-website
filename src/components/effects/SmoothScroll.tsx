@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ReactNode } from 'react';
+import React, { useEffect, useRef, ReactNode, useCallback } from 'react';
 import Lenis from 'lenis';
 
 interface SmoothScrollProps {
@@ -7,6 +7,12 @@ interface SmoothScrollProps {
 
 const SmoothScroll: React.FC<SmoothScrollProps> = ({ children }) => {
   const lenisRef = useRef<Lenis | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+
+  const raf = useCallback((time: number) => {
+    lenisRef.current?.raf(time);
+    rafIdRef.current = requestAnimationFrame(raf);
+  }, []);
 
   useEffect(() => {
     lenisRef.current = new Lenis({
@@ -18,19 +24,18 @@ const SmoothScroll: React.FC<SmoothScrollProps> = ({ children }) => {
       touchMultiplier: 2,
     });
 
-    function raf(time: number) {
-      lenisRef.current?.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
+    rafIdRef.current = requestAnimationFrame(raf);
 
     return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
       lenisRef.current?.destroy();
+      lenisRef.current = null;
     };
-  }, []);
+  }, [raf]);
 
   return <>{children}</>;
 };
 
-export default SmoothScroll;
+export default React.memo(SmoothScroll);

@@ -151,6 +151,7 @@ const FloatingElement = styled(motion.div)<{ $size: number; $left: string; $top:
   background: radial-gradient(circle, rgba(0, 122, 255, 0.3) 0%, transparent 70%);
   filter: blur(40px);
   z-index: 1;
+  will-change: transform;
 `;
 
 const GlowOrb = styled(motion.div)`
@@ -161,6 +162,7 @@ const GlowOrb = styled(motion.div)`
   background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
   filter: blur(60px);
   z-index: 1;
+  will-change: transform;
 `;
 
 const ScrollIndicator = styled(motion.div)`
