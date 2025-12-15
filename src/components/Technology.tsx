@@ -6,23 +6,23 @@ import { RevealText } from './effects/AnimatedText';
 
 const TechnologySection = styled.section`
   padding: 10rem 2rem;
-  background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
-  color: #000000;
+  background: #000000;
+  color: #ffffff;
   position: relative;
   overflow: hidden;
 `;
 
-const AnimatedBackground = styled(motion.div)`
+// Même "tache floue" que la section Hero (même couleur & opacité)
+const GlowOrb = styled(motion.div)`
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(0, 122, 255, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(52, 199, 89, 0.05) 0%, transparent 50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  filter: blur(60px);
   z-index: 0;
-  will-change: opacity;
+  pointer-events: none;
+  will-change: transform;
 `;
 
 const Container = styled.div`
@@ -42,7 +42,7 @@ const SectionTitle = styled(motion.h2)`
   font-weight: 900;
   margin-bottom: 1.5rem;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -54,7 +54,7 @@ const SectionTitle = styled(motion.h2)`
 
 const SectionSubtitle = styled(motion.p)`
   font-size: 1.3rem;
-  color: #666666;
+  color: #999999;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.8;
@@ -130,7 +130,7 @@ const AIBrain = styled(motion.div)`
 
 const VisualizationText = styled.span`
   font-size: 1.2rem;
-  color: #666666;
+  color: #999999;
   font-weight: 600;
   letter-spacing: 0.1em;
 `;
@@ -149,10 +149,10 @@ const TechContent = styled(motion.div)``;
 const TechFeature = styled(motion.div)`
   margin-bottom: 2.5rem;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
   
@@ -173,19 +173,19 @@ const TechFeatureNumber = styled.span`
   right: 1rem;
   font-size: 3rem;
   font-weight: 900;
-  color: rgba(0, 0, 0, 0.05);
+  color: rgba(255, 255, 255, 0.05);
 `;
 
 const TechFeatureTitle = styled.h3`
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
-  color: #000000;
+  color: #ffffff;
 `;
 
 const TechFeatureDescription = styled.p`
   font-size: 1.05rem;
-  color: #666666;
+  color: #999999;
   line-height: 1.7;
 `;
 
@@ -206,12 +206,13 @@ const StatsGrid = styled(motion.div)`
 const StatCard = styled(motion.div)`
   text-align: center;
   padding: 2.5rem 1.5rem;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
   
   &::before {
     content: '';
@@ -230,7 +231,7 @@ const StatCard = styled(motion.div)`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 122, 255, 0.02) 0%, rgba(52, 199, 89, 0.02) 100%);
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.05) 0%, rgba(52, 199, 89, 0.05) 100%);
     pointer-events: none;
   }
 `;
@@ -252,7 +253,7 @@ const StatNumber = styled(motion.h3)`
   font-size: 3rem;
   font-weight: 900;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -260,7 +261,7 @@ const StatNumber = styled(motion.h3)`
 
 const StatLabel = styled.p`
   font-size: 1rem;
-  color: #666666;
+  color: #999999;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -327,15 +328,15 @@ const Technology: React.FC = React.memo(() => {
 
   return (
     <TechnologySection id="technology" ref={sectionRef}>
-      <AnimatedBackground
-        animate={inView ? {
-          opacity: [0.5, 1, 0.5],
-        } : { opacity: 0.5 }}
-        transition={{
-          duration: 10,
-          repeat: inView ? Infinity : 0,
-          ease: 'easeInOut',
-        }}
+      <GlowOrb
+        style={{ top: '-20%', left: '-15%' }}
+        animate={inView ? { x: [0, 100, 0], y: [0, 60, 0] } : {}}
+        transition={{ duration: 22, repeat: inView ? Infinity : 0, ease: 'linear' }}
+      />
+      <GlowOrb
+        style={{ bottom: '-25%', right: '-10%' }}
+        animate={inView ? { x: [0, -80, 0], y: [0, -50, 0] } : {}}
+        transition={{ duration: 18, repeat: inView ? Infinity : 0, ease: 'linear' }}
       />
       
       <Container ref={ref}>

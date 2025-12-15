@@ -16,11 +16,11 @@ const ProductSection = styled.section`
 
 const GlowBackground = styled(motion.div)`
   position: absolute;
-  width: 1000px;
-  height: 1000px;
+  width: 600px;
+  height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.1) 0%, transparent 60%);
-  filter: blur(80px);
+  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  filter: blur(60px);
   z-index: 0;
   will-change: transform, opacity;
 `;

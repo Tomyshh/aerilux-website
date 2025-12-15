@@ -6,7 +6,7 @@ import { RevealText } from './effects/AnimatedText';
 
 const InActionSection = styled.section`
   padding: 6rem 2rem;
-  background: linear-gradient(180deg, #f0f0f5 0%, #0a0a0a 100%);
+  background: #000000;
   position: relative;
   overflow: hidden;
 `;
@@ -40,7 +40,7 @@ const SectionTitle = styled.h2`
   font-size: 2.8rem;
   font-weight: 900;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #000000 0%, #333333 50%, #ffffff 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -169,16 +169,17 @@ const StatLabel = styled.span`
   letter-spacing: 0.1em;
 `;
 
-const GlowEffect = styled(motion.div)`
+// Même "tache floue" que la section Hero (même couleur & opacité)
+const GlowOrb = styled(motion.div)`
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 600px;
+  height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.4) 0%, transparent 60%);
-  filter: blur(80px);
+  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  filter: blur(60px);
   z-index: 0;
   pointer-events: none;
-  will-change: transform, opacity;
+  will-change: transform;
 `;
 
 const FeaturesList = styled(motion.div)`
@@ -283,29 +284,15 @@ const InAction: React.FC = React.memo(() => {
 
   return (
     <InActionSection id="in-action" ref={ref}>
-      <GlowEffect
-        style={{ top: '20%', left: '-10%' }}
-        animate={inView ? {
-          scale: [1, 1.2, 1],
-          opacity: [0.5, 0.8, 0.5],
-        } : { scale: 1, opacity: 0.5 }}
-        transition={{
-          duration: 6,
-          repeat: inView ? Infinity : 0,
-          ease: 'easeInOut',
-        }}
+      <GlowOrb
+        style={{ top: '-15%', left: '-10%' }}
+        animate={inView ? { x: [0, 90, 0], y: [0, 40, 0] } : {}}
+        transition={{ duration: 18, repeat: inView ? Infinity : 0, ease: 'linear' }}
       />
-      <GlowEffect
-        style={{ bottom: '10%', right: '-5%' }}
-        animate={inView ? {
-          scale: [1.2, 1, 1.2],
-          opacity: [0.6, 0.4, 0.6],
-        } : { scale: 1.2, opacity: 0.6 }}
-        transition={{
-          duration: 8,
-          repeat: inView ? Infinity : 0,
-          ease: 'easeInOut',
-        }}
+      <GlowOrb
+        style={{ bottom: '-25%', right: '-15%' }}
+        animate={inView ? { x: [0, -70, 0], y: [0, -30, 0] } : {}}
+        transition={{ duration: 16, repeat: inView ? Infinity : 0, ease: 'linear' }}
       />
 
       <Container>

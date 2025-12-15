@@ -15,16 +15,17 @@ const PricingSection = styled.section`
   overflow: hidden;
 `;
 
-const AnimatedGradient = styled(motion.div)`
+// Même "tache floue" que la section Hero (même couleur & opacité)
+const GlowOrb = styled(motion.div)`
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(ellipse at 20% 0%, rgba(0, 122, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(52, 199, 89, 0.15) 0%, transparent 50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  filter: blur(60px);
   z-index: 0;
+  pointer-events: none;
+  will-change: transform;
 `;
 
 const Container = styled.div`
@@ -275,15 +276,15 @@ const Pricing: React.FC = () => {
 
   return (
     <PricingSection id="pricing">
-      <AnimatedGradient
-        animate={{
-          opacity: [0.5, 1, 0.5],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+      <GlowOrb
+        style={{ top: '-25%', left: '-10%' }}
+        animate={inView ? { x: [0, 90, 0], y: [0, 50, 0] } : {}}
+        transition={{ duration: 20, repeat: inView ? Infinity : 0, ease: 'linear' }}
+      />
+      <GlowOrb
+        style={{ bottom: '-30%', right: '-15%' }}
+        animate={inView ? { x: [0, -70, 0], y: [0, -40, 0] } : {}}
+        transition={{ duration: 17, repeat: inView ? Infinity : 0, ease: 'linear' }}
       />
       
       <Container ref={ref}>
