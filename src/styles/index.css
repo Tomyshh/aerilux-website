@@ -435,3 +435,22 @@ a:focus-visible {
     display: none !important;
   }
 }
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}

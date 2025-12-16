@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import AnimatedText from './effects/AnimatedText';
 import MagneticButton from './effects/MagneticButton';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
@@ -191,6 +192,7 @@ const ScrollText = styled.span`
 `;
 
 const Hero: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const sectionRef = useRef<HTMLElement>(null);
   const [ref, inView] = useInView({
@@ -341,12 +343,11 @@ const Hero: React.FC = React.memo(() => {
           </HeroTitleWrapper>
           
           <Slogan variants={itemVariants}>
-            Keep It Clean
+            {t('hero.slogan')}
           </Slogan>
           
           <HeroSubtitle variants={itemVariants}>
-            The world's first AI-powered pigeon deterrent system. 
-            Protect your property with cutting-edge technology.
+            {t('hero.subtitle')}
           </HeroSubtitle>
           
           <CTAContainer variants={itemVariants}>
@@ -355,7 +356,7 @@ const Hero: React.FC = React.memo(() => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Order Now
+                {t('hero.orderNow')}
               </PrimaryButton>
             </MagneticButton>
             <MagneticButton onClick={handleNavigateToAbout}>
@@ -363,7 +364,7 @@ const Hero: React.FC = React.memo(() => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Learn More
+                {t('hero.learnMore')}
               </SecondaryButton>
             </MagneticButton>
           </CTAContainer>
@@ -375,7 +376,7 @@ const Hero: React.FC = React.memo(() => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2, duration: 1 }}
       >
-        <ScrollText>Scroll</ScrollText>
+        <ScrollText>{t('hero.scroll')}</ScrollText>
         <ScrollLine
           animate={{ scaleY: [0, 1, 0] }}
           transition={{

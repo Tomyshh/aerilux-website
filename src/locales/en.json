@@ -1,0 +1,294 @@
+{
+  "nav": {
+    "home": "Home",
+    "product": "Product",
+    "about": "About",
+    "contact": "Contact",
+    "orderNow": "Order Now"
+  },
+  "hero": {
+    "slogan": "Keep It Clean",
+    "subtitle": "The world's first AI-powered pigeon deterrent system. Protect your property with cutting-edge technology.",
+    "orderNow": "Order Now",
+    "learnMore": "Learn More",
+    "scroll": "Scroll"
+  },
+  "features": {
+    "title": "Why Choose Aerilux?",
+    "subtitle": "Experience the future of pigeon control with our patented AI technology",
+    "aiDetection": {
+      "title": "AI-Powered Detection",
+      "description": "Advanced machine learning algorithms detect and deter pigeons with 99.9% accuracy."
+    },
+    "humane": {
+      "title": "Humane Solution",
+      "description": "Completely harmless to birds and humans. Uses sound and light patterns to discourage nesting."
+    },
+    "energyEfficient": {
+      "title": "Energy Efficient",
+      "description": "Solar-powered with battery backup. Zero electricity costs and environmentally friendly."
+    },
+    "smartControl": {
+      "title": "Smart Control",
+      "description": "Monitor and control your device remotely via our mobile app. Real-time notifications."
+    },
+    "weatherResistant": {
+      "title": "Weather Resistant",
+      "description": "IP67 rated for all weather conditions. Built to last with premium materials."
+    },
+    "costEffective": {
+      "title": "Cost Effective",
+      "description": "Save thousands on cleaning costs. ROI in less than 6 months for most properties."
+    }
+  },
+  "inAction": {
+    "tag": "In Action",
+    "title": "Intelligent Real-Time Protection",
+    "subtitle": "Discover how Aerilux detects and repels pigeons instantly thanks to its intelligent water jet system and cutting-edge AI.",
+    "reactionTime": "Reaction Time",
+    "accuracy": "Accuracy",
+    "range": "Range",
+    "instantDetection": "Instant detection. Immediate response.",
+    "preciseTargeting": {
+      "title": "Precise Targeting",
+      "description": "AI detection and targeted water jet only on nuisance birds."
+    },
+    "ecological": {
+      "title": "Ecological Solution",
+      "description": "Uses only water - no chemicals or harmful substances."
+    },
+    "coverage": {
+      "title": "360° Coverage",
+      "description": "Full rotation to protect your entire property."
+    }
+  },
+  "product": {
+    "tag": "The Device",
+    "title": "Aerilux Pro",
+    "description": "Engineered with precision and powered by advanced AI, the Aerilux Pro is the ultimate solution for pigeon control. Its sleek design seamlessly integrates with any architecture while providing unmatched protection.",
+    "dimensions": {
+      "title": "Dimensions",
+      "value": "12\" x 8\" x 4\" (30cm x 20cm x 10cm)"
+    },
+    "weight": {
+      "title": "Weight",
+      "value": "2.5 lbs (1.1 kg)"
+    },
+    "battery": {
+      "title": "Battery Life",
+      "value": "Up to 30 days on a single charge"
+    },
+    "range": {
+      "title": "Range",
+      "value": "360° coverage, 50ft (15m) radius"
+    },
+    "enterprise": {
+      "title": "Custom Enterprise Solution",
+      "description": "Every Aerilux system is completely customized to meet your specific business needs. Our team works closely with you to design the perfect solution.",
+      "price": "Starting from $1299",
+      "contact": "Contact our sales team for a personalized quote.",
+      "button": "Get Custom Quote"
+    }
+  },
+  "technology": {
+    "title": "Patented AI Technology",
+    "subtitle": "Advanced machine learning meets practical pigeon control",
+    "neuralNetwork": {
+      "title": "Deep Learning Neural Network",
+      "description": "Our proprietary AI model has been trained on millions of pigeon images and behaviors to ensure accurate detection and effective deterrence."
+    },
+    "realTime": {
+      "title": "Real-Time Processing",
+      "description": "Process visual and audio data in milliseconds, enabling instant response to pigeon activity without false alarms."
+    },
+    "adaptive": {
+      "title": "Adaptive Learning",
+      "description": "The system continuously learns and adapts to local pigeon behavior patterns, improving effectiveness over time."
+    },
+    "stats": {
+      "accuracy": "99.9%",
+      "accuracyLabel": "Accuracy",
+      "response": "<50ms",
+      "responseLabel": "Response",
+      "monitoring": "24/7",
+      "monitoringLabel": "Monitoring",
+      "falsePositives": "0",
+      "falsePositivesLabel": "False Positives"
+    }
+  },
+  "pricing": {
+    "title": "Enterprise Solution",
+    "subtitle": "A fully customized cleaning solution designed specifically for your business needs",
+    "mostPopular": "Most Popular",
+    "custom": "Custom",
+    "tailored": "tailored to your business",
+    "features": {
+      "customSystem": "Custom Aerilux System Configuration",
+      "tailoredAI": "Tailored AI Model for Your Industry",
+      "installation": "Complete Installation & Setup",
+      "accountManager": "Dedicated Account Manager",
+      "support": "Priority Technical Support",
+      "integration": "Custom Integration & API Access",
+      "training": "Comprehensive Training Program",
+      "maintenance": "Ongoing Maintenance & Updates",
+      "analytics": "Performance Analytics Dashboard",
+      "multiLocation": "Scalable Multi-Location Support"
+    },
+    "contactSales": "Contact Sales",
+    "security": {
+      "securePayment": "Secure Payment",
+      "moneyBack": "30-Day Money Back",
+      "support": "24/7 Support",
+      "fastInstallation": "Fast Installation"
+    }
+  },
+  "game": {
+    "tapToHunt": "tap to hunt",
+    "timer": "{{time}}",
+    "score": "{{score}}",
+    "combo": "×{{combo}}",
+    "gameOver": {
+      "newRecord": "🎉 New record!",
+      "finalScore": "{{score}}",
+      "maxCombo": "Combo",
+      "namePlaceholder": "Username",
+      "save": "Save",
+      "replay": "Replay",
+      "saved": "✓ Saved",
+      "error": "Connection error"
+    }
+  },
+  "footer": {
+    "cta": {
+      "title": "Ready to protect your property?",
+      "button": "Get Started Today"
+    },
+    "newsletter": {
+      "title": "Stay Updated",
+      "description": "Get the latest news and updates about Aerilux technology.",
+      "placeholder": "Enter your email",
+      "button": "Subscribe"
+    },
+    "description": "Pioneering AI-powered solutions for a cleaner, pigeon-free future. Keep it clean with Aerilux.",
+    "product": {
+      "title": "Product",
+      "aeriluxPro": "Aerilux Pro",
+      "features": "Features",
+      "specifications": "Specifications",
+      "pricing": "Pricing"
+    },
+    "support": {
+      "title": "Support",
+      "contact": "Contact Us",
+      "faq": "FAQ",
+      "installation": "Installation Guide",
+      "warranty": "Warranty"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About Us",
+      "team": "Our Team",
+      "mission": "Mission",
+      "careers": "Careers"
+    },
+    "copyright": "© 2025 Aerilux. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Have questions? We're here to help you keep your property clean",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "John Doe",
+      "email": "Email",
+      "emailPlaceholder": "john@example.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "How can we help?",
+      "message": "Message",
+      "messagePlaceholder": "Tell us more about your needs...",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Thank you! We'll get back to you within 24 hours."
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": "Email",
+      "emailValue": "sales@aerilux.io",
+      "address": "Address",
+      "addressValue": "Chicago 136<br />Haifa, Israel"
+    },
+    "hours": {
+      "title": "Support Hours",
+      "weekdays": "Sunday - Thursday",
+      "weekdaysTime": "9:00 AM - 6:00 PM",
+      "emergency": "Emergency",
+      "emergencyTime": "24/7"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "detection": {
+        "question": "How does the Aerilux Pro detect pigeons?",
+        "answer": "The Aerilux Pro uses advanced AI algorithms and computer vision to identify pigeons with 99.9% accuracy. The system continuously learns and adapts to local pigeon behavior patterns for maximum effectiveness."
+      },
+      "harmful": {
+        "question": "Is the system harmful to birds?",
+        "answer": "No, the Aerilux Pro is completely humane. It uses sound and light patterns to deter pigeons without causing any harm to birds or humans."
+      },
+      "coverage": {
+        "question": "What is the coverage area of one unit?",
+        "answer": "Each Aerilux Pro unit provides 360° coverage with a 50ft (15m) radius, making it ideal for most commercial and residential properties."
+      },
+      "battery": {
+        "question": "How long does the battery last?",
+        "answer": "The system is solar-powered with a 30-day battery backup. In most conditions, the solar panel provides sufficient power for continuous operation."
+      },
+      "remote": {
+        "question": "Can I control the system remotely?",
+        "answer": "Yes, the Aerilux Pro comes with a mobile app that allows you to monitor and control your device remotely, receive real-time notifications, and adjust settings from anywhere."
+      }
+    },
+    "installation": {
+      "title": "Installation Guide",
+      "intro": "Installing your Aerilux Pro is simple and requires no wiring. Follow these steps:",
+      "steps": {
+        "location": "Choose an optimal location with good visibility and sunlight exposure",
+        "mount": "Mount the device using the included mounting bracket (screws provided)",
+        "solar": "Ensure the solar panel faces south (in Northern Hemisphere) for maximum efficiency",
+        "app": "Download the Aerilux mobile app and pair your device",
+        "configure": "Configure detection zones and sensitivity settings via the app",
+        "test": "Test the system to ensure proper operation"
+      },
+      "professional": "For professional installation services, please contact our support team. We offer installation services for commercial properties and can provide custom mounting solutions for unique requirements."
+    },
+    "warranty": {
+      "title": "Warranty & Support",
+      "intro": "Every Aerilux Pro comes with a comprehensive 2-year warranty covering:",
+      "items": {
+        "defects": "Manufacturing defects and component failures",
+        "weather": "Weather-related damage (IP67 rated for all conditions)",
+        "software": "Software updates and technical support",
+        "parts": "Replacement parts and repair services"
+      },
+      "support": "Our warranty includes 24/7 technical support and remote diagnostics. Extended warranty options are available for commercial installations. For warranty claims or support, contact our team through the form above or email support@aerilux.io."
+    },
+    "careers": {
+      "title": "Join Our Team",
+      "intro": "At Aerilux, we're building the future of urban cleanliness through innovative AI technology. We're always looking for talented individuals to join our mission.",
+      "hiring": "We're currently hiring for positions in:",
+      "positions": {
+        "ai": "AI/ML Engineers",
+        "dev": "Software Developers",
+        "sales": "Sales & Business Development",
+        "success": "Customer Success Specialists",
+        "design": "Product Designers"
+      },
+      "apply": "To apply, please send your resume and cover letter to careers@aerilux.io or use the contact form above with the subject \"Career Application\". We review all applications and will reach out to qualified candidates."
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred. Please try again."
+  }
+}
+

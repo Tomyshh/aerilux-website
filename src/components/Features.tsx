@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useTranslation } from 'react-i18next';
 import { RevealText } from './effects/AnimatedText';
 
 const FeaturesSection = styled.section`
@@ -187,44 +188,45 @@ const FeatureNumber = styled(motion.span)`
   z-index: 0;
 `;
 
-const features = [
-  {
-    icon: '🧠',
-    title: 'AI-Powered Detection',
-    description: 'Advanced machine learning algorithms detect and deter pigeons with 99.9% accuracy.',
-  },
-  {
-    icon: '🛡️',
-    title: 'Humane Solution',
-    description: 'Completely harmless to birds and humans. Uses sound and light patterns to discourage nesting.',
-  },
-  {
-    icon: '⚡',
-    title: 'Energy Efficient',
-    description: 'Solar-powered with battery backup. Zero electricity costs and environmentally friendly.',
-  },
-  {
-    icon: '📱',
-    title: 'Smart Control',
-    description: 'Monitor and control your device remotely via our mobile app. Real-time notifications.',
-  },
-  {
-    icon: '🌧️',
-    title: 'Weather Resistant',
-    description: 'IP67 rated for all weather conditions. Built to last with premium materials.',
-  },
-  {
-    icon: '💰',
-    title: 'Cost Effective',
-    description: 'Save thousands on cleaning costs. ROI in less than 6 months for most properties.',
-  },
-];
-
 const Features: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  const features = useMemo(() => [
+    {
+      icon: '🧠',
+      title: t('features.aiDetection.title'),
+      description: t('features.aiDetection.description'),
+    },
+    {
+      icon: '🛡️',
+      title: t('features.humane.title'),
+      description: t('features.humane.description'),
+    },
+    {
+      icon: '⚡',
+      title: t('features.energyEfficient.title'),
+      description: t('features.energyEfficient.description'),
+    },
+    {
+      icon: '📱',
+      title: t('features.smartControl.title'),
+      description: t('features.smartControl.description'),
+    },
+    {
+      icon: '🌧️',
+      title: t('features.weatherResistant.title'),
+      description: t('features.weatherResistant.description'),
+    },
+    {
+      icon: '💰',
+      title: t('features.costEffective.title'),
+      description: t('features.costEffective.description'),
+    },
+  ], [t]);
 
   const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
@@ -281,7 +283,7 @@ const Features: React.FC = React.memo(() => {
         <SectionHeader>
           <RevealText delay={0}>
             <SectionTitle>
-              Why Choose Aerilux?
+              {t('features.title')}
             </SectionTitle>
           </RevealText>
           <SectionSubtitle
@@ -289,7 +291,7 @@ const Features: React.FC = React.memo(() => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Experience the future of pigeon control with our patented AI technology
+            {t('features.subtitle')}
           </SectionSubtitle>
         </SectionHeader>
 

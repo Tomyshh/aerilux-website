@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
+import './i18n/config';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PinLock from './components/PinLock';
@@ -95,7 +96,7 @@ const AnimatedRoutes: React.FC = () => {
   return (
     <AnimatePresence mode="wait">
       <PageTransition key={location.pathname}>
-        <Suspense fallback={<LoadingFallback>Chargement...</LoadingFallback>}>
+        <Suspense fallback={<LoadingFallback>Loading...</LoadingFallback>}>
           <Routes location={location}>
             <Route path="/" element={<HomePage />} />
             <Route path="/product" element={<ProductPage />} />

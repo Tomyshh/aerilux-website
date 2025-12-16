@@ -2,9 +2,11 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 import { useCart } from '../hooks/useCart';
 import MagneticButton from './effects/MagneticButton';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Nav = styled(motion.nav)<{ $scrolled: boolean; $isHero: boolean }>`
   position: fixed;
@@ -228,6 +230,7 @@ const CloseButton = styled(motion.button)`
 `;
 
 const Navbar: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -247,11 +250,11 @@ const Navbar: React.FC = React.memo(() => {
   }, []);
 
   const navLinks = useMemo(() => [
-    { path: '/', label: 'Home' },
-    { path: '/product', label: 'Product' },
-    { path: '/about', label: 'About' },
-    { path: '/contact', label: 'Contact' },
-  ], []);
+    { path: '/', label: t('nav.home') },
+    { path: '/product', label: t('nav.product') },
+    { path: '/about', label: t('nav.about') },
+    { path: '/contact', label: t('nav.contact') },
+  ], [t]);
 
   const menuVariants = useMemo(() => ({
     closed: { opacity: 0, x: '100%' },
@@ -333,6 +336,8 @@ const Navbar: React.FC = React.memo(() => {
           </NavLinks>
 
           <NavActions>
+            <LanguageSwitcher />
+            
             <CartButton
               onClick={handleNavigateToCart}
               whileHover={{ scale: 1.1 }}
@@ -358,7 +363,7 @@ const Navbar: React.FC = React.memo(() => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Order Now
+                {t('nav.orderNow')}
               </CTAButton>
             </MagneticButton>
             

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { addContactMessage } from '../lib/firebase';
 
 const ContactContainer = styled.div`
@@ -266,6 +267,7 @@ const ListItem = styled.li`
 `;
 
 const ContactPage: React.FC = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -317,14 +319,14 @@ const ContactPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Get in Touch
+          {t('contact.title')}
         </PageTitle>
         <PageSubtitle
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Have questions? We're here to help you keep your property clean
+          {t('contact.subtitle')}
         </PageSubtitle>
 
         <ContactGrid>
@@ -340,53 +342,53 @@ const ContactPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                Thank you! We'll get back to you within 24 hours.
+                {t('contact.form.success')}
               </SuccessMessage>
             )}
 
             <FormGroup>
-              <Label>Name</Label>
+              <Label>{t('contact.form.name')}</Label>
               <Input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="John Doe"
+                placeholder={t('contact.form.namePlaceholder')}
                 required
               />
             </FormGroup>
 
             <FormGroup>
-              <Label>Email</Label>
+              <Label>{t('contact.form.email')}</Label>
               <Input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="john@example.com"
+                placeholder={t('contact.form.emailPlaceholder')}
                 required
               />
             </FormGroup>
 
             <FormGroup>
-              <Label>Subject</Label>
+              <Label>{t('contact.form.subject')}</Label>
               <Input
                 type="text"
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                placeholder="How can we help?"
+                placeholder={t('contact.form.subjectPlaceholder')}
                 required
               />
             </FormGroup>
 
             <FormGroup>
-              <Label>Message</Label>
+              <Label>{t('contact.form.message')}</Label>
               <Textarea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Tell us more about your needs..."
+                placeholder={t('contact.form.messagePlaceholder')}
                 required
               />
             </FormGroup>
@@ -397,7 +399,7 @@ const ContactPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
+              {isSubmitting ? t('contact.form.sending') : t('contact.form.send')}
             </SubmitButton>
           </ContactForm>
 
