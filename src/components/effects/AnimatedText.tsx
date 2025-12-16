@@ -14,6 +14,8 @@ interface AnimatedTextProps {
 
 const TextWrapper = styled(motion.span)`
   display: inline-block;
+  direction: ltr; /* Force LTR pour éviter l'inversion en RTL */
+  unicode-bidi: embed; /* Préserve la direction LTR même en contexte RTL */
 `;
 
 const CharacterSpan = styled(motion.span)`

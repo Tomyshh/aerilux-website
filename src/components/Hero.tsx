@@ -58,6 +58,8 @@ const HeroTitle = styled.h1`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 0.05em;
+  direction: ltr; /* Force LTR pour éviter l'inversion en RTL */
+  unicode-bidi: embed; /* Préserve la direction LTR même en contexte RTL */
 `;
 
 const Slogan = styled(motion.p)`

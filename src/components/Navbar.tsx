@@ -53,6 +53,8 @@ const LogoText = styled(motion.h1)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  direction: ltr; /* Force LTR pour éviter l'inversion en RTL */
+  unicode-bidi: embed; /* Préserve la direction LTR même en contexte RTL */
 `;
 
 const NavLinks = styled(motion.ul)`
