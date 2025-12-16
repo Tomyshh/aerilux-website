@@ -16,7 +16,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Types
+// ============== LEADERBOARD ==============
+
 export interface LeaderboardEntry {
   id?: string;
   playerName: string;
@@ -27,10 +28,8 @@ export interface LeaderboardEntry {
   timestamp: Timestamp;
 }
 
-// Leaderboard collection reference
 const leaderboardRef = collection(db, "pigeon_game_leaderboard");
 
-// Add score to leaderboard
 export const addScore = async (entry: Omit<LeaderboardEntry, 'id' | 'timestamp'>): Promise<string> => {
   try {
     const docRef = await addDoc(leaderboardRef, {
@@ -44,7 +43,6 @@ export const addScore = async (entry: Omit<LeaderboardEntry, 'id' | 'timestamp'>
   }
 };
 
-// Get top scores
 export const getTopScores = async (limitCount: number = 10): Promise<LeaderboardEntry[]> => {
   try {
     const q = query(leaderboardRef, orderBy("score", "desc"), limit(limitCount));
@@ -56,6 +54,51 @@ export const getTopScores = async (limitCount: number = 10): Promise<Leaderboard
     } as LeaderboardEntry));
   } catch (error) {
     console.error("Error getting scores:", error);
+    return [];
+  }
+};
+
+// ============== CONTACT MESSAGES ==============
+
+export interface ContactMessage {
+  id?: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: 'new' | 'read' | 'replied';
+  timestamp: Timestamp;
+}
+
+const contactsRef = collection(db, "contact_messages");
+
+export const addContactMessage = async (
+  message: Omit<ContactMessage, 'id' | 'timestamp' | 'status'>
+): Promise<string> => {
+  try {
+    const docRef = await addDoc(contactsRef, {
+      ...message,
+      status: 'new',
+      timestamp: Timestamp.now()
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding contact message:", error);
+    throw error;
+  }
+};
+
+export const getContactMessages = async (limitCount: number = 50): Promise<ContactMessage[]> => {
+  try {
+    const q = query(contactsRef, orderBy("timestamp", "desc"), limit(limitCount));
+    const querySnapshot = await getDocs(q);
+    
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    } as ContactMessage));
+  } catch (error) {
+    console.error("Error getting contact messages:", error);
     return [];
   }
 };
