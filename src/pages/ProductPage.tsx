@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ProductPageContainer = styled.div`
   min-height: 100vh;
@@ -235,6 +236,7 @@ const ShippingText = styled.div`
 `;
 
 const ProductPage: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedImage, setSelectedImage] = useState(0);
   const navigate = useNavigate();
 
@@ -300,28 +302,22 @@ const ProductPage: React.FC = () => {
           </ImageGallery>
 
           <ProductInfo>
-            <ProductTitle>Aerilux Pro</ProductTitle>
-            <ProductSubtitle>Revolutionary AI-Powered Pigeon Deterrent</ProductSubtitle>
+            <ProductTitle>{t('productPage.title')}</ProductTitle>
+            <ProductSubtitle>{t('productPage.subtitle')}</ProductSubtitle>
             
             <PricingSection>
-              <PricingTitle>Custom Enterprise Solution</PricingTitle>
-              <PricingHighlight>Starting from $1299</PricingHighlight>
+              <PricingTitle>{t('productPage.enterprise.title')}</PricingTitle>
+              <PricingHighlight>{t('productPage.enterprise.price')}</PricingHighlight>
               <PricingDescription>
-                Every Aerilux system is completely customized to meet your specific business needs. 
-                Our team works closely with you to design the perfect solution for your property, 
-                industry requirements, and operational goals.
+                {t('productPage.enterprise.description1')}
               </PricingDescription>
               <PricingDescription>
-                Final pricing depends on system complexity, number of units, installation requirements, 
-                and ongoing support needs. Contact our sales team for a personalized quote.
+                {t('productPage.enterprise.description2')}
               </PricingDescription>
             </PricingSection>
             
             <Description>
-              The Aerilux Pro is the world's most advanced pigeon deterrent system, 
-              combining cutting-edge AI technology with humane deterrent methods. 
-              Protect your property from pigeon damage while maintaining a clean, 
-              professional appearance.
+              {t('productPage.description')}
             </Description>
 
             <ActionButtons>
@@ -330,14 +326,14 @@ const ProductPage: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Get Custom Quote
+                {t('product.enterprise.button')}
               </AddToCartButton>
               <BuyNowButton
                 onClick={handleNavigateToContact}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Contact Sales
+                {t('pricing.contactSales')}
               </BuyNowButton>
             </ActionButtons>
 
@@ -357,7 +353,7 @@ const ProductPage: React.FC = () => {
             </ShippingInfo>
 
             <SpecsSection id="specs">
-              <SpecsTitle>Technical Specifications</SpecsTitle>
+              <SpecsTitle>{t('productPage.specs.title')}</SpecsTitle>
               <SpecsList>
                 {specs.map((spec, index) => (
                   <SpecItem key={index}>
@@ -369,7 +365,7 @@ const ProductPage: React.FC = () => {
             </SpecsSection>
 
             <FeaturesSection id="features">
-              <SpecsTitle>Key Features</SpecsTitle>
+              <SpecsTitle>{t('productPage.specs.features.title')}</SpecsTitle>
               <FeaturesList>
                 {features.map((feature, index) => (
                   <FeatureItem key={index}>{feature}</FeatureItem>

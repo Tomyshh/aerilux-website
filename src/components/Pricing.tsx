@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { RevealText } from './effects/AnimatedText';
 import GlassmorphicCard from './effects/GlassmorphicCard';
 import MagneticButton from './effects/MagneticButton';
@@ -207,33 +208,34 @@ const TrustIcon = styled.span`
   font-size: 1.5rem;
 `;
 
-const plans = [
-  {
-    name: 'Enterprise Solution',
-    price: 'Custom',
-    period: 'tailored to your business',
-    featured: true,
-    features: [
-      'Custom Aerilux System Configuration',
-      'Tailored AI Model for Your Industry',
-      'Complete Installation & Setup',
-      'Dedicated Account Manager',
-      'Priority Technical Support',
-      'Custom Integration & API Access',
-      'Comprehensive Training Program',
-      'Ongoing Maintenance & Updates',
-      'Performance Analytics Dashboard',
-      'Scalable Multi-Location Support',
-    ],
-  },
-];
-
 const Pricing: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  const plans = useMemo(() => [
+    {
+      name: t('pricing.title'),
+      price: t('pricing.custom'),
+      period: t('pricing.tailored'),
+      featured: true,
+      features: [
+        t('pricing.features.customSystem'),
+        t('pricing.features.tailoredAI'),
+        t('pricing.features.installation'),
+        t('pricing.features.accountManager'),
+        t('pricing.features.support'),
+        t('pricing.features.integration'),
+        t('pricing.features.training'),
+        t('pricing.features.maintenance'),
+        t('pricing.features.analytics'),
+        t('pricing.features.multiLocation'),
+      ],
+    },
+  ], [t]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -291,7 +293,7 @@ const Pricing: React.FC = () => {
         <SectionHeader>
           <RevealText delay={0}>
             <SectionTitle>
-              Enterprise Solution
+              {t('pricing.title')}
             </SectionTitle>
           </RevealText>
           <SectionSubtitle
@@ -299,7 +301,7 @@ const Pricing: React.FC = () => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            A fully customized cleaning solution designed specifically for your business needs
+            {t('pricing.subtitle')}
           </SectionSubtitle>
         </SectionHeader>
 
@@ -321,7 +323,7 @@ const Pricing: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5, duration: 0.5 }}
                     >
-                      Most Popular
+                      {t('pricing.mostPopular')}
                     </PopularBadge>
                   )}
                   
@@ -366,7 +368,7 @@ const Pricing: React.FC = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      Contact Sales
+                      {t('pricing.contactSales')}
                     </PurchaseButton>
                   </MagneticButton>
                 </PricingCardInner>
@@ -382,19 +384,19 @@ const Pricing: React.FC = () => {
         >
           <TrustItem>
             <TrustIcon>🔒</TrustIcon>
-            <span>Secure Payment</span>
+            <span>{t('pricing.security.securePayment')}</span>
           </TrustItem>
           <TrustItem>
             <TrustIcon>🎯</TrustIcon>
-            <span>30-Day Money Back</span>
+            <span>{t('pricing.security.moneyBack')}</span>
           </TrustItem>
           <TrustItem>
             <TrustIcon>💬</TrustIcon>
-            <span>24/7 Support</span>
+            <span>{t('pricing.security.support')}</span>
           </TrustItem>
           <TrustItem>
             <TrustIcon>⚡</TrustIcon>
-            <span>Fast Installation</span>
+            <span>{t('pricing.security.fastInstallation')}</span>
           </TrustItem>
         </TrustIndicators>
       </Container>

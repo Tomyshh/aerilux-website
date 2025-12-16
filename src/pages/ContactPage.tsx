@@ -409,33 +409,33 @@ const ContactPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <InfoSection>
-              <InfoTitle>Contact Information</InfoTitle>
+              <InfoTitle>{t('contact.info.title')}</InfoTitle>
               <InfoItem>
                 <InfoIcon>📧</InfoIcon>
                 <InfoText>
-                  <InfoLabel>Email</InfoLabel>
-                  <InfoValue>sales@aerilux.io</InfoValue>
+                  <InfoLabel>{t('contact.info.email')}</InfoLabel>
+                  <InfoValue dangerouslySetInnerHTML={{ __html: t('contact.info.emailValue') }} />
                 </InfoText>
               </InfoItem>
               <InfoItem>
                 <InfoIcon>📍</InfoIcon>
                 <InfoText>
-                  <InfoLabel>Address</InfoLabel>
-                  <InfoValue>Chicago 136<br />Haifa, Israel</InfoValue>
+                  <InfoLabel>{t('contact.info.address')}</InfoLabel>
+                  <InfoValue dangerouslySetInnerHTML={{ __html: t('contact.info.addressValue') }} />
                 </InfoText>
               </InfoItem>
             </InfoSection>
 
             <SupportHours>
-              <InfoTitle>Support Hours</InfoTitle>
+              <InfoTitle>{t('contact.hours.title')}</InfoTitle>
               <HoursGrid>
                 <HourItem>
-                  <Day>Sunday - Thursday</Day>
-                  <Time>9:00 AM - 6:00 PM</Time>
+                  <Day>{t('contact.hours.weekdays')}</Day>
+                  <Time>{t('contact.hours.weekdaysTime')}</Time>
                 </HourItem>
                 <HourItem>
-                  <Day>Emergency</Day>
-                  <Time>24/7</Time>
+                  <Day>{t('contact.hours.emergency')}</Day>
+                  <Time>{t('contact.hours.emergencyTime')}</Time>
                 </HourItem>
               </HoursGrid>
             </SupportHours>
@@ -449,7 +449,7 @@ const ContactPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Frequently Asked Questions
+            {t('contact.faq.title')}
           </SectionTitle>
           <SectionContent
             initial={{ opacity: 0, y: 20 }}
@@ -457,38 +457,33 @@ const ContactPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <FAQItem>
-              <FAQQuestion>How does the Aerilux Pro detect pigeons?</FAQQuestion>
+              <FAQQuestion>{t('contact.faq.detection.question')}</FAQQuestion>
               <FAQAnswer>
-                The Aerilux Pro uses advanced AI algorithms and computer vision to identify pigeons with 99.9% accuracy. 
-                The system continuously learns and adapts to local bird behaviors for maximum effectiveness.
+                {t('contact.faq.detection.answer')}
               </FAQAnswer>
             </FAQItem>
             <FAQItem>
-              <FAQQuestion>Is the system harmful to birds?</FAQQuestion>
+              <FAQQuestion>{t('contact.faq.harmful.question')}</FAQQuestion>
               <FAQAnswer>
-                No, the Aerilux Pro is completely humane. It uses sound and light patterns to deter pigeons without 
-                causing any harm to birds or humans.
+                {t('contact.faq.harmful.answer')}
               </FAQAnswer>
             </FAQItem>
             <FAQItem>
-              <FAQQuestion>What is the coverage area of one unit?</FAQQuestion>
+              <FAQQuestion>{t('contact.faq.coverage.question')}</FAQQuestion>
               <FAQAnswer>
-                Each Aerilux Pro unit provides 360° coverage with a 50ft (15m) radius, making it ideal for most 
-                commercial and residential properties.
+                {t('contact.faq.coverage.answer')}
               </FAQAnswer>
             </FAQItem>
             <FAQItem>
-              <FAQQuestion>How long does the battery last?</FAQQuestion>
+              <FAQQuestion>{t('contact.faq.battery.question')}</FAQQuestion>
               <FAQAnswer>
-                The system is solar-powered with a 30-day battery backup. In most conditions, the solar panel 
-                provides sufficient power for continuous operation.
+                {t('contact.faq.battery.answer')}
               </FAQAnswer>
             </FAQItem>
             <FAQItem>
-              <FAQQuestion>Can I control the system remotely?</FAQQuestion>
+              <FAQQuestion>{t('contact.faq.remote.question')}</FAQQuestion>
               <FAQAnswer>
-                Yes, the Aerilux Pro comes with a mobile app that allows you to monitor and control your device 
-                remotely, receive real-time notifications, and adjust settings from anywhere.
+                {t('contact.faq.remote.answer')}
               </FAQAnswer>
             </FAQItem>
           </SectionContent>
@@ -501,7 +496,7 @@ const ContactPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Installation Guide
+            {t('contact.installation.title')}
           </SectionTitle>
           <SectionContent
             initial={{ opacity: 0, y: 20 }}
@@ -509,19 +504,18 @@ const ContactPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <p>
-              Installing your Aerilux Pro is simple and requires no wiring. Follow these steps:
+              {t('contact.installation.intro')}
             </p>
             <List>
-              <ListItem>Choose an optimal location with good visibility and sunlight exposure</ListItem>
-              <ListItem>Mount the device using the included mounting bracket (screws provided)</ListItem>
-              <ListItem>Ensure the solar panel faces south (in Northern Hemisphere) for maximum efficiency</ListItem>
-              <ListItem>Download the Aerilux mobile app and pair your device</ListItem>
-              <ListItem>Configure detection zones and sensitivity settings via the app</ListItem>
-              <ListItem>Test the system to ensure proper operation</ListItem>
+              <ListItem>{t('contact.installation.steps.location')}</ListItem>
+              <ListItem>{t('contact.installation.steps.mount')}</ListItem>
+              <ListItem>{t('contact.installation.steps.solar')}</ListItem>
+              <ListItem>{t('contact.installation.steps.app')}</ListItem>
+              <ListItem>{t('contact.installation.steps.configure')}</ListItem>
+              <ListItem>{t('contact.installation.steps.test')}</ListItem>
             </List>
             <p style={{ marginTop: '2rem' }}>
-              For professional installation services, please contact our support team. We offer installation 
-              services for commercial properties and can provide custom mounting solutions for unique requirements.
+              {t('contact.installation.professional')}
             </p>
           </SectionContent>
         </Section>
@@ -533,7 +527,7 @@ const ContactPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Warranty & Support
+            {t('contact.warranty.title')}
           </SectionTitle>
           <SectionContent
             initial={{ opacity: 0, y: 20 }}
@@ -541,18 +535,16 @@ const ContactPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <p>
-              Every Aerilux Pro comes with a comprehensive 2-year warranty covering:
+              {t('contact.warranty.intro')}
             </p>
             <List>
-              <ListItem>Manufacturing defects and component failures</ListItem>
-              <ListItem>Weather-related damage (IP67 rated for all conditions)</ListItem>
-              <ListItem>Software updates and technical support</ListItem>
-              <ListItem>Replacement parts and repair services</ListItem>
+              <ListItem>{t('contact.warranty.items.defects')}</ListItem>
+              <ListItem>{t('contact.warranty.items.weather')}</ListItem>
+              <ListItem>{t('contact.warranty.items.software')}</ListItem>
+              <ListItem>{t('contact.warranty.items.parts')}</ListItem>
             </List>
             <p style={{ marginTop: '2rem' }}>
-              Our warranty includes 24/7 technical support and remote diagnostics. Extended warranty options 
-              are available for commercial installations. For warranty claims or support, contact our team 
-              through the form above or email support@aerilux.io.
+              {t('contact.warranty.support')}
             </p>
           </SectionContent>
         </Section>
@@ -564,7 +556,7 @@ const ContactPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Join Our Team
+            {t('contact.careers.title')}
           </SectionTitle>
           <SectionContent
             initial={{ opacity: 0, y: 20 }}
@@ -572,23 +564,20 @@ const ContactPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <p>
-              At Aerilux, we're building the future of urban cleanliness through innovative AI technology. 
-              We're always looking for talented individuals to join our mission.
+              {t('contact.careers.intro')}
             </p>
             <p style={{ marginTop: '1.5rem' }}>
-              We're currently hiring for positions in:
+              {t('contact.careers.hiring')}
             </p>
             <List>
-              <ListItem>AI/ML Engineers</ListItem>
-              <ListItem>Software Developers</ListItem>
-              <ListItem>Sales & Business Development</ListItem>
-              <ListItem>Customer Success Specialists</ListItem>
-              <ListItem>Product Designers</ListItem>
+              <ListItem>{t('contact.careers.positions.ai')}</ListItem>
+              <ListItem>{t('contact.careers.positions.dev')}</ListItem>
+              <ListItem>{t('contact.careers.positions.sales')}</ListItem>
+              <ListItem>{t('contact.careers.positions.success')}</ListItem>
+              <ListItem>{t('contact.careers.positions.design')}</ListItem>
             </List>
             <p style={{ marginTop: '2rem' }}>
-              To apply, please send your resume and cover letter to careers@aerilux.io or use the contact 
-              form above with the subject "Career Application". We review all applications and will reach 
-              out to qualified candidates.
+              {t('contact.careers.apply')}
             </p>
           </SectionContent>
         </Section>

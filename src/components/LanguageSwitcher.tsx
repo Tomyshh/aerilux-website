@@ -91,6 +91,8 @@ const LanguageSwitcher: React.FC = () => {
 
   const handleLanguageChange = (code: string) => {
     i18n.changeLanguage(code);
+    // Sauvegarder explicitement dans localStorage
+    localStorage.setItem('i18nextLng', code);
     setIsOpen(false);
     
     // Update HTML dir attribute for RTL languages

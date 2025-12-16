@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { RevealText } from './effects/AnimatedText';
 import MagneticButton from './effects/MagneticButton';
 
@@ -279,35 +280,36 @@ const CTAButton = styled(motion.button)`
   }
 `;
 
-const specs = [
-  {
-    icon: '📏',
-    title: 'Dimensions',
-    value: '12" x 8" x 4" (30cm x 20cm x 10cm)',
-  },
-  {
-    icon: '⚖️',
-    title: 'Weight',
-    value: '2.5 lbs (1.1 kg)',
-  },
-  {
-    icon: '🔋',
-    title: 'Battery Life',
-    value: 'Up to 30 days on a single charge',
-  },
-  {
-    icon: '📡',
-    title: 'Range',
-    value: '360° coverage, 50ft (15m) radius',
-  },
-];
-
 const Product: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  const specs = useMemo(() => [
+    {
+      icon: '📏',
+      title: t('product.dimensions.title'),
+      value: t('product.dimensions.value'),
+    },
+    {
+      icon: '⚖️',
+      title: t('product.weight.title'),
+      value: t('product.weight.value'),
+    },
+    {
+      icon: '🔋',
+      title: t('product.battery.title'),
+      value: t('product.battery.value'),
+    },
+    {
+      icon: '📡',
+      title: t('product.range.title'),
+      value: t('product.range.value'),
+    },
+  ], [t]);
 
   const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
@@ -360,14 +362,12 @@ const Product: React.FC = React.memo(() => {
             animate={inView ? 'visible' : 'hidden'}
             style={{ textAlign: 'center', marginBottom: '2rem' }}
           >
-            <ProductTag variants={itemVariants}>The Device</ProductTag>
+            <ProductTag variants={itemVariants}>{t('product.tag')}</ProductTag>
             <RevealText delay={0.2}>
-              <ProductTitle>Aerilux Pro</ProductTitle>
+              <ProductTitle>{t('product.title')}</ProductTitle>
             </RevealText>
             <ProductDescription variants={itemVariants} style={{ maxWidth: '800px', margin: '0 auto' }}>
-              Engineered with precision and powered by advanced AI, the Aerilux Pro 
-              is the ultimate solution for pigeon control. Its sleek design seamlessly 
-              integrates with any architecture while providing unmatched protection.
+              {t('product.description')}
             </ProductDescription>
           </ProductContent>
 
@@ -423,10 +423,9 @@ const Product: React.FC = React.memo(() => {
               animate={inView ? 'visible' : 'hidden'}
             >
               <PricingInfo variants={itemVariants}>
-                <PricingTitle>Custom Enterprise Solution</PricingTitle>
+                <PricingTitle>{t('product.enterprise.title')}</PricingTitle>
                 <PricingDescription>
-                  Every Aerilux system is completely customized to meet your specific business needs. 
-                  Our team works closely with you to design the perfect solution.
+                  {t('product.enterprise.description')}
                 </PricingDescription>
                 <PricingHighlight
                   animate={{ 
@@ -435,10 +434,10 @@ const Product: React.FC = React.memo(() => {
                   transition={{ duration: 5, repeat: Infinity }}
                   style={{ backgroundSize: '200% 200%' }}
                 >
-                  Starting from $1299
+                  {t('product.enterprise.price')}
                 </PricingHighlight>
                 <PricingDescription>
-                  Contact our sales team for a personalized quote.
+                  {t('product.enterprise.contact')}
                 </PricingDescription>
               </PricingInfo>
 
@@ -448,7 +447,7 @@ const Product: React.FC = React.memo(() => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Get Custom Quote
+                    {t('product.enterprise.button')}
                   </CTAButton>
                 </MagneticButton>
               </motion.div>

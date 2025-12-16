@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useTranslation } from 'react-i18next';
 import { RevealText } from './effects/AnimatedText';
 
 const TechnologySection = styled.section`
@@ -267,34 +268,35 @@ const StatLabel = styled.p`
   letter-spacing: 0.05em;
 `;
 
-const techFeatures = [
-  {
-    title: 'Deep Learning Neural Network',
-    description: 'Our proprietary AI model has been trained on millions of pigeon images and behaviors to ensure accurate detection and effective deterrence.',
-  },
-  {
-    title: 'Real-Time Processing',
-    description: 'Process visual and audio data in milliseconds, enabling instant response to pigeon activity without false alarms.',
-  },
-  {
-    title: 'Adaptive Learning',
-    description: 'The system continuously learns and adapts to local pigeon behavior patterns, improving effectiveness over time.',
-  },
-];
-
-const stats = [
-  { icon: '🎯', number: '99.9%', label: 'Accuracy' },
-  { icon: '⚡', number: '<50ms', label: 'Response' },
-  { icon: '👁️', number: '24/7', label: 'Monitoring' },
-  { icon: '✅', number: '0', label: 'False Positives' },
-];
-
 const Technology: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  const techFeatures = useMemo(() => [
+    {
+      title: t('technology.neuralNetwork.title'),
+      description: t('technology.neuralNetwork.description'),
+    },
+    {
+      title: t('technology.realTime.title'),
+      description: t('technology.realTime.description'),
+    },
+    {
+      title: t('technology.adaptive.title'),
+      description: t('technology.adaptive.description'),
+    },
+  ], [t]);
+
+  const stats = useMemo(() => [
+    { icon: '🎯', number: t('technology.stats.accuracy'), label: t('technology.stats.accuracyLabel') },
+    { icon: '⚡', number: t('technology.stats.response'), label: t('technology.stats.responseLabel') },
+    { icon: '👁️', number: t('technology.stats.monitoring'), label: t('technology.stats.monitoringLabel') },
+    { icon: '✅', number: t('technology.stats.falsePositives'), label: t('technology.stats.falsePositivesLabel') },
+  ], [t]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -343,7 +345,7 @@ const Technology: React.FC = React.memo(() => {
         <SectionHeader>
           <RevealText delay={0}>
             <SectionTitle>
-              Patented AI Technology
+              {t('technology.title')}
             </SectionTitle>
           </RevealText>
           <SectionSubtitle
@@ -351,7 +353,7 @@ const Technology: React.FC = React.memo(() => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Advanced machine learning meets practical pigeon control
+            {t('technology.subtitle')}
           </SectionSubtitle>
         </SectionHeader>
 

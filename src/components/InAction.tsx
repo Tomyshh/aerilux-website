@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useTranslation } from 'react-i18next';
 import { RevealText } from './effects/AnimatedText';
 
 const InActionSection = styled.section`
@@ -235,29 +236,30 @@ const FeatureDescription = styled.p`
   line-height: 1.6;
 `;
 
-const actionFeatures = [
-  {
-    icon: '🎯',
-    title: 'Ciblage Précis',
-    description: 'Détection IA et jet d\'eau ciblé uniquement sur les oiseaux nuisibles.',
-  },
-  {
-    icon: '💧',
-    title: 'Solution Écologique',
-    description: 'Utilise uniquement de l\'eau - sans produits chimiques ni substances nocives.',
-  },
-  {
-    icon: '🔄',
-    title: '360° de Couverture',
-    description: 'Rotation complète pour protéger toute votre propriété.',
-  },
-];
-
 const InAction: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+
+  const actionFeatures = useMemo(() => [
+    {
+      icon: '🎯',
+      title: t('inAction.preciseTargeting.title'),
+      description: t('inAction.preciseTargeting.description'),
+    },
+    {
+      icon: '💧',
+      title: t('inAction.ecological.title'),
+      description: t('inAction.ecological.description'),
+    },
+    {
+      icon: '🔄',
+      title: t('inAction.coverage.title'),
+      description: t('inAction.coverage.description'),
+    },
+  ], [t]);
 
   const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
@@ -302,13 +304,12 @@ const InAction: React.FC = React.memo(() => {
             initial="hidden"
             animate={inView ? 'visible' : 'hidden'}
           >
-            <SectionTag variants={itemVariants}>En Action</SectionTag>
+            <SectionTag variants={itemVariants}>{t('inAction.tag')}</SectionTag>
             <RevealText delay={0.2}>
-              <SectionTitle>Protection Intelligente en Temps Réel</SectionTitle>
+              <SectionTitle>{t('inAction.title')}</SectionTitle>
             </RevealText>
             <SectionSubtitle variants={itemVariants}>
-              Découvrez comment Aerilux détecte et repousse les pigeons instantanément 
-              grâce à son système de jet d'eau intelligent et son IA de pointe.
+              {t('inAction.subtitle')}
             </SectionSubtitle>
           </motion.div>
         </SectionHeader>
@@ -330,7 +331,7 @@ const InAction: React.FC = React.memo(() => {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <OverlayTitle>
-              Détection instantanée. Réponse immédiate.
+              {t('inAction.instantDetection')}
             </OverlayTitle>
             <StatsContainer>
               <StatItem
@@ -338,21 +339,21 @@ const InAction: React.FC = React.memo(() => {
                 transition={{ duration: 0.2 }}
               >
                 <StatValue>&lt;0.5s</StatValue>
-                <StatLabel>Temps de réaction</StatLabel>
+                <StatLabel>{t('inAction.reactionTime')}</StatLabel>
               </StatItem>
               <StatItem
                 whileHover={{ scale: 1.05, y: -5 }}
                 transition={{ duration: 0.2 }}
               >
                 <StatValue>99.9%</StatValue>
-                <StatLabel>Précision</StatLabel>
+                <StatLabel>{t('inAction.accuracy')}</StatLabel>
               </StatItem>
               <StatItem
                 whileHover={{ scale: 1.05, y: -5 }}
                 transition={{ duration: 0.2 }}
               >
                 <StatValue>15m</StatValue>
-                <StatLabel>Portée</StatLabel>
+                <StatLabel>{t('inAction.range')}</StatLabel>
               </StatItem>
             </StatsContainer>
           </ImageOverlay>

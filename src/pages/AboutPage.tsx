@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useTranslation } from 'react-i18next';
 
 const AboutContainer = styled.div`
   min-height: 100vh;
@@ -207,6 +208,7 @@ const MemberRole = styled.p`
 `;
 
 const AboutPage: React.FC = () => {
+  const { t } = useTranslation();
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,
@@ -245,14 +247,14 @@ const AboutPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            About Aerilux
+            {t('about.title')}
           </Title>
           <Subtitle
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Revolutionizing urban cleanliness through innovative AI technology
+            {t('about.subtitle')}
           </Subtitle>
         </Hero>
 
@@ -263,14 +265,12 @@ const AboutPage: React.FC = () => {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8 }}
             >
-              <SectionTitle>Our Mission</SectionTitle>
+              <SectionTitle>{t('about.mission.title')}</SectionTitle>
               <SectionText>
-                At Aerilux, we believe that clean cities are the foundation of healthy communities. 
-                Our mission is to provide innovative, humane solutions to urban bird control challenges.
+                {t('about.mission.text1')}
               </SectionText>
               <SectionText>
-                Founded in 2025, we've combined cutting-edge AI technology with environmental 
-                consciousness to create products that protect properties while respecting wildlife.
+                {t('about.mission.text2')}
               </SectionText>
             </SectionContent>
             <ImageWrapper
@@ -329,7 +329,7 @@ const AboutPage: React.FC = () => {
         </Section>
 
         <Team id="team">
-          <SectionTitle>Meet Our Team</SectionTitle>
+          <SectionTitle>{t('about.team.title')}</SectionTitle>
           <TeamGrid>
             {team.map((member, index) => (
               <TeamMember

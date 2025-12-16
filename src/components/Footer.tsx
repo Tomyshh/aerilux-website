@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
+import { useTranslation } from 'react-i18next';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 import { navigateToSection } from '../utils/navigation';
 
@@ -279,6 +280,7 @@ const SubscribeButton = styled(motion.button)`
 `;
 
 const Footer: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const [ref, inView] = useInView({
@@ -336,13 +338,13 @@ const Footer: React.FC = React.memo(() => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <CTAText>Ready to protect your property?</CTAText>
+          <CTAText>{t('footer.cta.title')}</CTAText>
           <CTAButton
             onClick={handleCTAClick}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Get Started Today
+            {t('footer.cta.button')}
           </CTAButton>
         </FooterTop>
 
@@ -352,17 +354,17 @@ const Footer: React.FC = React.memo(() => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <NewsletterContent>
-            <NewsletterTitle>Stay Updated</NewsletterTitle>
-            <NewsletterText>Get the latest news and updates about Aerilux technology.</NewsletterText>
+            <NewsletterTitle>{t('footer.newsletter.title')}</NewsletterTitle>
+            <NewsletterText>{t('footer.newsletter.description')}</NewsletterText>
           </NewsletterContent>
           <NewsletterForm>
-            <NewsletterInput placeholder="Enter your email" type="email" />
+            <NewsletterInput placeholder={t('footer.newsletter.placeholder')} type="email" />
             <SubscribeButton
               type="submit"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Subscribe
+              {t('footer.newsletter.button')}
             </SubscribeButton>
           </NewsletterForm>
         </Newsletter>
@@ -383,13 +385,12 @@ const Footer: React.FC = React.memo(() => {
               <LogoText>AERILUX</LogoText>
             </Logo>
             <BrandTagline>
-              Pioneering AI-powered solutions for a cleaner, pigeon-free future. 
-              Keep it clean with Aerilux.
+              {t('footer.description')}
             </BrandTagline>
           </BrandSection>
 
           <FooterColumn variants={itemVariants}>
-            <ColumnTitle>Product</ColumnTitle>
+            <ColumnTitle>{t('footer.product.title')}</ColumnTitle>
             <ColumnLinks>
               <ColumnLink whileHover={{ x: 5 }}>
                 <StyledLink 
@@ -399,7 +400,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/product');
                   }}
                 >
-                  Aerilux Pro
+                  {t('footer.product.aeriluxPro')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -410,7 +411,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/product', 'features');
                   }}
                 >
-                  Features
+                  {t('footer.product.features')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -421,7 +422,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/product', 'specs');
                   }}
                 >
-                  Specifications
+                  {t('footer.product.specifications')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -432,14 +433,14 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/', 'pricing');
                   }}
                 >
-                  Pricing
+                  {t('footer.product.pricing')}
                 </StyledLink>
               </ColumnLink>
             </ColumnLinks>
           </FooterColumn>
 
           <FooterColumn variants={itemVariants}>
-            <ColumnTitle>Support</ColumnTitle>
+            <ColumnTitle>{t('footer.support.title')}</ColumnTitle>
             <ColumnLinks>
               <ColumnLink whileHover={{ x: 5 }}>
                 <StyledLink 
@@ -449,7 +450,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/contact');
                   }}
                 >
-                  Contact Us
+                  {t('footer.support.contact')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -460,7 +461,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/contact', 'faq');
                   }}
                 >
-                  FAQ
+                  {t('footer.support.faq')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -471,7 +472,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/contact', 'installation');
                   }}
                 >
-                  Installation Guide
+                  {t('footer.support.installation')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -482,14 +483,14 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/contact', 'warranty');
                   }}
                 >
-                  Warranty
+                  {t('footer.support.warranty')}
                 </StyledLink>
               </ColumnLink>
             </ColumnLinks>
           </FooterColumn>
 
           <FooterColumn variants={itemVariants}>
-            <ColumnTitle>Company</ColumnTitle>
+            <ColumnTitle>{t('footer.company.title')}</ColumnTitle>
             <ColumnLinks>
               <ColumnLink whileHover={{ x: 5 }}>
                 <StyledLink 
@@ -499,7 +500,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/about');
                   }}
                 >
-                  About Us
+                  {t('footer.company.about')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -510,7 +511,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/about', 'team');
                   }}
                 >
-                  Our Team
+                  {t('footer.company.team')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -521,7 +522,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/about', 'mission');
                   }}
                 >
-                  Mission
+                  {t('footer.company.mission')}
                 </StyledLink>
               </ColumnLink>
               <ColumnLink whileHover={{ x: 5 }}>
@@ -532,7 +533,7 @@ const Footer: React.FC = React.memo(() => {
                     handleLinkClick('/contact', 'careers');
                   }}
                 >
-                  Careers
+                  {t('footer.company.careers')}
                 </StyledLink>
               </ColumnLink>
             </ColumnLinks>
@@ -545,11 +546,11 @@ const Footer: React.FC = React.memo(() => {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <Copyright>
-            © {currentYear} Aerilux. All rights reserved.
+            {t('footer.copyright', { year: currentYear })}
           </Copyright>
           <LegalLinks>
-            <LegalLink to="/privacy">Privacy Policy</LegalLink>
-            <LegalLink to="/terms">Terms of Service</LegalLink>
+            <LegalLink to="/privacy">{t('footer.privacy')}</LegalLink>
+            <LegalLink to="/terms">{t('footer.terms')}</LegalLink>
           </LegalLinks>
         </FooterBottom>
       </Container>

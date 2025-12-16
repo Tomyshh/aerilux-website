@@ -286,6 +286,36 @@
       "apply": "Pour postuler, veuillez envoyer votre CV et votre lettre de motivation à careers@aerilux.io ou utilisez le formulaire de contact ci-dessus avec le sujet \"Candidature\". Nous examinons toutes les candidatures et contacterons les candidats qualifiés."
     }
   },
+  "about": {
+    "title": "À propos d'Aerilux",
+    "subtitle": "Pionnier de l'avenir de la propreté urbaine grâce à une technologie IA innovante",
+    "mission": {
+      "title": "Notre Mission",
+      "text1": "Notre mission est de fournir des solutions innovantes et humaines aux défis du contrôle des oiseaux urbains.",
+      "text2": "Nous combinons une technologie IA de pointe avec une conscience environnementale pour créer des produits qui protègent les propriétés tout en respectant la faune."
+    },
+    "team": {
+      "title": "Notre Équipe",
+      "subtitle": "Rencontrez les experts derrière Aerilux"
+    }
+  },
+  "productPage": {
+    "title": "Aerilux Pro",
+    "subtitle": "Dissuasion de Pigeons Révolutionnaire Alimentée par IA",
+    "enterprise": {
+      "title": "Solution Entreprise Personnalisée",
+      "description1": "Chaque système Aerilux est entièrement personnalisé pour répondre à vos besoins commerciaux spécifiques.",
+      "description2": "Contactez notre équipe commerciale pour un devis personnalisé.",
+      "price": "À partir de 1299 $"
+    },
+    "description": "Conçu avec précision et alimenté par une IA avancée, l'Aerilux Pro est la solution ultime pour le contrôle des pigeons. Son design élégant s'intègre parfaitement à toute architecture tout en offrant une protection inégalée.",
+    "specs": {
+      "title": "Spécifications Techniques",
+      "features": {
+        "title": "Caractéristiques Clés"
+      }
+    }
+  },
   "common": {
     "loading": "Chargement...",
     "error": "Une erreur est survenue. Veuillez réessayer."

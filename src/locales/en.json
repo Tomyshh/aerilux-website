@@ -286,6 +286,36 @@
       "apply": "To apply, please send your resume and cover letter to careers@aerilux.io or use the contact form above with the subject \"Career Application\". We review all applications and will reach out to qualified candidates."
     }
   },
+  "about": {
+    "title": "About Aerilux",
+    "subtitle": "Pioneering the future of urban cleanliness through innovative AI technology",
+    "mission": {
+      "title": "Our Mission",
+      "text1": "Our mission is to provide innovative, humane solutions to urban bird control challenges.",
+      "text2": "We combine cutting-edge AI technology with environmental consciousness to create products that protect properties while respecting wildlife."
+    },
+    "team": {
+      "title": "Our Team",
+      "subtitle": "Meet the experts behind Aerilux"
+    }
+  },
+  "productPage": {
+    "title": "Aerilux Pro",
+    "subtitle": "Revolutionary AI-Powered Pigeon Deterrent",
+    "enterprise": {
+      "title": "Custom Enterprise Solution",
+      "description1": "Every Aerilux system is completely customized to meet your specific business needs.",
+      "description2": "Contact our sales team for a personalized quote.",
+      "price": "Starting from $1299"
+    },
+    "description": "Engineered with precision and powered by advanced AI, the Aerilux Pro is the ultimate solution for pigeon control. Its sleek design seamlessly integrates with any architecture while providing unmatched protection.",
+    "specs": {
+      "title": "Technical Specifications",
+      "features": {
+        "title": "Key Features"
+      }
+    }
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred. Please try again."

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { addScore, getTopScores, LeaderboardEntry } from '../lib/firebase';
 
 // ============== TYPES ==============
@@ -697,6 +698,7 @@ const SmallPigeonIcon = memo(() => (
 
 // ============== MAIN COMPONENT ==============
 const PigeonGame: React.FC = () => {
+  const { t } = useTranslation();
   const [gameState, setGameState] = useState<GameState>('idle');
   const [enemies, setEnemies] = useState<Enemy[]>([]);
   const [score, setScore] = useState(0);
@@ -1015,7 +1017,7 @@ const PigeonGame: React.FC = () => {
                   <ReticleCircle />
                 </TargetReticle>
                 
-                <TapText>tap to hunt</TapText>
+                <TapText>{t('game.tapToHunt')}</TapText>
               </IdleOverlay>
             )}
 
@@ -1074,20 +1076,20 @@ const PigeonGame: React.FC = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', damping: 20 }}
             >
-              {isNewHighScore && <NewRecord>🎉 Nouveau record !</NewRecord>}
+              {isNewHighScore && <NewRecord>{t('game.gameOver.newRecord')}</NewRecord>}
               <FinalScore>{score}</FinalScore>
               
               <StatsRow>
-                <div>Combo <span>×{maxCombo}</span></div>
+                <div>{t('game.gameOver.maxCombo')} <span>×{maxCombo}</span></div>
               </StatsRow>
 
-              {saveStatus === 'success' && <StatusMsg>✓ Sauvegardé</StatusMsg>}
-              {saveStatus === 'error' && <StatusMsg $error>Erreur de connexion</StatusMsg>}
+              {saveStatus === 'success' && <StatusMsg>{t('game.gameOver.saved')}</StatusMsg>}
+              {saveStatus === 'error' && <StatusMsg $error>{t('game.gameOver.error')}</StatusMsg>}
 
               {saveStatus !== 'success' && (
                 <>
                   <NameInput
-                    placeholder="Pseudo"
+                    placeholder={t('game.gameOver.namePlaceholder')}
                     value={playerName}
                     onChange={e => setPlayerName(e.target.value.slice(0, 15))}
                     maxLength={15}
@@ -1095,10 +1097,10 @@ const PigeonGame: React.FC = () => {
                   />
                   <ButtonRow>
                     <ActionBtn $primary onClick={saveScore} disabled={!playerName.trim() || isSaving}>
-                      {isSaving ? '...' : 'Sauvegarder'}
+                      {isSaving ? '...' : t('game.gameOver.save')}
                     </ActionBtn>
                     <ActionBtn onClick={replay} disabled={isSaving}>
-                      Rejouer
+                      {t('game.gameOver.replay')}
                     </ActionBtn>
                   </ButtonRow>
                 </>

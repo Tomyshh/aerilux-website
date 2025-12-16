@@ -15,6 +15,7 @@ i18n
       fr: { translation: frTranslations },
       he: { translation: heTranslations },
     },
+    lng: 'en', // Langue par défaut : anglais
     fallbackLng: 'en',
     debug: false,
     interpolation: {
@@ -23,6 +24,7 @@ i18n
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng', // Clé de sauvegarde dans localStorage
     },
   });
 
