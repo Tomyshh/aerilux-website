@@ -5,6 +5,7 @@ import InAction from '../components/InAction';
 import Product from '../components/Product';
 import Technology from '../components/Technology';
 import Pricing from '../components/Pricing';
+import PigeonGame from '../components/PigeonGame';
 
 const HomePage: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const HomePage: React.FC = () => {
       <Product />
       <Technology />
       <Pricing />
+      <PigeonGame />
     </>
   );
 };
