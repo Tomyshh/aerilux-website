@@ -218,9 +218,9 @@ const AboutPage: React.FC = () => {
   ];
 
   const team = [
-    { name: 'Maalon Szuman', role: 'Founder & CTO', image: '/avatar/maalon.jpeg' },
-    { name: 'Tom Jami', role: 'Founder & CPO', image: '/avatar/tom.jpeg' },
-    { name: 'Gabriel Azaria', role: 'Founder & COO', image: '/avatar/gabriel.jpeg' },
+    { name: 'Maalon Szuman', role: 'Founder', image: '/avatar/maalon.jpeg' },
+    { name: 'Tom Jami', role: 'Founder', image: '/avatar/tom.jpeg' },
+    { name: 'Gabriel Azaria', role: 'Founder', image: '/avatar/gabriel.jpeg' },
   ];
 
   const itemVariants = {
