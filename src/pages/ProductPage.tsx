@@ -167,7 +167,7 @@ const FeatureItem = styled.li`
   
   &::before {
     content: '✓';
-    color: #34c759;
+    color: #3B9EFF;
     font-size: 1.5rem;
     font-weight: 700;
   }

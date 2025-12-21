@@ -58,8 +58,8 @@ const PinDot = styled(motion.div)<{ $filled: boolean; $error: boolean }>`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid ${props => props.$error ? '#ff3b30' : props.$filled ? '#34c759' : 'rgba(255, 255, 255, 0.3)'};
-  background: ${props => props.$error ? '#ff3b30' : props.$filled ? '#34c759' : 'transparent'};
+  border: 2px solid ${props => props.$error ? '#ff3b30' : props.$filled ? '#3B9EFF' : 'rgba(255, 255, 255, 0.3)'};
+  background: ${props => props.$error ? '#ff3b30' : props.$filled ? '#3B9EFF' : 'transparent'};
   transition: all 0.2s ease;
 `;
 
@@ -125,12 +125,12 @@ const Message = styled(motion.div)<{ $type: 'error' | 'success' }>`
   padding: 1rem 2rem;
   background: ${props => props.$type === 'error' 
     ? 'rgba(255, 59, 48, 0.2)' 
-    : 'rgba(52, 199, 89, 0.2)'};
+    : 'rgba(59, 158, 255, 0.15)'};
   border: 1px solid ${props => props.$type === 'error' 
     ? 'rgba(255, 59, 48, 0.5)' 
-    : 'rgba(52, 199, 89, 0.5)'};
+    : 'rgba(59, 158, 255, 0.4)'};
   border-radius: 10px;
-  color: ${props => props.$type === 'error' ? '#ff3b30' : '#34c759'};
+  color: ${props => props.$type === 'error' ? '#ff3b30' : '#3B9EFF'};
   font-size: 1rem;
   text-align: center;
 `;

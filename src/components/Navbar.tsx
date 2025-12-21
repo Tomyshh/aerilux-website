@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { ShoppingCart, Menu, X } from 'lucide-react';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 import { useCart } from '../hooks/useCart';
 import MagneticButton from './effects/MagneticButton';
@@ -88,7 +89,7 @@ const StyledNavLink = styled(Link)<{ $isActive: boolean }>`
     left: 0;
     width: ${props => props.$isActive ? '100%' : '0'};
     height: 2px;
-    background: linear-gradient(90deg, #007AFF 0%, #34c759 100%);
+    background: #3B9EFF;
     transition: width 0.3s ease;
   }
   
@@ -126,6 +127,12 @@ const CartButton = styled(motion.button)`
   &:hover {
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.8;
   }
 `;
 
@@ -194,6 +201,12 @@ const MobileMenuButton = styled(motion.button)`
   @media (max-width: 768px) {
     display: flex;
   }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.8;
+  }
 `;
 
 const MobileMenu = styled(motion.div)`
@@ -218,7 +231,7 @@ const MobileNavLink = styled(motion(Link))`
   color: #ffffff;
   
   &:hover {
-    color: #007AFF;
+    color: #3B9EFF;
   }
 `;
 
@@ -228,7 +241,17 @@ const CloseButton = styled(motion.button)`
   right: 2rem;
   background: none;
   color: #ffffff;
-  font-size: 2rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.8;
+  }
 `;
 
 const Navbar: React.FC = React.memo(() => {
@@ -344,8 +367,9 @@ const Navbar: React.FC = React.memo(() => {
               onClick={handleNavigateToCart}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              aria-label="Cart"
             >
-              🛒
+              <ShoppingCart aria-hidden="true" />
               <AnimatePresence>
                 {cartItemsCount > 0 && (
                   <CartBadge
@@ -373,8 +397,9 @@ const Navbar: React.FC = React.memo(() => {
               onClick={handleToggleMobileMenu}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              aria-label="Open menu"
             >
-              ☰
+              <Menu aria-hidden="true" />
             </MobileMenuButton>
           </NavActions>
         </NavContainer>
@@ -392,8 +417,9 @@ const Navbar: React.FC = React.memo(() => {
               onClick={handleCloseMobileMenu}
               whileHover={{ rotate: 90 }}
               transition={{ duration: 0.3 }}
+              aria-label="Close menu"
             >
-              ✕
+              <X aria-hidden="true" />
             </CloseButton>
             {navLinks.map((link, index) => (
               <MobileNavLink

@@ -138,7 +138,7 @@ const RevealMask = styled(motion.div)`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #ffffff 0%, #007AFF 100%);
+  background: #3B9EFF;
   transform-origin: left;
 `;
 

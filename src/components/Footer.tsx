@@ -20,7 +20,7 @@ const FooterGlow = styled(motion.div)`
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.1) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59, 158, 255, 0.08) 0%, transparent 60%);
   filter: blur(80px);
   z-index: 0;
 `;
@@ -62,13 +62,13 @@ const CTAText = styled.h3`
 `;
 
 const CTAButton = styled(motion.button)`
-  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
-  color: #ffffff;
+  background: #3B9EFF;
+  color: #000000;
   padding: 1.2rem 3rem;
   border-radius: 50px;
   font-weight: 700;
   font-size: 1.1rem;
-  box-shadow: 0 10px 40px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 10px 40px rgba(59, 158, 255, 0.3);
   position: relative;
   overflow: hidden;
   
@@ -82,7 +82,7 @@ const CTAButton = styled(motion.button)`
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.4),
       transparent
     );
     transition: left 0.5s ease;
@@ -154,7 +154,7 @@ const ColumnTitle = styled.h4`
     left: 0;
     width: 30px;
     height: 2px;
-    background: linear-gradient(90deg, #007AFF 0%, #34c759 100%);
+    background: #3B9EFF;
   }
 `;
 
@@ -266,7 +266,7 @@ const NewsletterInput = styled.input`
   
   &:focus {
     outline: none;
-    border-color: #007AFF;
+    border-color: #3B9EFF;
   }
 `;
 

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Ruler, Scale, Battery, Radar } from 'lucide-react';
 import { RevealText } from './effects/AnimatedText';
 import MagneticButton from './effects/MagneticButton';
 
@@ -20,7 +21,7 @@ const GlowBackground = styled(motion.div)`
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59, 158, 255, 0.12) 0%, transparent 60%);
   filter: blur(60px);
   z-index: 0;
   will-change: transform, opacity;
@@ -107,9 +108,9 @@ const ImageGlow = styled(motion.div)`
   background: conic-gradient(
     from 0deg,
     transparent,
-    rgba(0, 122, 255, 0.3),
+    rgba(59, 158, 255, 0.2),
     transparent,
-    rgba(52, 199, 89, 0.3),
+    rgba(59, 158, 255, 0.15),
     transparent
   );
   animation: rotateGlow 10s linear infinite;
@@ -126,14 +127,14 @@ const ProductContent = styled(motion.div)``;
 const ProductTag = styled(motion.span)`
   display: inline-block;
   font-size: 0.85rem;
-  color: #007AFF;
+  color: #3B9EFF;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   margin-bottom: 1rem;
   padding: 0.5rem 1rem;
-  background: rgba(0, 122, 255, 0.1);
+  background: rgba(59, 158, 255, 0.1);
   border-radius: 50px;
-  border: 1px solid rgba(0, 122, 255, 0.3);
+  border: 1px solid rgba(59, 158, 255, 0.3);
 `;
 
 const ProductTitle = styled.h2`
@@ -178,14 +179,20 @@ const SpecItem = styled(motion.li)`
 const SpecIcon = styled(motion.div)`
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: rgba(59, 158, 255, 0.12);
   backdrop-filter: blur(10px);
   border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #3B9EFF;
+  border: 1px solid rgba(59, 158, 255, 0.28);
+
+  svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.9;
+  }
 `;
 
 const SpecText = styled.div`
@@ -241,10 +248,7 @@ const PricingDescription = styled.p`
 const PricingHighlight = styled(motion.p)`
   font-size: 2rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #3B9EFF;
   margin-bottom: 0.5rem;
 `;
 
@@ -290,22 +294,22 @@ const Product: React.FC = React.memo(() => {
 
   const specs = useMemo(() => [
     {
-      icon: '📏',
+      icon: <Ruler aria-hidden="true" />,
       title: t('product.dimensions.title'),
       value: t('product.dimensions.value'),
     },
     {
-      icon: '⚖️',
+      icon: <Scale aria-hidden="true" />,
       title: t('product.weight.title'),
       value: t('product.weight.value'),
     },
     {
-      icon: '🔋',
+      icon: <Battery aria-hidden="true" />,
       title: t('product.battery.title'),
       value: t('product.battery.value'),
     },
     {
-      icon: '📡',
+      icon: <Radar aria-hidden="true" />,
       title: t('product.range.title'),
       value: t('product.range.value'),
     },
@@ -403,7 +407,7 @@ const Product: React.FC = React.memo(() => {
                 {specs.map((spec, index) => (
                   <SpecItem key={index} variants={itemVariants}>
                     <SpecIcon
-                      whileHover={{ scale: 1.1, rotate: [0, -10, 10, 0] }}
+                      whileHover={{ scale: 1.06 }}
                       transition={{ duration: 0.3 }}
                     >
                       {spec.icon}
@@ -427,13 +431,7 @@ const Product: React.FC = React.memo(() => {
                 <PricingDescription>
                   {t('product.enterprise.description')}
                 </PricingDescription>
-                <PricingHighlight
-                  animate={{ 
-                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                  }}
-                  transition={{ duration: 5, repeat: Infinity }}
-                  style={{ backgroundSize: '200% 200%' }}
-                >
+                <PricingHighlight>
                   {t('product.enterprise.price')}
                 </PricingHighlight>
                 <PricingDescription>

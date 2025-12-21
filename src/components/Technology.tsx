@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useTranslation } from 'react-i18next';
+import { Target, Zap, Eye, CheckCircle } from 'lucide-react';
 import { RevealText } from './effects/AnimatedText';
 
 const TechnologySection = styled.section`
@@ -19,7 +20,7 @@ const GlowOrb = styled(motion.div)`
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59, 158, 255, 0.12) 0%, transparent 60%);
   filter: blur(60px);
   z-index: 0;
   pointer-events: none;
@@ -94,15 +95,15 @@ const TechVisualization = styled(motion.div)`
         0deg,
         transparent,
         transparent 50px,
-        rgba(0, 122, 255, 0.03) 50px,
-        rgba(0, 122, 255, 0.03) 51px
+        rgba(59, 158, 255, 0.05) 50px,
+        rgba(59, 158, 255, 0.05) 51px
       ),
       repeating-linear-gradient(
         90deg,
         transparent,
         transparent 50px,
-        rgba(0, 122, 255, 0.03) 50px,
-        rgba(0, 122, 255, 0.03) 51px
+        rgba(59, 158, 255, 0.05) 50px,
+        rgba(59, 158, 255, 0.05) 51px
       );
   }
 `;
@@ -121,12 +122,13 @@ const AIBrain = styled(motion.div)`
   height: 120px;
   margin: 0 auto 1rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
+  background: rgba(59, 158, 255, 0.15);
+  border: 1px solid rgba(59, 158, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-  box-shadow: 0 0 60px rgba(0, 122, 255, 0.5);
+  box-shadow: 0 0 60px rgba(59, 158, 255, 0.25);
 `;
 
 const VisualizationText = styled.span`
@@ -164,7 +166,7 @@ const TechFeature = styled(motion.div)`
     left: 0;
     width: 4px;
     height: 100%;
-    background: linear-gradient(180deg, #007AFF 0%, #34c759 100%);
+    background: #3B9EFF;
   }
 `;
 
@@ -222,7 +224,7 @@ const StatCard = styled(motion.div)`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #007AFF 0%, #34c759 100%);
+    background: #3B9EFF;
   }
   
   &::after {
@@ -232,7 +234,7 @@ const StatCard = styled(motion.div)`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 122, 255, 0.05) 0%, rgba(52, 199, 89, 0.05) 100%);
+    background: rgba(59, 158, 255, 0.03);
     pointer-events: none;
   }
 `;
@@ -241,13 +243,20 @@ const StatIconWrapper = styled(motion.div)`
   width: 70px;
   height: 70px;
   margin: 0 auto 1.5rem;
-  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
+  background: rgba(59, 158, 255, 0.15);
+  border: 1px solid rgba(59, 158, 255, 0.3);
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(59, 158, 255, 0.15);
+
+  svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.9;
+  }
 `;
 
 const StatNumber = styled(motion.h3)`
@@ -292,10 +301,10 @@ const Technology: React.FC = React.memo(() => {
   ], [t]);
 
   const stats = useMemo(() => [
-    { icon: '🎯', number: t('technology.stats.accuracy'), label: t('technology.stats.accuracyLabel') },
-    { icon: '⚡', number: t('technology.stats.response'), label: t('technology.stats.responseLabel') },
-    { icon: '👁️', number: t('technology.stats.monitoring'), label: t('technology.stats.monitoringLabel') },
-    { icon: '✅', number: t('technology.stats.falsePositives'), label: t('technology.stats.falsePositivesLabel') },
+    { icon: <Target aria-hidden="true" />, number: t('technology.stats.accuracy'), label: t('technology.stats.accuracyLabel') },
+    { icon: <Zap aria-hidden="true" />, number: t('technology.stats.response'), label: t('technology.stats.responseLabel') },
+    { icon: <Eye aria-hidden="true" />, number: t('technology.stats.monitoring'), label: t('technology.stats.monitoringLabel') },
+    { icon: <CheckCircle aria-hidden="true" />, number: t('technology.stats.falsePositives'), label: t('technology.stats.falsePositivesLabel') },
   ], [t]);
 
   const { scrollYProgress } = useScroll({
@@ -372,7 +381,7 @@ const Technology: React.FC = React.memo(() => {
                   y1={50 + Math.floor(i / 5) * 100}
                   x2={150 + ((i + 1) % 5) * 50}
                   y2={80 + Math.floor((i + 1) / 5) * 80}
-                  stroke="rgba(0, 122, 255, 0.3)"
+                  stroke="rgba(59, 158, 255, 0.3)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -391,7 +400,7 @@ const Technology: React.FC = React.memo(() => {
                   cx={50 + (i % 4) * 100}
                   cy={50 + Math.floor(i / 4) * 80}
                   r="6"
-                  fill="#007AFF"
+                  fill="#3B9EFF"
                   initial={{ scale: 0 }}
                   animate={{ scale: [0, 1, 0.8, 1] }}
                   transition={{
@@ -407,11 +416,11 @@ const Technology: React.FC = React.memo(() => {
                 style={{ rotate: smoothRotate }}
                 animate={inView ? {
                   boxShadow: [
-                    '0 0 60px rgba(0, 122, 255, 0.5)',
-                    '0 0 100px rgba(0, 122, 255, 0.8)',
-                    '0 0 60px rgba(0, 122, 255, 0.5)',
+                    '0 0 60px rgba(59, 158, 255, 0.25)',
+                    '0 0 100px rgba(59, 158, 255, 0.4)',
+                    '0 0 60px rgba(59, 158, 255, 0.25)',
                   ],
-                } : { boxShadow: '0 0 60px rgba(0, 122, 255, 0.5)' }}
+                } : { boxShadow: '0 0 60px rgba(59, 158, 255, 0.25)' }}
                 transition={{ duration: 3, repeat: inView ? Infinity : 0 }}
               >
                 🧠

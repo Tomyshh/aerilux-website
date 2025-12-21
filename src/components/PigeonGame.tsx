@@ -144,10 +144,7 @@ const LiveScore = styled.div`
   font-variant-numeric: tabular-nums;
   
   span {
-    background: linear-gradient(135deg, #007AFF, #34c759);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #3B9EFF;
   }
 `;
 
@@ -157,8 +154,8 @@ const ComboDisplay = styled(motion.div)<{ $level: number }>`
   color: ${p => {
     if (p.$level >= 6) return '#ff3b30';
     if (p.$level >= 4) return '#ff9500';
-    if (p.$level >= 2) return '#34c759';
-    return '#007AFF';
+    if (p.$level >= 2) return '#3B9EFF';
+    return 'rgba(59, 158, 255, 0.8)';
   }};
   animation: ${pulse} 0.4s ease-in-out infinite;
 `;
@@ -208,7 +205,7 @@ const TargetReticle = styled.div`
   &::before, &::after {
     content: '';
     position: absolute;
-    background: linear-gradient(135deg, #007AFF, #34c759);
+    background: #3B9EFF;
   }
   
   &::before {
@@ -234,14 +231,14 @@ const ReticleCircle = styled.div`
   position: absolute;
   inset: 0;
   border: 3px solid;
-  border-color: #007AFF;
+  border-color: #3B9EFF;
   border-radius: 50%;
   
   &::before {
     content: '';
     position: absolute;
     inset: 8px;
-    border: 2px dashed rgba(52, 199, 89, 0.5);
+    border: 2px dashed rgba(59, 158, 255, 0.5);
     border-radius: 50%;
     animation: spin 8s linear infinite;
   }
@@ -502,8 +499,8 @@ const ScorePopupEl = styled.div<{ $x: number; $y: number }>`
   top: ${p => p.$y}%;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #34c759;
-  text-shadow: 0 0 10px rgba(52, 199, 89, 0.6);
+  color: #3B9EFF;
+  text-shadow: 0 0 10px rgba(59, 158, 255, 0.6);
   pointer-events: none;
   z-index: 100;
   animation: ${scoreFloat} 0.5s ease-out forwards;
@@ -535,10 +532,7 @@ const GameOverContent = styled(motion.div)`
 const FinalScore = styled.div`
   font-size: 4rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #3B9EFF;
   margin: 16px 0;
   line-height: 1;
 `;
@@ -579,7 +573,7 @@ const NameInput = styled.input`
   transition: border-color 0.2s;
   
   &:focus {
-    border-color: rgba(0, 122, 255, 0.4);
+    border-color: rgba(59, 158, 255, 0.5);
   }
   
   &::placeholder { color: rgba(255, 255, 255, 0.25); }
@@ -593,14 +587,14 @@ const ButtonRow = styled.div`
 const ActionBtn = styled(motion.button)<{ $primary?: boolean }>`
   flex: 1;
   background: ${p => p.$primary 
-    ? 'linear-gradient(135deg, #007AFF 0%, #34c759 100%)'
+    ? '#3B9EFF'
     : 'rgba(255, 255, 255, 0.06)'};
   border: none;
   border-radius: 10px;
   padding: 12px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #fff;
+  color: ${p => p.$primary ? '#000000' : '#ffffff'};
   cursor: pointer;
   
   &:disabled {
@@ -610,7 +604,7 @@ const ActionBtn = styled(motion.button)<{ $primary?: boolean }>`
 `;
 
 const StatusMsg = styled.div<{ $error?: boolean }>`
-  color: ${p => p.$error ? '#ff6b6b' : '#34c759'};
+  color: ${p => p.$error ? '#ff6b6b' : '#3B9EFF'};
   font-size: 0.85rem;
   margin-bottom: 10px;
 `;
@@ -651,7 +645,7 @@ const LeaderboardItem = styled.div<{ $rank: number }>`
   .score {
     font-weight: 700;
     font-size: 0.85rem;
-    color: #007AFF;
+    color: #3B9EFF;
   }
 `;
 
@@ -727,7 +721,12 @@ const PigeonGame: React.FC = () => {
   useEffect(() => {
     const saved = localStorage.getItem('pg_hs_v5');
     if (saved) setHighScore(parseInt(saved, 10));
-    getTopScores(5).then(setLeaderboard).catch(console.error);
+    getTopScores(5).then(setLeaderboard).catch((error: any) => {
+      // Ignorer les erreurs AbortError (normales lors du rechargement)
+      if (error?.name !== 'AbortError' && !error?.message?.includes('aborted')) {
+        console.error('Error loading leaderboard:', error);
+      }
+    });
   }, []);
 
   // Create enemy
@@ -851,7 +850,12 @@ const PigeonGame: React.FC = () => {
         localStorage.setItem('pg_hs_v5', score.toString());
       }
       
-      getTopScores(5).then(setLeaderboard).catch(console.error);
+      getTopScores(5).then(setLeaderboard).catch((error: any) => {
+        // Ignorer les erreurs AbortError (normales lors du rechargement)
+        if (error?.name !== 'AbortError' && !error?.message?.includes('aborted')) {
+          console.error('Error loading leaderboard:', error);
+        }
+      });
     }
   }, [gameState, score, highScore]);
 

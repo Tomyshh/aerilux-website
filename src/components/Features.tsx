@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useTranslation } from 'react-i18next';
 import { RevealText } from './effects/AnimatedText';
+import { Brain, Shield, Zap, Smartphone, CloudRain, BadgeDollarSign } from 'lucide-react';
 
 const FeaturesSection = styled.section`
   padding: 10rem 2rem;
@@ -19,7 +20,7 @@ const GlowOrb = styled(motion.div)`
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59, 158, 255, 0.12) 0%, transparent 60%);
   filter: blur(60px);
   z-index: 0;
   will-change: transform;
@@ -123,16 +124,23 @@ const IconWrapper = styled(motion.div)`
   width: 90px;
   height: 90px;
   margin: 0 auto 2rem;
-  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
+  background: rgba(59, 158, 255, 0.15);
+  border: 1px solid rgba(59, 158, 255, 0.3);
   border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  box-shadow: 0 20px 40px rgba(0, 122, 255, 0.3);
+  color: #3B9EFF;
+  box-shadow: 0 20px 40px rgba(59, 158, 255, 0.15);
   position: relative;
   overflow: hidden;
   z-index: 1;
+
+  svg {
+    width: 34px;
+    height: 34px;
+    stroke-width: 1.8;
+  }
   
   &::after {
     content: '';
@@ -144,7 +152,7 @@ const IconWrapper = styled(motion.div)`
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.3),
+      rgba(59, 158, 255, 0.3),
       transparent
     );
     animation: iconShine 3s infinite;
@@ -197,32 +205,32 @@ const Features: React.FC = React.memo(() => {
 
   const features = useMemo(() => [
     {
-      icon: '🧠',
+      icon: <Brain aria-hidden="true" />,
       title: t('features.aiDetection.title'),
       description: t('features.aiDetection.description'),
     },
     {
-      icon: '🛡️',
+      icon: <Shield aria-hidden="true" />,
       title: t('features.humane.title'),
       description: t('features.humane.description'),
     },
     {
-      icon: '⚡',
+      icon: <Zap aria-hidden="true" />,
       title: t('features.energyEfficient.title'),
       description: t('features.energyEfficient.description'),
     },
     {
-      icon: '📱',
+      icon: <Smartphone aria-hidden="true" />,
       title: t('features.smartControl.title'),
       description: t('features.smartControl.description'),
     },
     {
-      icon: '🌧️',
+      icon: <CloudRain aria-hidden="true" />,
       title: t('features.weatherResistant.title'),
       description: t('features.weatherResistant.description'),
     },
     {
-      icon: '💰',
+      icon: <BadgeDollarSign aria-hidden="true" />,
       title: t('features.costEffective.title'),
       description: t('features.costEffective.description'),
     },

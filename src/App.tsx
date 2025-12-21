@@ -6,6 +6,7 @@ import './i18n/config';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import PinLock from './components/PinLock';
+import ErrorBoundary from './components/ErrorBoundary';
 import { 
   CustomCursor, 
   SmoothScroll, 
@@ -138,26 +139,28 @@ function App() {
   }
 
   return (
-    <Router>
-      <SmoothScroll>
-        <AppContainer>
-          {/* Custom cursor effect */}
-          <CustomCursor />
-          
-          {/* Scroll progress indicator */}
-          <ScrollProgress />
-          
-          {/* Particle background */}
-          <ParticleBackground variant="connections" />
-          
-          <Navbar />
-          <MainContent>
-            <AnimatedRoutes />
-          </MainContent>
-          <Footer />
-        </AppContainer>
-      </SmoothScroll>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <SmoothScroll>
+          <AppContainer>
+            {/* Custom cursor effect */}
+            <CustomCursor />
+            
+            {/* Scroll progress indicator */}
+            <ScrollProgress />
+            
+            {/* Particle background */}
+            <ParticleBackground variant="connections" />
+            
+            <Navbar />
+            <MainContent>
+              <AnimatedRoutes />
+            </MainContent>
+            <Footer />
+          </AppContainer>
+        </SmoothScroll>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 
 const CartPageContainer = styled.div`
@@ -38,8 +39,14 @@ const EmptyCart = styled.div`
 `;
 
 const EmptyCartIcon = styled.div`
-  font-size: 4rem;
+  color: #3B9EFF;
   margin-bottom: 1rem;
+
+  svg {
+    width: 56px;
+    height: 56px;
+    stroke-width: 1.6;
+  }
 `;
 
 const EmptyCartText = styled.p`
@@ -245,7 +252,9 @@ const CartPage: React.FC = () => {
         <Container>
           <PageTitle>Shopping Cart</PageTitle>
           <EmptyCart>
-            <EmptyCartIcon>🛒</EmptyCartIcon>
+            <EmptyCartIcon>
+              <ShoppingCart aria-hidden="true" />
+            </EmptyCartIcon>
             <EmptyCartText>Your cart is empty</EmptyCartText>
             <ContinueShoppingButton
               onClick={() => navigate('/')}

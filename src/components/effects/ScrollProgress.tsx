@@ -8,7 +8,7 @@ const ProgressBar = styled(motion.div)`
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #007AFF 0%, #34c759 50%, #ffffff 100%);
+  background: #3B9EFF;
   transform-origin: left;
   z-index: 9999;
 `;

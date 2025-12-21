@@ -10,6 +10,18 @@ const api = axios.create({
   },
 });
 
+// Intercepteur pour ignorer les erreurs AbortError
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Ignorer les erreurs AbortError (normales lors du rechargement)
+    if (error?.code === 'ERR_CANCELED' || error?.message?.includes('aborted')) {
+      return Promise.reject(error);
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Product endpoints
 export const productService = {
   getProducts: async (): Promise<Product[]> => {

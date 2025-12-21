@@ -52,7 +52,11 @@ export const getTopScores = async (limitCount: number = 10): Promise<Leaderboard
       id: doc.id,
       ...doc.data()
     } as LeaderboardEntry));
-  } catch (error) {
+  } catch (error: any) {
+    // Ignorer les erreurs AbortError (normales lors du rechargement)
+    if (error?.name === 'AbortError' || error?.message?.includes('aborted')) {
+      return [];
+    }
     console.error("Error getting scores:", error);
     return [];
   }
@@ -97,7 +101,11 @@ export const getContactMessages = async (limitCount: number = 50): Promise<Conta
       id: doc.id,
       ...doc.data()
     } as ContactMessage));
-  } catch (error) {
+  } catch (error: any) {
+    // Ignorer les erreurs AbortError (normales lors du rechargement)
+    if (error?.name === 'AbortError' || error?.message?.includes('aborted')) {
+      return [];
+    }
     console.error("Error getting contact messages:", error);
     return [];
   }

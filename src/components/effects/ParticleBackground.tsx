@@ -62,7 +62,7 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = React.memo(({ vari
   }, [variant]);
 
   const colors = useMemo(() => 
-    variant === 'default' ? ['#ffffff', '#007AFF', '#34c759'] : ['#ffffff'],
+    variant === 'default' ? ['#ffffff', '#3B9EFF', '#5AB8FF'] : ['#ffffff'],
     [variant]
   );
 

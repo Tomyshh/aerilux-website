@@ -196,8 +196,9 @@ const Time = styled.span`
 `;
 
 const SuccessMessage = styled(motion.div)`
-  background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
-  color: #ffffff;
+  background: rgba(59, 158, 255, 0.15);
+  border: 1px solid rgba(59, 158, 255, 0.4);
+  color: #3B9EFF;
   padding: 1rem 2rem;
   border-radius: 10px;
   margin-bottom: 2rem;
@@ -261,7 +262,7 @@ const ListItem = styled.li`
     content: '✓';
     position: absolute;
     left: 0;
-    color: #34c759;
+    color: #3B9EFF;
     font-weight: 700;
   }
 `;

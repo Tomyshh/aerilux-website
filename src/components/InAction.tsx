@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useTranslation } from 'react-i18next';
 import { RevealText } from './effects/AnimatedText';
+import { Target, Droplets, RotateCcw } from 'lucide-react';
 
 const InActionSection = styled.section`
   padding: 6rem 2rem;
@@ -27,14 +28,14 @@ const SectionHeader = styled.div`
 const SectionTag = styled(motion.span)`
   display: inline-block;
   font-size: 0.85rem;
-  color: #007AFF;
+  color: #3B9EFF;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   margin-bottom: 1rem;
   padding: 0.5rem 1rem;
-  background: rgba(0, 122, 255, 0.1);
+  background: rgba(59, 158, 255, 0.1);
   border-radius: 50px;
-  border: 1px solid rgba(0, 122, 255, 0.3);
+  border: 1px solid rgba(59, 158, 255, 0.3);
 `;
 
 const SectionTitle = styled.h2`
@@ -176,7 +177,7 @@ const GlowOrb = styled(motion.div)`
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59, 158, 255, 0.12) 0%, transparent 60%);
   filter: blur(60px);
   z-index: 0;
   pointer-events: none;
@@ -212,13 +213,20 @@ const FeatureItem = styled(motion.div)`
 const FeatureIcon = styled.div`
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #007AFF 0%, #34c759 100%);
+  background: rgba(59, 158, 255, 0.15);
+  border: 1px solid rgba(59, 158, 255, 0.3);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  color: #3B9EFF;
   flex-shrink: 0;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.9;
+  }
 `;
 
 const FeatureText = styled.div``;
@@ -245,17 +253,17 @@ const InAction: React.FC = React.memo(() => {
 
   const actionFeatures = useMemo(() => [
     {
-      icon: '🎯',
+      icon: <Target aria-hidden="true" />,
       title: t('inAction.preciseTargeting.title'),
       description: t('inAction.preciseTargeting.description'),
     },
     {
-      icon: '💧',
+      icon: <Droplets aria-hidden="true" />,
       title: t('inAction.ecological.title'),
       description: t('inAction.ecological.description'),
     },
     {
-      icon: '🔄',
+      icon: <RotateCcw aria-hidden="true" />,
       title: t('inAction.coverage.title'),
       description: t('inAction.coverage.description'),
     },
@@ -370,7 +378,7 @@ const InAction: React.FC = React.memo(() => {
               variants={itemVariants}
               whileHover={{ 
                 scale: 1.02, 
-                borderColor: 'rgba(0, 122, 255, 0.5)',
+                borderColor: 'rgba(59, 158, 255, 0.5)',
                 transition: { duration: 0.2 }
               }}
             >

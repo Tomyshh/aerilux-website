@@ -2,6 +2,40 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+      // IMPORTANT (DEV): ignorer AbortError avant react-error-overlay
+      // Certaines extensions injectent des scripts (ex: frame_ant.js) qui déclenchent
+      // "AbortError: The user aborted a request." → CRA l'affiche en plein écran.
+      (function () {
+        function isAbortLike(err, msg) {
+          var name = (err && err.name) ? String(err.name) : '';
+          var m = msg || (err && err.message) || String(err || '');
+          return (
+            name === 'AbortError' ||
+            (m && (m.indexOf('aborted') !== -1 || m.indexOf('The user aborted a request') !== -1))
+          );
+        }
+
+        window.addEventListener('unhandledrejection', function (event) {
+          if (isAbortLike(event && event.reason)) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+            if (event.stopPropagation) event.stopPropagation();
+            return false;
+          }
+        }, true);
+
+        window.addEventListener('error', function (event) {
+          var msg = event && event.message;
+          if (isAbortLike(null, msg)) {
+            event.preventDefault();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+            if (event.stopPropagation) event.stopPropagation();
+            return false;
+          }
+        }, true);
+      })();
+    </script>
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />

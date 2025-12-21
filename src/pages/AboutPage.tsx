@@ -181,11 +181,7 @@ const MemberImage = styled(motion.div)`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(0, 122, 255, 0.1) 0%,
-      rgba(52, 199, 89, 0.1) 100%
-    );
+    background: rgba(59, 158, 255, 0.1);
     pointer-events: none;
   }
 `;

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Check } from 'lucide-react';
 
 const ConfirmationContainer = styled.div`
   min-height: 100vh;
@@ -24,13 +25,20 @@ const SuccessIcon = styled(motion.div)`
   width: 120px;
   height: 120px;
   margin: 0 auto 2rem;
-  background: linear-gradient(135deg, #34c759 0%, #30d158 100%);
+  background: rgba(59, 158, 255, 0.15);
+  border: 2px solid rgba(59, 158, 255, 0.4);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4rem;
-  color: #ffffff;
+  color: #3B9EFF;
+
+  svg {
+    width: 44px;
+    height: 44px;
+    stroke-width: 2.2;
+  }
 `;
 
 const Title = styled.h1`
@@ -162,7 +170,7 @@ const OrderConfirmationPage: React.FC = () => {
           initial="hidden"
           animate="visible"
         >
-          ✓
+          <Check aria-hidden="true" />
         </SuccessIcon>
         
         <Title>Order Confirmed!</Title>

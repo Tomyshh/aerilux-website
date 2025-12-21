@@ -7,6 +7,8 @@ interface GlassmorphicCardProps {
   className?: string;
   tiltEnabled?: boolean;
   glowEnabled?: boolean;
+  hoverEnabled?: boolean;
+  shineEnabled?: boolean;
   intensity?: number;
 }
 
@@ -18,14 +20,17 @@ const CardWrapper = styled(motion.div)`
 
 const Card = styled(motion.div)<{ $intensity: number }>`
   position: relative;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.035);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 0;
   overflow: hidden;
   transform-style: preserve-3d;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
   
   &::before {
     content: '';
@@ -36,9 +41,21 @@ const Card = styled(motion.div)<{ $intensity: number }>`
     bottom: 0;
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, ${props => props.$intensity * 0.1}) 0%,
+      rgba(255, 255, 255, ${props => props.$intensity * 0.06}) 0%,
       transparent 50%,
-      rgba(255, 255, 255, ${props => props.$intensity * 0.05}) 100%
+      rgba(255, 255, 255, ${props => props.$intensity * 0.03}) 100%
+    );
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      1200px 500px at 50% -120px,
+      rgba(59, 158, 255, 0.12),
+      transparent 60%
     );
     pointer-events: none;
   }
@@ -46,18 +63,20 @@ const Card = styled(motion.div)<{ $intensity: number }>`
 
 const Glow = styled(motion.div)`
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(0, 122, 255, 0.4) 0%,
-    rgba(0, 122, 255, 0.1) 40%,
+    rgba(59, 158, 255, 0.35) 0%,
+    rgba(59, 158, 255, 0.12) 45%,
     transparent 70%
   );
   pointer-events: none;
-  filter: blur(20px);
-  z-index: -1;
+  filter: blur(22px);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  z-index: 0;
 `;
 
 const Shine = styled(motion.div)`
@@ -69,13 +88,14 @@ const Shine = styled(motion.div)`
   background: linear-gradient(
     105deg,
     transparent 40%,
-    rgba(255, 255, 255, 0.1) 45%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0.1) 55%,
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.06) 55%,
     transparent 60%
   );
   pointer-events: none;
-  border-radius: 20px;
+  border-radius: 28px;
+  opacity: 0.7;
 `;
 
 const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
@@ -83,6 +103,8 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
   className,
   tiltEnabled = true,
   glowEnabled = true,
+  hoverEnabled = true,
+  shineEnabled = true,
   intensity = 1,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -99,7 +121,7 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
   const shineX = useSpring(useTransform(x, [-0.5, 0.5], [-100, 100]), springConfig);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || !tiltEnabled) return;
+    if (!cardRef.current || (!tiltEnabled && !glowEnabled)) return;
     
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -108,8 +130,10 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
     const mouseX = (e.clientX - centerX) / (rect.width / 2);
     const mouseY = (e.clientY - centerY) / (rect.height / 2);
     
-    x.set(mouseX);
-    y.set(mouseY);
+    if (tiltEnabled) {
+      x.set(mouseX);
+      y.set(mouseY);
+    }
     
     if (glowEnabled) {
       glowX.set(e.clientX - rect.left - 100);
@@ -133,8 +157,8 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
         }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.3 }}
+        whileHover={hoverEnabled ? { scale: 1.02 } : undefined}
+        transition={hoverEnabled ? { duration: 0.3 } : undefined}
       >
         {glowEnabled && (
           <Glow
@@ -144,11 +168,13 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
             }}
           />
         )}
-        <Shine
-          style={{
-            x: shineX,
-          }}
-        />
+        {shineEnabled && (
+          <Shine
+            style={{
+              x: shineX,
+            }}
+          />
+        )}
         {children}
       </Card>
     </CardWrapper>

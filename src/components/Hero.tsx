@@ -151,7 +151,7 @@ const FloatingElement = styled(motion.div)<{ $size: number; $left: string; $top:
   left: ${props => props.$left};
   top: ${props => props.$top};
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(59, 158, 255, 0.2) 0%, transparent 70%);
   filter: blur(40px);
   z-index: 1;
   will-change: transform;
@@ -162,7 +162,7 @@ const GlowOrb = styled(motion.div)`
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 122, 255, 0.15) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59, 158, 255, 0.12) 0%, transparent 60%);
   filter: blur(60px);
   z-index: 1;
   will-change: transform;
