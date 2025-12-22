@@ -50,12 +50,18 @@ const LogoText = styled(motion.h1)`
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: 0.15em;
-  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   direction: ltr; /* Force LTR pour éviter l'inversion en RTL */
   unicode-bidi: embed; /* Préserve la direction LTR même en contexte RTL */
+`;
+
+const LogoTextChar = styled.span<{ $isBlue?: boolean }>`
+  background: ${props => props.$isBlue 
+    ? 'none' 
+    : 'linear-gradient(135deg, #ffffff 0%, #cccccc 100%)'};
+  -webkit-background-clip: ${props => props.$isBlue ? 'none' : 'text'};
+  -webkit-text-fill-color: ${props => props.$isBlue ? '#3B9EFF' : 'transparent'};
+  background-clip: ${props => props.$isBlue ? 'none' : 'text'};
+  color: ${props => props.$isBlue ? '#3B9EFF' : 'inherit'};
 `;
 
 const NavLinks = styled(motion.ul)`
@@ -339,7 +345,13 @@ const Navbar: React.FC = React.memo(() => {
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
             />
-            <LogoText>AERILUX</LogoText>
+            <LogoText>
+              {'AERILUX'.split('').map((char, index) => (
+                <LogoTextChar key={index} $isBlue={char.toLowerCase() === 'i'}>
+                  {char}
+                </LogoTextChar>
+              ))}
+            </LogoText>
           </Logo>
           
           <NavLinks>

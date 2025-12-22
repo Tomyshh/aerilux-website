@@ -97,7 +97,7 @@
     "enterprise": {
       "title": "Custom Enterprise Solution",
       "description": "Every Aerilux system is completely customized to meet your specific business needs. Our team works closely with you to design the perfect solution.",
-      "price": "Starting from $3250",
+      "price": "",
       "contact": "Contact our sales team for a personalized quote.",
       "button": "Get Custom Quote"
     }
@@ -319,7 +319,7 @@
       "title": "Custom Enterprise Solution",
       "description1": "Every Aerilux system is completely customized to meet your specific business needs.",
       "description2": "Contact our sales team for a personalized quote.",
-      "price": "Starting from $3250"
+      "price": ""
     },
     "description": "Engineered with precision and powered by advanced AI, the Aerilux Pro is the ultimate solution for pigeon control. Its sleek design seamlessly integrates with any architecture while providing unmatched protection.",
     "specs": {

@@ -131,6 +131,10 @@ const LogoText = styled.h3`
   letter-spacing: 0.15em;
 `;
 
+const LogoTextChar = styled.span<{ $isBlue?: boolean }>`
+  color: ${props => props.$isBlue ? '#3B9EFF' : 'inherit'};
+`;
+
 const BrandTagline = styled.p`
   color: #666666;
   margin-bottom: 2rem;
@@ -382,7 +386,13 @@ const Footer: React.FC = React.memo(() => {
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
               />
-              <LogoText>AERILUX</LogoText>
+              <LogoText>
+                {'AERILUX'.split('').map((char, index) => (
+                  <LogoTextChar key={index} $isBlue={char.toLowerCase() === 'i'}>
+                    {char}
+                  </LogoTextChar>
+                ))}
+              </LogoText>
             </Logo>
             <BrandTagline>
               {t('footer.description')}

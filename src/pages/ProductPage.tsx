@@ -307,7 +307,9 @@ const ProductPage: React.FC = () => {
             
             <PricingSection>
               <PricingTitle>{t('productPage.enterprise.title')}</PricingTitle>
-              <PricingHighlight>{t('productPage.enterprise.price')}</PricingHighlight>
+              {t('productPage.enterprise.price') && (
+                <PricingHighlight>{t('productPage.enterprise.price')}</PricingHighlight>
+              )}
               <PricingDescription>
                 {t('productPage.enterprise.description1')}
               </PricingDescription>

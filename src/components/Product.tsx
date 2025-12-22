@@ -344,9 +344,11 @@ const Product: React.FC = React.memo(() => {
                 <PricingDescription>
                   {t('product.enterprise.description')}
                 </PricingDescription>
-                <PricingHighlight>
-                  {t('product.enterprise.price')}
-                </PricingHighlight>
+                {t('product.enterprise.price') && (
+                  <PricingHighlight>
+                    {t('product.enterprise.price')}
+                  </PricingHighlight>
+                )}
                 <PricingDescription>
                   {t('product.enterprise.contact')}
                 </PricingDescription>

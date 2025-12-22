@@ -16,11 +16,22 @@ const TextWrapper = styled(motion.span)`
   display: inline-block;
   direction: ltr; /* Force LTR pour éviter l'inversion en RTL */
   unicode-bidi: embed; /* Préserve la direction LTR même en contexte RTL */
+  /* Permet aux enfants de override le gradient du parent */
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
 `;
 
-const CharacterSpan = styled(motion.span)`
+const CharacterSpan = styled(motion.span)<{ $isBlue?: boolean }>`
   display: inline-block;
   white-space: pre;
+  ${props => props.$isBlue ? `
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #3B9EFF !important;
+    background-clip: unset !important;
+    color: #3B9EFF !important;
+  ` : ''}
 `;
 
 const WordSpan = styled(motion.span)`
@@ -110,6 +121,7 @@ const AnimatedText: React.FC<AnimatedTextProps> = ({
           key={`${char}-${index}`}
           custom={index + delay}
           variants={letterVariants}
+          $isBlue={char.toLowerCase() === 'i'}
         >
           {char}
         </CharacterSpan>
