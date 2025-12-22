@@ -205,7 +205,8 @@
     },
     "copyright": "© 2025 Aerilux. All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "legal": "Legal Mentions"
   },
   "contact": {
     "title": "Get in Touch",
@@ -331,6 +332,192 @@
   "common": {
     "loading": "Loading...",
     "error": "An error occurred. Please try again."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: January 1, 2025",
+    "section1": {
+      "title": "1. Introduction",
+      "content": "At Aerilux, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our products, or interact with our services. By using our services, you agree to the collection and use of information in accordance with this policy."
+    },
+    "section2": {
+      "title": "2. Information We Collect",
+      "intro": "We collect only the minimal information necessary to provide you with a quote for our products and services. The information we collect includes:",
+      "item1": "Contact information: Name and email address (required to send you a quote)",
+      "item2": "Optional information: Phone number and company name (if provided to better understand your needs)",
+      "item3": "Project details: Information about your property or requirements (if provided in your inquiry)",
+      "item4": "",
+      "item5": "",
+      "subtitle1": "Automatically Collected Information",
+      "subcontent1": "We automatically collect basic technical information when you visit our website, including your IP address, browser type, and pages visited. This information is used solely for website functionality and analytics to improve user experience. We do not use this information to identify you personally."
+    },
+    "section3": {
+      "title": "3. How We Use Your Information",
+      "intro": "We use the information you provide solely for the following purposes:",
+      "item1": "To prepare and send you a personalized quote for our products and services",
+      "item2": "To respond to your inquiries and provide customer support",
+      "item3": "To communicate with you regarding your quote request (if you have provided contact information)",
+      "item4": "To improve our website functionality and user experience (using anonymized analytics data)",
+      "item5": "",
+      "item6": ""
+    },
+    "section4": {
+      "title": "4. Data Sharing and Disclosure",
+      "content": "We do not sell, rent, or trade your personal information. We only share your information in the following limited circumstances:",
+      "subtitle1": "Service Providers",
+      "subcontent1": "We may share your contact information with trusted service providers who assist us in operating our website (such as email service providers for sending quotes), provided they agree to keep this information confidential and use it solely for the purpose of providing services to us.",
+      "subtitle2": "Legal Requirements",
+      "subcontent2": "We may disclose your information if required by law or in response to valid requests by public authorities. We will only share the minimum information necessary to comply with such requirements."
+    },
+    "section5": {
+      "title": "5. Your Rights",
+      "intro": "Depending on your location, you may have the following rights regarding your personal information:",
+      "item1": "Right to access: Request a copy of the personal information we hold about you",
+      "item2": "Right to rectification: Request correction of inaccurate or incomplete data",
+      "item3": "Right to erasure: Request deletion of your personal information",
+      "item4": "Right to restrict processing: Request limitation of how we use your data",
+      "item5": "Right to data portability: Request transfer of your data to another service",
+      "item6": "Right to object: Opt-out of certain data processing activities"
+    },
+    "section6": {
+      "title": "6. Data Security",
+      "content": "We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure.",
+      "subtitle1": "Security Measures",
+      "subcontent1": "We use encryption, secure servers, access controls, and regular security audits to protect your data."
+    },
+    "section7": {
+      "title": "7. Cookies and Tracking Technologies",
+      "content": "We use cookies and similar tracking technologies to track activity on our website and store certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our website."
+    },
+    "section8": {
+      "title": "8. Children's Privacy",
+      "content": "Our services are not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately."
+    },
+    "section9": {
+      "title": "9. Contact Us",
+      "intro": "If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at:",
+      "contact": "Contact Information:",
+      "email": "Email: privacy@aerilux.io",
+      "phone": "Phone: +972-4-123-4567",
+      "address": "Address: Chicago 136, Haifa, Israel"
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: January 1, 2025",
+    "section1": {
+      "title": "1. Acceptance of Terms",
+      "content": "By accessing and using the Aerilux website, purchasing our products, or using our services, you accept and agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site and our services."
+    },
+    "section2": {
+      "title": "2. Use License and Restrictions",
+      "content": "Permission is granted to temporarily access and use the Aerilux website and services for personal, non-commercial use only. This is the grant of a license, not a transfer of title, and under this license you may not:",
+      "subtitle1": "Prohibited Activities",
+      "subcontent1": "Modify or copy the materials; use the materials for any commercial purpose or for any public display; attempt to reverse engineer any software contained on the website; remove any copyright or other proprietary notations from the materials; or transfer the materials to another person or 'mirror' the materials on any other server.",
+      "subtitle2": "Termination",
+      "subcontent2": "This license shall automatically terminate if you violate any of these restrictions and may be terminated by Aerilux at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession."
+    },
+    "section3": {
+      "title": "3. Product Warranty and Limitations",
+      "intro": "All Aerilux products come with a limited warranty covering:",
+      "item1": "2-year warranty on hardware defects and manufacturing issues",
+      "item2": "1-year warranty on battery performance and capacity",
+      "item3": "90-day warranty on accessories and consumables",
+      "item4": "Warranty is void if the product is modified, misused, or damaged due to negligence",
+      "note": "The warranty does not cover normal wear and tear, damage from accidents, or unauthorized repairs. For warranty claims, please contact our support team with proof of purchase."
+    },
+    "section4": {
+      "title": "4. Limitation of Liability",
+      "content": "In no event shall Aerilux or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use Aerilux products or services, even if Aerilux or an authorized representative has been notified orally or in writing of the possibility of such damage.",
+      "item1": "Aerilux's total liability shall not exceed the amount paid by you for the product or service",
+      "item2": "Aerilux is not responsible for indirect, incidental, or consequential damages",
+      "item3": "Some jurisdictions do not allow limitations on implied warranties or limitations of liability for incidental or consequential damages, so these limitations may not apply to you"
+    },
+    "section5": {
+      "title": "5. Shipping, Returns, and Refunds",
+      "intro": "Our shipping and return policies are as follows:",
+      "item1": "Free shipping on all orders over $100. Standard shipping takes 5-7 business days",
+      "item2": "30-day return policy for unopened products in original packaging",
+      "item3": "Customer is responsible for return shipping costs unless the product is defective",
+      "item4": "Refunds are processed within 5-7 business days after we receive and inspect the returned product",
+      "subtitle1": "Return Process",
+      "subcontent1": "To initiate a return, contact our customer service team with your order number. All returned items must be in their original condition with all accessories and packaging included."
+    },
+    "section6": {
+      "title": "6. Intellectual Property",
+      "content": "All content on the Aerilux website, including but not limited to text, graphics, logos, images, audio clips, digital downloads, and software, is the property of Aerilux or its content suppliers and is protected by international copyright and trademark laws."
+    },
+    "section7": {
+      "title": "7. User Accounts and Responsibilities",
+      "content": "If you create an account on our website, you are responsible for maintaining the confidentiality of your account and password and for restricting access to your computer. You agree to accept responsibility for all activities that occur under your account.",
+      "subtitle1": "Account Security",
+      "subcontent1": "You must immediately notify us of any unauthorized use of your account or any other breach of security. We will not be liable for any loss or damage arising from your failure to comply with this section."
+    },
+    "section8": {
+      "title": "8. Privacy Policy",
+      "content": "Your use of our website and services is also governed by our Privacy Policy. Please review our Privacy Policy, which also governs the Site and informs users of our data collection and usage practices."
+    },
+    "section9": {
+      "title": "9. Governing Law",
+      "content": "These Terms of Service are governed by and construed in accordance with the laws of the State of Israel, without regard to its conflict of law provisions. You irrevocably submit to the exclusive jurisdiction of the courts located in Haifa, Israel for the resolution of any disputes."
+    },
+    "section10": {
+      "title": "10. Contact Information",
+      "content": "If you have any questions about these Terms of Service, please contact us at:",
+      "contact": "Contact Information:",
+      "email": "Email: legal@aerilux.io",
+      "phone": "Phone: +972-4-123-4567",
+      "address": "Address: Chicago 136, Haifa, Israel"
+    }
+  },
+  "legal": {
+    "title": "Legal Mentions",
+    "lastUpdated": "Last updated: January 1, 2025",
+    "section1": {
+      "title": "1. Company Information",
+      "content": "This website is operated by Aerilux, a company specializing in AI-powered pigeon deterrent systems. The following information is provided in accordance with legal requirements."
+    },
+    "section2": {
+      "title": "2. Company Details",
+      "content": "Aerilux is committed to providing innovative solutions for urban bird control while maintaining the highest standards of quality and service.",
+      "subtitle1": "Legal Entity",
+      "subcontent1": "Aerilux operates as a registered business entity in Israel. Our company registration number and official business address are available upon request for business inquiries.",
+      "subtitle2": "Headquarters",
+      "subcontent2": "Our main office is located at Chicago 136, Haifa, Israel. For all business correspondence, please use this address or contact us via email at sales@aerilux.io.",
+      "subtitle3": "VAT Information",
+      "subcontent3": "Aerilux is registered for VAT purposes. Our VAT number is available upon request for business customers and will be provided on all invoices."
+    },
+    "section3": {
+      "title": "3. Website Hosting and Technical Information",
+      "content": "This website is hosted and maintained to ensure optimal performance and security for our users.",
+      "item1": "Hosting Provider: Information available upon request",
+      "item2": "Content Management: The website is managed by Aerilux's technical team",
+      "item3": "Security: We implement industry-standard security measures to protect user data",
+      "item4": "Cookies: This website uses cookies to enhance user experience. For more information, see our Privacy Policy."
+    },
+    "section4": {
+      "title": "4. Intellectual Property",
+      "content": "All content, trademarks, logos, and intellectual property displayed on this website are the exclusive property of Aerilux or are used with permission.",
+      "item1": "Copyright: All website content is protected by copyright laws",
+      "item2": "Trademarks: Aerilux and related marks are trademarks of Aerilux",
+      "item3": "Unauthorized use of any materials from this website is strictly prohibited"
+    },
+    "section5": {
+      "title": "5. Liability and Disclaimers",
+      "content": "While we strive to provide accurate and up-to-date information, Aerilux makes no warranties or representations about the accuracy, reliability, or completeness of the information on this website.",
+      "subtitle1": "Product Information",
+      "subcontent1": "Product specifications, features, and availability are subject to change without notice. We reserve the right to modify or discontinue products at any time.",
+      "subtitle2": "Website Availability",
+      "subcontent2": "Aerilux does not guarantee that the website will be available at all times. We may experience downtime for maintenance, updates, or due to technical issues beyond our control."
+    },
+    "section6": {
+      "title": "6. Contact and Legal Inquiries",
+      "content": "For legal inquiries, compliance questions, or to exercise your rights under applicable data protection laws, please contact us:",
+      "contact": "Legal Department:",
+      "email": "Email: legal@aerilux.io",
+      "phone": "Phone: +972-4-123-4567",
+      "address": "Address: Chicago 136, Haifa, Israel"
+    }
   }
 }
 

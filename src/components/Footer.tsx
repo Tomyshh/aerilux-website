@@ -551,6 +551,7 @@ const Footer: React.FC = React.memo(() => {
           <LegalLinks>
             <LegalLink to="/privacy">{t('footer.privacy')}</LegalLink>
             <LegalLink to="/terms">{t('footer.terms')}</LegalLink>
+            <LegalLink to="/legal">{t('footer.legal')}</LegalLink>
           </LegalLinks>
         </FooterBottom>
       </Container>

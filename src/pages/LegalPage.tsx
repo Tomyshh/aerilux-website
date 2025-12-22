@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-const TermsContainer = styled.div`
+const LegalContainer = styled.div`
   min-height: 100vh;
   padding: 2rem;
   background: #000000;
@@ -127,25 +127,25 @@ const SubTitle = styled.h3`
   }
 `;
 
-const TermsPage: React.FC = () => {
+const LegalPage: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <TermsContainer>
+    <LegalContainer>
       <Container>
         <Title
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {t('terms.title')}
+          {t('legal.title')}
         </Title>
         <LastUpdated
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
         >
-          {t('terms.lastUpdated')}
+          {t('legal.lastUpdated')}
         </LastUpdated>
 
         <Content
@@ -154,98 +154,75 @@ const TermsPage: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <Section>
-            <SectionTitle>{t('terms.section1.title')}</SectionTitle>
-            <Paragraph>{t('terms.section1.content')}</Paragraph>
+            <SectionTitle>{t('legal.section1.title')}</SectionTitle>
+            <Paragraph>{t('legal.section1.content')}</Paragraph>
           </Section>
 
           <Section>
-            <SectionTitle>{t('terms.section2.title')}</SectionTitle>
-            <Paragraph>{t('terms.section2.content')}</Paragraph>
+            <SectionTitle>{t('legal.section2.title')}</SectionTitle>
+            <Paragraph>{t('legal.section2.content')}</Paragraph>
             <SubSection>
-              <SubTitle>{t('terms.section2.subtitle1')}</SubTitle>
-              <Paragraph>{t('terms.section2.subcontent1')}</Paragraph>
+              <SubTitle>{t('legal.section2.subtitle1')}</SubTitle>
+              <Paragraph>{t('legal.section2.subcontent1')}</Paragraph>
             </SubSection>
             <SubSection>
-              <SubTitle>{t('terms.section2.subtitle2')}</SubTitle>
-              <Paragraph>{t('terms.section2.subcontent2')}</Paragraph>
+              <SubTitle>{t('legal.section2.subtitle2')}</SubTitle>
+              <Paragraph>{t('legal.section2.subcontent2')}</Paragraph>
+            </SubSection>
+            <SubSection>
+              <SubTitle>{t('legal.section2.subtitle3')}</SubTitle>
+              <Paragraph>{t('legal.section2.subcontent3')}</Paragraph>
             </SubSection>
           </Section>
 
           <Section>
-            <SectionTitle>{t('terms.section3.title')}</SectionTitle>
-            <Paragraph>{t('terms.section3.intro')}</Paragraph>
+            <SectionTitle>{t('legal.section3.title')}</SectionTitle>
+            <Paragraph>{t('legal.section3.content')}</Paragraph>
             <List>
-              <ListItem>{t('terms.section3.item1')}</ListItem>
-              <ListItem>{t('terms.section3.item2')}</ListItem>
-              <ListItem>{t('terms.section3.item3')}</ListItem>
-              <ListItem>{t('terms.section3.item4')}</ListItem>
-            </List>
-            <Paragraph>{t('terms.section3.note')}</Paragraph>
-          </Section>
-
-          <Section>
-            <SectionTitle>{t('terms.section4.title')}</SectionTitle>
-            <Paragraph>{t('terms.section4.content')}</Paragraph>
-            <List>
-              <ListItem>{t('terms.section4.item1')}</ListItem>
-              <ListItem>{t('terms.section4.item2')}</ListItem>
-              <ListItem>{t('terms.section4.item3')}</ListItem>
+              <ListItem>{t('legal.section3.item1')}</ListItem>
+              <ListItem>{t('legal.section3.item2')}</ListItem>
+              <ListItem>{t('legal.section3.item3')}</ListItem>
+              <ListItem>{t('legal.section3.item4')}</ListItem>
             </List>
           </Section>
 
           <Section>
-            <SectionTitle>{t('terms.section5.title')}</SectionTitle>
-            <Paragraph>{t('terms.section5.intro')}</Paragraph>
+            <SectionTitle>{t('legal.section4.title')}</SectionTitle>
+            <Paragraph>{t('legal.section4.content')}</Paragraph>
             <List>
-              <ListItem>{t('terms.section5.item1')}</ListItem>
-              <ListItem>{t('terms.section5.item2')}</ListItem>
-              <ListItem>{t('terms.section5.item3')}</ListItem>
-              <ListItem>{t('terms.section5.item4')}</ListItem>
+              <ListItem>{t('legal.section4.item1')}</ListItem>
+              <ListItem>{t('legal.section4.item2')}</ListItem>
+              <ListItem>{t('legal.section4.item3')}</ListItem>
             </List>
+          </Section>
+
+          <Section>
+            <SectionTitle>{t('legal.section5.title')}</SectionTitle>
+            <Paragraph>{t('legal.section5.content')}</Paragraph>
             <SubSection>
-              <SubTitle>{t('terms.section5.subtitle1')}</SubTitle>
-              <Paragraph>{t('terms.section5.subcontent1')}</Paragraph>
+              <SubTitle>{t('legal.section5.subtitle1')}</SubTitle>
+              <Paragraph>{t('legal.section5.subcontent1')}</Paragraph>
+            </SubSection>
+            <SubSection>
+              <SubTitle>{t('legal.section5.subtitle2')}</SubTitle>
+              <Paragraph>{t('legal.section5.subcontent2')}</Paragraph>
             </SubSection>
           </Section>
 
           <Section>
-            <SectionTitle>{t('terms.section6.title')}</SectionTitle>
-            <Paragraph>{t('terms.section6.content')}</Paragraph>
-          </Section>
-
-          <Section>
-            <SectionTitle>{t('terms.section7.title')}</SectionTitle>
-            <Paragraph>{t('terms.section7.content')}</Paragraph>
-            <SubSection>
-              <SubTitle>{t('terms.section7.subtitle1')}</SubTitle>
-              <Paragraph>{t('terms.section7.subcontent1')}</Paragraph>
-            </SubSection>
-          </Section>
-
-          <Section>
-            <SectionTitle>{t('terms.section8.title')}</SectionTitle>
-            <Paragraph>{t('terms.section8.content')}</Paragraph>
-          </Section>
-
-          <Section>
-            <SectionTitle>{t('terms.section9.title')}</SectionTitle>
-            <Paragraph>{t('terms.section9.content')}</Paragraph>
-          </Section>
-
-          <Section>
-            <SectionTitle>{t('terms.section10.title')}</SectionTitle>
-            <Paragraph>{t('terms.section10.content')}</Paragraph>
+            <SectionTitle>{t('legal.section6.title')}</SectionTitle>
+            <Paragraph>{t('legal.section6.content')}</Paragraph>
             <Paragraph>
-              <strong>{t('terms.section10.contact')}</strong><br />
-              {t('terms.section10.email')}<br />
-              {t('terms.section10.phone')}<br />
-              {t('terms.section10.address')}
+              <strong>{t('legal.section6.contact')}</strong><br />
+              {t('legal.section6.email')}<br />
+              {t('legal.section6.phone')}<br />
+              {t('legal.section6.address')}
             </Paragraph>
           </Section>
         </Content>
       </Container>
-    </TermsContainer>
+    </LegalContainer>
   );
 };
 
-export default TermsPage; 
+export default LegalPage;

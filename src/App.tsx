@@ -25,6 +25,7 @@ const CartPage = lazy(() => import('./pages/CartPage'));
 const OrderConfirmationPage = lazy(() => import('./pages/OrderConfirmationPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
+const LegalPage = lazy(() => import('./pages/LegalPage'));
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -108,6 +109,7 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
+            <Route path="/legal" element={<LegalPage />} />
           </Routes>
         </Suspense>
       </PageTransition>
