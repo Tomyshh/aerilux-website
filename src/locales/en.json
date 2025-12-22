@@ -43,7 +43,7 @@
   },
   "inAction": {
     "tag": "In Action",
-    "title": "Intelligent Real-Time Protection",
+    "title": "The Device",
     "subtitle": "Discover how Aerilux detects and repels pigeons instantly thanks to its intelligent water jet system and cutting-edge AI.",
     "reactionTime": "Reaction Time",
     "accuracy": "Accuracy",
@@ -60,6 +60,18 @@
     "coverage": {
       "title": "360° Coverage",
       "description": "Full rotation to protect your entire property."
+    },
+    "visionShowcase": {
+      "design": {
+        "kicker": "Design",
+        "title": "A sculptural object, made for architecture",
+        "description": "Clean lines, premium materials, and a discreet light signature — Aerilux blends seamlessly into any environment."
+      },
+      "exploded": {
+        "kicker": "Technology",
+        "title": "Precision engineering on the inside",
+        "description": "Sensors, onboard AI, and high‑reliability modules — every component is optimized for real‑time detection and instant response."
+      }
     }
   },
   "product": {

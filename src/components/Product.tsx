@@ -44,11 +44,6 @@ const ProductGrid = styled.div`
   }
 `;
 
-const ProductImageSection = styled.div`
-  width: 100%;
-  margin-bottom: 2rem;
-`;
-
 const ProductInfoGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -58,67 +53,6 @@ const ProductInfoGrid = styled.div`
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
     gap: 3rem;
-  }
-`;
-
-const ProductImageWrapper = styled(motion.div)`
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  border-radius: 30px;
-  overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
-  
-  @media (max-width: 768px) {
-    aspect-ratio: 4 / 3;
-    border-radius: 20px;
-  }
-`;
-
-const ProductImage = styled(motion.img)`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-`;
-
-const ImageOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.05) 100%
-  );
-  pointer-events: none;
-`;
-
-const ImageGlow = styled(motion.div)`
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    transparent,
-    rgba(59, 158, 255, 0.2),
-    transparent,
-    rgba(59, 158, 255, 0.15),
-    transparent
-  );
-  animation: rotateGlow 10s linear infinite;
-  z-index: -1;
-  
-  @keyframes rotateGlow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
   }
 `;
 
@@ -374,27 +308,6 @@ const Product: React.FC = React.memo(() => {
               {t('product.description')}
             </ProductDescription>
           </ProductContent>
-
-          {/* Full Width Image */}
-          <ProductImageSection>
-            <ProductImageWrapper
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 1, ease: [0.6, -0.05, 0.01, 0.99] }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <ImageGlow />
-              <ProductImage
-                src="/exploded-view.jpeg"
-                alt="Aerilux Pro - Exploded View"
-                loading="lazy"
-                initial={{ opacity: 0 }}
-                animate={inView ? { opacity: 1 } : {}}
-                transition={{ duration: 1.2, delay: 0.3 }}
-              />
-              <ImageOverlay />
-            </ProductImageWrapper>
-          </ProductImageSection>
 
           {/* Info Grid */}
           <ProductInfoGrid>

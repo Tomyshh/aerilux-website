@@ -1,10 +1,11 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useTranslation } from 'react-i18next';
 import { Target, Zap, Eye, CheckCircle } from 'lucide-react';
 import { RevealText } from './effects/AnimatedText';
+import Lottie from 'lottie-react';
 
 const TechnologySection = styled.section`
   padding: 10rem 2rem;
@@ -82,69 +83,17 @@ const TechVisualization = styled(motion.div)`
   border-radius: 30px;
   overflow: hidden;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 50px,
-        rgba(59, 158, 255, 0.05) 50px,
-        rgba(59, 158, 255, 0.05) 51px
-      ),
-      repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 50px,
-        rgba(59, 158, 255, 0.05) 50px,
-        rgba(59, 158, 255, 0.05) 51px
-      );
-  }
-`;
-
-const VisualizationContent = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 1;
-`;
-
-const AIBrain = styled(motion.div)`
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 1rem;
-  border-radius: 50%;
-  background: rgba(59, 158, 255, 0.15);
-  border: 1px solid rgba(59, 158, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  box-shadow: 0 0 60px rgba(59, 158, 255, 0.25);
 `;
 
-const VisualizationText = styled.span`
-  font-size: 1.2rem;
-  color: #999999;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-`;
-
-const NeuralNetwork = styled(motion.svg)`
-  position: absolute;
-  top: 0;
-  left: 0;
+const LottieContainer = styled.div`
   width: 100%;
   height: 100%;
-  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const TechContent = styled(motion.div)``;
@@ -284,6 +233,14 @@ const Technology: React.FC = React.memo(() => {
     threshold: 0.1,
     triggerOnce: true,
   });
+  const [waveAnimation, setWaveAnimation] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/lottie/Wave Loop.json')
+      .then(res => res.json())
+      .then(data => setWaveAnimation(data))
+      .catch(err => console.error('Error loading Lottie animation:', err));
+  }, []);
 
   const techFeatures = useMemo(() => [
     {
@@ -307,13 +264,6 @@ const Technology: React.FC = React.memo(() => {
     { icon: <CheckCircle aria-hidden="true" />, number: t('technology.stats.falsePositives'), label: t('technology.stats.falsePositivesLabel') },
   ], [t]);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const smoothRotate = useSpring(rotate, { damping: 50, stiffness: 100 });
 
   const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
@@ -372,61 +322,15 @@ const Technology: React.FC = React.memo(() => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-            <NeuralNetwork viewBox="0 0 400 300">
-              {/* Animated neural network lines */}
-              {[...Array(15)].map((_, i) => (
-                <motion.line
-                  key={i}
-                  x1={50 + (i % 5) * 80}
-                  y1={50 + Math.floor(i / 5) * 100}
-                  x2={150 + ((i + 1) % 5) * 50}
-                  y2={80 + Math.floor((i + 1) / 5) * 80}
-                  stroke="rgba(59, 158, 255, 0.3)"
-                  strokeWidth="1"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ 
-                    duration: 2, 
-                    delay: i * 0.1,
-                    repeat: Infinity,
-                    repeatType: 'reverse',
-                  }}
+            {waveAnimation && (
+              <LottieContainer>
+                <Lottie
+                  animationData={waveAnimation}
+                  loop={true}
+                  style={{ width: '100%', height: '100%' }}
                 />
-              ))}
-              {/* Nodes */}
-              {[...Array(12)].map((_, i) => (
-                <motion.circle
-                  key={i}
-                  cx={50 + (i % 4) * 100}
-                  cy={50 + Math.floor(i / 4) * 80}
-                  r="6"
-                  fill="#3B9EFF"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: [0, 1, 0.8, 1] }}
-                  transition={{
-                    duration: 2,
-                    delay: i * 0.15,
-                    repeat: Infinity,
-                  }}
-                />
-              ))}
-            </NeuralNetwork>
-            <VisualizationContent>
-              <AIBrain
-                style={{ rotate: smoothRotate }}
-                animate={inView ? {
-                  boxShadow: [
-                    '0 0 60px rgba(59, 158, 255, 0.25)',
-                    '0 0 100px rgba(59, 158, 255, 0.4)',
-                    '0 0 60px rgba(59, 158, 255, 0.25)',
-                  ],
-                } : { boxShadow: '0 0 60px rgba(59, 158, 255, 0.25)' }}
-                transition={{ duration: 3, repeat: inView ? Infinity : 0 }}
-              >
-                🧠
-              </AIBrain>
-              <VisualizationText>AI VISUALIZATION</VisualizationText>
-            </VisualizationContent>
+              </LottieContainer>
+            )}
           </TechVisualization>
           
           <TechContent

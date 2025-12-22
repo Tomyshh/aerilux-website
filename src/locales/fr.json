@@ -43,7 +43,7 @@
   },
   "inAction": {
     "tag": "En Action",
-    "title": "Protection Intelligente en Temps Réel",
+    "title": "L'Appareil",
     "subtitle": "Découvrez comment Aerilux détecte et repousse les pigeons instantanément grâce à son système de jet d'eau intelligent et son IA de pointe.",
     "reactionTime": "Temps de réaction",
     "accuracy": "Précision",
@@ -60,6 +60,18 @@
     "coverage": {
       "title": "360° de Couverture",
       "description": "Rotation complète pour protéger toute votre propriété."
+    },
+    "visionShowcase": {
+      "design": {
+        "kicker": "Design",
+        "title": "Un objet sculptural, pensé pour l’architecture",
+        "description": "Lignes pures, matériaux premium et signature lumineuse discrète — Aerilux s’intègre avec élégance à tout environnement."
+      },
+      "exploded": {
+        "kicker": "Technologie",
+        "title": "Une ingénierie de précision à l’intérieur",
+        "description": "Capteurs, IA embarquée et modules haute fiabilité : chaque composant est optimisé pour une détection en temps réel et une réponse instantanée."
+      }
     }
   },
   "product": {

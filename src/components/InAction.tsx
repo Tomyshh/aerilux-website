@@ -60,76 +60,10 @@ const SectionSubtitle = styled(motion.p)`
   line-height: 1.7;
 `;
 
-const ImageContainer = styled(motion.div)`
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 
-    0 40px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
-  will-change: transform, opacity;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      transparent 60%,
-      rgba(0, 0, 0, 0.7) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-  }
-  
-  @media (max-width: 768px) {
-    border-radius: 16px;
-  }
-`;
-
-const ActionImage = styled(motion.img)`
-  width: 100%;
-  height: auto;
-  display: block;
-`;
-
-const ImageOverlay = styled(motion.div)`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  z-index: 2;
+const StatsRow = styled(motion.div)`
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  align-items: flex-end;
-  justify-content: space-between;
-  
-  @media (max-width: 768px) {
-    padding: 1.25rem;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-const OverlayTitle = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #ffffff;
-  max-width: 400px;
-  line-height: 1.3;
-  
-  @media (max-width: 768px) {
-    font-size: 1.2rem;
-  }
+  justify-content: center;
+  margin: 2.25rem auto 0;
 `;
 
 const StatsContainer = styled.div`
@@ -146,10 +80,11 @@ const StatsContainer = styled.div`
 const StatItem = styled(motion.div)`
   text-align: center;
   padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
 `;
 
 const StatValue = styled.span`
@@ -169,6 +104,83 @@ const StatLabel = styled.span`
   color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+`;
+
+const VisionShowcase = styled(motion.div)`
+  width: 100%;
+  max-width: 960px;
+  margin: 3rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+`;
+
+const VisionRow = styled(motion.div)<{ $reverse?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  flex-direction: ${p => p.$reverse ? 'row-reverse' : 'row'};
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+`;
+
+const VisionImageWrap = styled(motion.div)`
+  flex: 0 0 auto;
+  width: 450px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle at center, rgba(59, 158, 255, 0.12), transparent 70%);
+    z-index: -1;
+    filter: blur(30px);
+  }
+
+  @media (max-width: 768px) {
+    width: 320px;
+  }
+`;
+
+const VisionImage = styled.img`
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+`;
+
+const VisionContent = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+const VisionKicker = styled.p`
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #3B9EFF;
+  font-weight: 500;
+`;
+
+const VisionTitle = styled.h3`
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+`;
+
+const VisionDescription = styled.p`
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.6);
 `;
 
 // Même "tache floue" que la section Hero (même couleur & opacité)
@@ -322,50 +334,77 @@ const InAction: React.FC = React.memo(() => {
           </motion.div>
         </SectionHeader>
 
-        <ImageContainer
-          initial={{ opacity: 0, y: 50, scale: 0.95 }}
-          animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.6, -0.05, 0.01, 0.99] }}
-          whileHover={{ scale: 1.01 }}
+        <StatsRow
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.25 }}
         >
-          <ActionImage
-            src="/image_pres.jpeg"
-            alt="Aerilux en action - Système de répulsion des pigeons par jet d'eau"
-            loading="lazy"
-          />
-          <ImageOverlay
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.6 }}
+          <StatsContainer>
+            <StatItem>
+              <StatValue>&lt;0.5s</StatValue>
+              <StatLabel>{t('inAction.reactionTime')}</StatLabel>
+            </StatItem>
+            <StatItem>
+              <StatValue>99.9%</StatValue>
+              <StatLabel>{t('inAction.accuracy')}</StatLabel>
+            </StatItem>
+            <StatItem>
+              <StatValue>15m</StatValue>
+              <StatLabel>{t('inAction.range')}</StatLabel>
+            </StatItem>
+          </StatsContainer>
+        </StatsRow>
+
+        <VisionShowcase
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <VisionRow
+            initial={{ opacity: 0, x: -30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.4 }}
           >
-            <OverlayTitle>
-              {t('inAction.instantDetection')}
-            </OverlayTitle>
-            <StatsContainer>
-              <StatItem
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <StatValue>&lt;0.5s</StatValue>
-                <StatLabel>{t('inAction.reactionTime')}</StatLabel>
-              </StatItem>
-              <StatItem
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <StatValue>99.9%</StatValue>
-                <StatLabel>{t('inAction.accuracy')}</StatLabel>
-              </StatItem>
-              <StatItem
-                whileHover={{ scale: 1.05, y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <StatValue>15m</StatValue>
-                <StatLabel>{t('inAction.range')}</StatLabel>
-              </StatItem>
-            </StatsContainer>
-          </ImageOverlay>
-        </ImageContainer>
+            <VisionImageWrap
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <VisionImage
+                src="/aerilux-vision.png"
+                alt="Aerilux Vision — design esthétique"
+                loading="lazy"
+              />
+            </VisionImageWrap>
+            <VisionContent>
+              <VisionKicker>{t('inAction.visionShowcase.design.kicker')}</VisionKicker>
+              <VisionTitle>{t('inAction.visionShowcase.design.title')}</VisionTitle>
+              <VisionDescription>{t('inAction.visionShowcase.design.description')}</VisionDescription>
+            </VisionContent>
+          </VisionRow>
+
+          <VisionRow
+            $reverse
+            initial={{ opacity: 0, x: 30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.55 }}
+          >
+            <VisionImageWrap
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <VisionImage
+                src="/aerilux-vision-exploded.png"
+                alt="Aerilux Vision — vue éclatée technologique"
+                loading="lazy"
+              />
+            </VisionImageWrap>
+            <VisionContent>
+              <VisionKicker>{t('inAction.visionShowcase.exploded.kicker')}</VisionKicker>
+              <VisionTitle>{t('inAction.visionShowcase.exploded.title')}</VisionTitle>
+              <VisionDescription>{t('inAction.visionShowcase.exploded.description')}</VisionDescription>
+            </VisionContent>
+          </VisionRow>
+        </VisionShowcase>
 
         <FeaturesList
           variants={containerVariants}
