@@ -394,12 +394,7 @@ const ContactPage: React.FC = () => {
               />
             </FormGroup>
 
-            <SubmitButton
-              type="submit"
-              disabled={isSubmitting}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <SubmitButton type="submit" disabled={isSubmitting}>
               {isSubmitting ? t('contact.form.sending') : t('contact.form.send')}
             </SubmitButton>
           </ContactForm>

@@ -52,12 +52,12 @@ const ParticleBackground: React.FC<ParticleBackgroundProps> = React.memo(({ vari
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const isVisibleRef = useRef(true);
 
-  // Memoize particle count based on variant - reduced for performance
+  // Memoize particle count based on variant - heavily reduced for performance
   const particleCount = useMemo(() => {
     switch (variant) {
-      case 'connections': return 40; // Reduced from 60
-      case 'stars': return 60; // Reduced from 100
-      default: return 35; // Reduced from 50
+      case 'connections': return 25; // Reduced for better performance
+      case 'stars': return 35; // Reduced for better performance
+      default: return 20; // Reduced for better performance
     }
   }, [variant]);
 

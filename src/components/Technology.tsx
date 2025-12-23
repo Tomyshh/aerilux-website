@@ -342,11 +342,6 @@ const Technology: React.FC = React.memo(() => {
               <TechFeature
                 key={index}
                 variants={itemVariants}
-                whileHover={{ 
-                  x: 10,
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
-                }}
-                transition={{ duration: 0.3 }}
               >
                 <TechFeatureNumber>0{index + 1}</TechFeatureNumber>
                 <TechFeatureTitle>{feature.title}</TechFeatureTitle>
@@ -365,22 +360,8 @@ const Technology: React.FC = React.memo(() => {
             <StatCard
               key={index}
               variants={itemVariants}
-              whileHover={{ 
-                y: -10,
-                boxShadow: '0 30px 60px rgba(0, 0, 0, 0.15)',
-              }}
             >
-              <StatIconWrapper
-                animate={inView ? { 
-                  y: [0, -5, 0],
-                  rotate: [0, 5, -5, 0],
-                } : { y: 0, rotate: 0 }}
-                transition={{ 
-                  duration: 3,
-                  delay: index * 0.2,
-                  repeat: inView ? Infinity : 0,
-                }}
-              >
+              <StatIconWrapper>
                 {stat.icon}
               </StatIconWrapper>
               <StatNumber>{stat.number}</StatNumber>

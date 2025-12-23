@@ -5,7 +5,6 @@ import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AnimatedText from './effects/AnimatedText';
-import MagneticButton from './effects/MagneticButton';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 
 const HeroSection = styled.section`
@@ -353,22 +352,12 @@ const Hero: React.FC = React.memo(() => {
           </HeroSubtitle>
           
           <CTAContainer variants={itemVariants}>
-            <MagneticButton onClick={handleNavigateToProduct}>
-              <PrimaryButton
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {t('hero.orderNow')}
-              </PrimaryButton>
-            </MagneticButton>
-            <MagneticButton onClick={handleNavigateToAbout}>
-              <SecondaryButton
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {t('hero.learnMore')}
-              </SecondaryButton>
-            </MagneticButton>
+            <PrimaryButton onClick={handleNavigateToProduct}>
+              {t('hero.orderNow')}
+            </PrimaryButton>
+            <SecondaryButton onClick={handleNavigateToAbout}>
+              {t('hero.learnMore')}
+            </SecondaryButton>
           </CTAContainer>
         </motion.div>
       </HeroContent>

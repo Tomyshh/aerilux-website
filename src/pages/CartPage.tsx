@@ -256,11 +256,7 @@ const CartPage: React.FC = () => {
               <ShoppingCart aria-hidden="true" />
             </EmptyCartIcon>
             <EmptyCartText>Your cart is empty</EmptyCartText>
-            <ContinueShoppingButton
-              onClick={() => navigate('/')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <ContinueShoppingButton onClick={() => navigate('/')}>
               Continue Shopping
             </ContinueShoppingButton>
           </EmptyCart>
@@ -287,27 +283,15 @@ const CartPage: React.FC = () => {
                   <ItemName>{item.planName}</ItemName>
                   <ItemPrice>${item.price}</ItemPrice>
                   <QuantityControls>
-                    <QuantityButton
-                      onClick={() => updateQuantity(item.planId, item.quantity - 1)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
+                    <QuantityButton onClick={() => updateQuantity(item.planId, item.quantity - 1)}>
                       -
                     </QuantityButton>
                     <Quantity>{item.quantity}</Quantity>
-                    <QuantityButton
-                      onClick={() => updateQuantity(item.planId, item.quantity + 1)}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
+                    <QuantityButton onClick={() => updateQuantity(item.planId, item.quantity + 1)}>
                       +
                     </QuantityButton>
                   </QuantityControls>
-                  <RemoveButton
-                    onClick={() => removeFromCart(item.planId)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
+                  <RemoveButton onClick={() => removeFromCart(item.planId)}>
                     Remove
                   </RemoveButton>
                 </ItemDetails>
@@ -337,11 +321,7 @@ const CartPage: React.FC = () => {
               <TotalValue>${total.toFixed(2)}</TotalValue>
             </TotalRow>
             
-            <CheckoutButton
-              onClick={() => navigate('/checkout')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <CheckoutButton onClick={() => navigate('/checkout')}>
               Proceed to Checkout
             </CheckoutButton>
 

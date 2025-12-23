@@ -114,11 +114,7 @@ const LanguageSwitcher: React.FC = () => {
 
   return (
     <Container ref={containerRef}>
-      <LanguageButton
-        onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
+      <LanguageButton onClick={() => setIsOpen(!isOpen)}>
         <span>{currentLanguage.flag}</span>
         <span>{currentLanguage.code.toUpperCase()}</span>
       </LanguageButton>
@@ -136,8 +132,6 @@ const LanguageSwitcher: React.FC = () => {
                 key={lang.code}
                 $active={i18n.language === lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.95 }}
               >
                 <span style={{ marginRight: '0.5rem' }}>{lang.flag}</span>
                 {lang.name}

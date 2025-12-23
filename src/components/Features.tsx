@@ -313,13 +313,7 @@ const Features: React.FC = React.memo(() => {
               <FeatureCard>
                 <FeatureContent>
                   <FeatureNumber>{String(index + 1).padStart(2, '0')}</FeatureNumber>
-                  <IconWrapper
-                    whileHover={{ 
-                      scale: 1.1, 
-                      rotate: [0, -5, 5, 0],
-                      transition: { duration: 0.4 }
-                    }}
-                  >
+                  <IconWrapper>
                     {feature.icon}
                   </IconWrapper>
                   <FeatureTitle>{feature.title}</FeatureTitle>

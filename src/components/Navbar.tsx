@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 import { useCart } from '../hooks/useCart';
-import MagneticButton from './effects/MagneticButton';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const Nav = styled(motion.nav)<{ $scrolled: boolean; $isHero: boolean }>`
@@ -342,8 +341,6 @@ const Navbar: React.FC = React.memo(() => {
             <LogoImg 
               src={logoSolid} 
               alt="Aerilux Logo"
-              whileHover={{ rotate: 360 }}
-              transition={{ duration: 0.6 }}
             />
             <LogoText>
               {'AERILUX'.split('').map((char, index) => (
@@ -377,8 +374,6 @@ const Navbar: React.FC = React.memo(() => {
             
             <CartButton
               onClick={handleNavigateToCart}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
               aria-label="Cart"
             >
               <ShoppingCart aria-hidden="true" />
@@ -396,19 +391,12 @@ const Navbar: React.FC = React.memo(() => {
               </AnimatePresence>
             </CartButton>
             
-            <MagneticButton onClick={handleNavigateToProduct}>
-              <CTAButton
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {t('nav.orderNow')}
-              </CTAButton>
-            </MagneticButton>
+            <CTAButton onClick={handleNavigateToProduct}>
+              {t('nav.orderNow')}
+            </CTAButton>
             
             <MobileMenuButton 
               onClick={handleToggleMobileMenu}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
               aria-label="Open menu"
             >
               <Menu aria-hidden="true" />
@@ -427,8 +415,6 @@ const Navbar: React.FC = React.memo(() => {
           >
             <CloseButton 
               onClick={handleCloseMobileMenu}
-              whileHover={{ rotate: 90 }}
-              transition={{ duration: 0.3 }}
               aria-label="Close menu"
             >
               <X aria-hidden="true" />

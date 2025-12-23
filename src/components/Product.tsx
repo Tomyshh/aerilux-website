@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Ruler, Scale, Battery, Radar } from 'lucide-react';
 import { RevealText } from './effects/AnimatedText';
-import MagneticButton from './effects/MagneticButton';
 
 const ProductSection = styled.section`
   padding: 10rem 2rem;
@@ -319,10 +318,7 @@ const Product: React.FC = React.memo(() => {
               <SpecsList>
                 {specs.map((spec, index) => (
                   <SpecItem key={index} variants={itemVariants}>
-                    <SpecIcon
-                      whileHover={{ scale: 1.06 }}
-                      transition={{ duration: 0.3 }}
-                    >
+                    <SpecIcon>
                       {spec.icon}
                     </SpecIcon>
                     <SpecText>
@@ -355,14 +351,9 @@ const Product: React.FC = React.memo(() => {
               </PricingInfo>
 
               <motion.div variants={itemVariants} style={{ marginTop: '2rem' }}>
-                <MagneticButton onClick={handleNavigateToContact}>
-                  <CTAButton
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {t('product.enterprise.button')}
-                  </CTAButton>
-                </MagneticButton>
+                <CTAButton onClick={handleNavigateToContact}>
+                  {t('product.enterprise.button')}
+                </CTAButton>
               </motion.div>
             </motion.div>
           </ProductInfoGrid>

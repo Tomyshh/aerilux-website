@@ -62,10 +62,6 @@ body {
   line-height: 1.6;
 }
 
-/* Hide cursor on elements with custom cursor */
-body.custom-cursor * {
-  cursor: none !important;
-}
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
@@ -73,10 +69,32 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
+/* Performance optimizations */
+img, video {
+  content-visibility: auto;
+}
+
+/* Optimize rendering for fixed elements */
+[style*="position: fixed"] {
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* Reduce paint operations on scrollable containers */
+.scroll-container {
+  contain: strict;
+}
+
+/* Hardware acceleration hint for animated elements */
+.animated, [class*="motion"] {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
 a {
   text-decoration: none;
   color: inherit;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 button {
@@ -84,7 +102,7 @@ button {
   cursor: pointer;
   border: none;
   outline: none;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 img {

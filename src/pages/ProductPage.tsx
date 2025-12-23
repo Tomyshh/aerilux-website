@@ -280,10 +280,7 @@ const ProductPage: React.FC = () => {
       <Container>
         <ProductGrid>
           <ImageGallery>
-            <MainImage
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-            >
+            <MainImage>
               {images[selectedImage]}
             </MainImage>
             <ThumbnailGrid>
@@ -292,8 +289,6 @@ const ProductPage: React.FC = () => {
                   key={index}
                   active={selectedImage === index}
                   onClick={() => handleImageSelect(index)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   {image}
                 </Thumbnail>
@@ -323,18 +318,10 @@ const ProductPage: React.FC = () => {
             </Description>
 
             <ActionButtons>
-              <AddToCartButton
-                onClick={handleNavigateToContact}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <AddToCartButton onClick={handleNavigateToContact}>
                 {t('product.enterprise.button')}
               </AddToCartButton>
-              <BuyNowButton
-                onClick={handleNavigateToContact}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <BuyNowButton onClick={handleNavigateToContact}>
                 {t('pricing.contactSales')}
               </BuyNowButton>
             </ActionButtons>

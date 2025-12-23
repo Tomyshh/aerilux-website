@@ -7,7 +7,6 @@ interface GlassmorphicCardProps {
   className?: string;
   tiltEnabled?: boolean;
   glowEnabled?: boolean;
-  hoverEnabled?: boolean;
   shineEnabled?: boolean;
   intensity?: number;
 }
@@ -103,7 +102,6 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
   className,
   tiltEnabled = true,
   glowEnabled = true,
-  hoverEnabled = true,
   shineEnabled = true,
   intensity = 1,
 }) => {
@@ -157,8 +155,6 @@ const GlassmorphicCard: React.FC<GlassmorphicCardProps> = ({
         }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        whileHover={hoverEnabled ? { scale: 1.02 } : undefined}
-        transition={hoverEnabled ? { duration: 0.3 } : undefined}
       >
         {glowEnabled && (
           <Glow

@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import { Check, Lock, Target, MessageCircle, Zap } from 'lucide-react';
 import { RevealText } from './effects/AnimatedText';
 import GlassmorphicCard from './effects/GlassmorphicCard';
-import MagneticButton from './effects/MagneticButton';
 
 const PricingSection = styled.section`
   padding: 10rem 2rem;
@@ -378,7 +377,6 @@ const Pricing: React.FC = () => {
               <GlassmorphicCard
                 tiltEnabled={false}
                 glowEnabled={false}
-                hoverEnabled={false}
                 shineEnabled={false}
                 intensity={0.9}
               >
@@ -408,14 +406,9 @@ const Pricing: React.FC = () => {
                         {t('pricing.tailored')}
                       </PricingPeriod>
 
-                      <MagneticButton onClick={handleContact}>
-                        <PurchaseButton
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          {t('pricing.contactSales')}
-                        </PurchaseButton>
-                      </MagneticButton>
+                      <PurchaseButton onClick={handleContact}>
+                        {t('pricing.contactSales')}
+                      </PurchaseButton>
                     </LeftCol>
 
                     <RightCol>
@@ -428,10 +421,7 @@ const Pricing: React.FC = () => {
                             initial="hidden"
                             animate={inView ? 'visible' : 'hidden'}
                           >
-                            <FeatureIcon
-                              whileHover={{ scale: 1.2, rotate: 360 }}
-                              transition={{ duration: 0.3 }}
-                            >
+                            <FeatureIcon>
                               <Check aria-hidden="true" />
                             </FeatureIcon>
                             <FeatureText>{feature}</FeatureText>

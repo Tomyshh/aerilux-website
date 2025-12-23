@@ -343,11 +343,7 @@ const Footer: React.FC = React.memo(() => {
           transition={{ duration: 0.6 }}
         >
           <CTAText>{t('footer.cta.title')}</CTAText>
-          <CTAButton
-            onClick={handleCTAClick}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <CTAButton onClick={handleCTAClick}>
             {t('footer.cta.button')}
           </CTAButton>
         </FooterTop>
@@ -363,11 +359,7 @@ const Footer: React.FC = React.memo(() => {
           </NewsletterContent>
           <NewsletterForm>
             <NewsletterInput placeholder={t('footer.newsletter.placeholder')} type="email" />
-            <SubscribeButton
-              type="submit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <SubscribeButton type="submit">
               {t('footer.newsletter.button')}
             </SubscribeButton>
           </NewsletterForm>
@@ -383,8 +375,6 @@ const Footer: React.FC = React.memo(() => {
               <LogoImg 
                 src={logoSolid} 
                 alt="Aerilux Logo"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
               />
               <LogoText>
                 {'AERILUX'.split('').map((char, index) => (
@@ -402,7 +392,7 @@ const Footer: React.FC = React.memo(() => {
           <FooterColumn variants={itemVariants}>
             <ColumnTitle>{t('footer.product.title')}</ColumnTitle>
             <ColumnLinks>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/product"
                   onClick={(e) => {
@@ -413,7 +403,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.product.aeriluxPro')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/product#features"
                   onClick={(e) => {
@@ -424,7 +414,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.product.features')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/product#specs"
                   onClick={(e) => {
@@ -435,7 +425,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.product.specifications')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/#pricing"
                   onClick={(e) => {
@@ -452,7 +442,7 @@ const Footer: React.FC = React.memo(() => {
           <FooterColumn variants={itemVariants}>
             <ColumnTitle>{t('footer.support.title')}</ColumnTitle>
             <ColumnLinks>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/contact"
                   onClick={(e) => {
@@ -463,7 +453,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.support.contact')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/contact#faq"
                   onClick={(e) => {
@@ -474,7 +464,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.support.faq')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/contact#installation"
                   onClick={(e) => {
@@ -485,7 +475,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.support.installation')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/contact#warranty"
                   onClick={(e) => {
@@ -502,7 +492,7 @@ const Footer: React.FC = React.memo(() => {
           <FooterColumn variants={itemVariants}>
             <ColumnTitle>{t('footer.company.title')}</ColumnTitle>
             <ColumnLinks>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/about"
                   onClick={(e) => {
@@ -513,7 +503,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.company.about')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/about#team"
                   onClick={(e) => {
@@ -524,7 +514,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.company.team')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/about#mission"
                   onClick={(e) => {
@@ -535,7 +525,7 @@ const Footer: React.FC = React.memo(() => {
                   {t('footer.company.mission')}
                 </StyledLink>
               </ColumnLink>
-              <ColumnLink whileHover={{ x: 5 }}>
+              <ColumnLink>
                 <StyledLink 
                   to="/contact#careers"
                   onClick={(e) => {

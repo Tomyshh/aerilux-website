@@ -365,8 +365,6 @@ const CheckoutPage: React.FC = () => {
                 <PaymentMethod
                   selected={paymentMethod === 'card'}
                   onClick={() => setPaymentMethod('card')}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   <PaymentIcon>💳</PaymentIcon>
                   <PaymentLabel>Credit Card</PaymentLabel>
@@ -374,8 +372,6 @@ const CheckoutPage: React.FC = () => {
                 <PaymentMethod
                   selected={paymentMethod === 'paypal'}
                   onClick={() => setPaymentMethod('paypal')}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   <PaymentIcon>🅿️</PaymentIcon>
                   <PaymentLabel>PayPal</PaymentLabel>
@@ -383,8 +379,6 @@ const CheckoutPage: React.FC = () => {
                 <PaymentMethod
                   selected={paymentMethod === 'apple'}
                   onClick={() => setPaymentMethod('apple')}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
                   <PaymentIcon>🍎</PaymentIcon>
                   <PaymentLabel>Apple Pay</PaymentLabel>
@@ -442,8 +436,6 @@ const CheckoutPage: React.FC = () => {
             <PlaceOrderButton
               type="submit"
               disabled={isProcessing}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               onClick={handleSubmit}
             >
               {isProcessing ? 'Processing...' : 'Place Order'}

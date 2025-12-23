@@ -68,19 +68,6 @@ const SectionText = styled.p`
   margin-bottom: 1.5rem;
 `;
 
-const ImagePlaceholder = styled(motion.div)`
-  aspect-ratio: 16/9;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  color: #333333;
-  font-weight: 600;
-  overflow: hidden;
-`;
-
 const ImageWrapper = styled(motion.div)`
   width: 100%;
   aspect-ratio: 16/9;
@@ -273,7 +260,6 @@ const AboutPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8 }}
-              whileHover={{ scale: 1.02 }}
             >
               <StyledImage src="/vision.jpeg" alt="Aerilux Vision - AI Technology" loading="lazy" />
             </ImageWrapper>
@@ -287,7 +273,6 @@ const AboutPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
             >
               <StatNumber>{stat.number}</StatNumber>
               <StatLabel>{stat.label}</StatLabel>
@@ -301,7 +286,6 @@ const AboutPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.8 }}
-              whileHover={{ scale: 1.02 }}
             >
               <StyledImage src="/algo.jpeg" alt="Aerilux AI Algorithm Technology" loading="lazy" />
             </ImageWrapper>
@@ -333,12 +317,8 @@ const AboutPage: React.FC = () => {
                 variants={itemVariants}
                 initial="hidden"
                 animate={inView ? 'visible' : 'hidden'}
-                whileHover={{ y: -10 }}
               >
-                <MemberImage
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
+                <MemberImage>
                   <MemberPhoto src={member.image} alt={member.name} />
                 </MemberImage>
                 <MemberName>{member.name}</MemberName>

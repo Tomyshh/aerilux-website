@@ -365,10 +365,7 @@ const InAction: React.FC = React.memo(() => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.4 }}
           >
-            <VisionImageWrap
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-            >
+            <VisionImageWrap>
               <VisionImage
                 src="/aerilux-vision.png"
                 alt="Aerilux Vision — design esthétique"
@@ -388,10 +385,7 @@ const InAction: React.FC = React.memo(() => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.55 }}
           >
-            <VisionImageWrap
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-            >
+            <VisionImageWrap>
               <VisionImage
                 src="/aerilux-vision-exploded.png"
                 alt="Aerilux Vision — vue éclatée technologique"
@@ -415,11 +409,6 @@ const InAction: React.FC = React.memo(() => {
             <FeatureItem
               key={index}
               variants={itemVariants}
-              whileHover={{ 
-                scale: 1.02, 
-                borderColor: 'rgba(59, 158, 255, 0.5)',
-                transition: { duration: 0.2 }
-              }}
             >
               <FeatureIcon>{feature.icon}</FeatureIcon>
               <FeatureText>

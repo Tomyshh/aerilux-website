@@ -8,7 +8,6 @@ import Footer from './components/Footer';
 import PinLock from './components/PinLock';
 import ErrorBoundary from './components/ErrorBoundary';
 import { 
-  CustomCursor, 
   SmoothScroll, 
   PageTransition,
   ScrollProgress,
@@ -145,9 +144,6 @@ function App() {
       <Router>
         <SmoothScroll>
           <AppContainer>
-            {/* Custom cursor effect */}
-            <CustomCursor />
-            
             {/* Scroll progress indicator */}
             <ScrollProgress />
             

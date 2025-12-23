@@ -196,18 +196,10 @@ const OrderConfirmationPage: React.FC = () => {
         </OrderDetails>
         
         <ActionButtons>
-          <PrimaryButton
-            onClick={() => navigate('/')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <PrimaryButton onClick={() => navigate('/')}>
             Continue Shopping
           </PrimaryButton>
-          <SecondaryButton
-            onClick={() => navigate('/product')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+          <SecondaryButton onClick={() => navigate('/product')}>
             View Product
           </SecondaryButton>
         </ActionButtons>
