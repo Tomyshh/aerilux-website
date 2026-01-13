@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { addContactMessage } from '../lib/firebase';
+import { addContactLeadToSupabase } from '../lib/supabase';
 
 const ContactContainer = styled.div`
   min-height: 100vh;
@@ -289,21 +290,43 @@ const ContactPage: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      // Envoyer le message à Firebase Firestore
-      await addContactMessage({
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
-      });
+    const contactData = {
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+    };
 
-      console.log('Message envoyé avec succès sur Firebase');
-      setShowSuccess(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Hide success message after 5 seconds
-      setTimeout(() => setShowSuccess(false), 5000);
+    try {
+      // Envoyer le message à Firebase Firestore ET Supabase en parallèle
+      const [firebaseResult, supabaseResult] = await Promise.allSettled([
+        addContactMessage(contactData),
+        addContactLeadToSupabase(contactData)
+      ]);
+
+      // Log des résultats
+      if (firebaseResult.status === 'fulfilled') {
+        console.log('Message envoyé avec succès sur Firebase');
+      } else {
+        console.error('Erreur Firebase:', firebaseResult.reason);
+      }
+
+      if (supabaseResult.status === 'fulfilled') {
+        console.log('Message envoyé avec succès sur Supabase');
+      } else {
+        console.error('Erreur Supabase:', supabaseResult.reason);
+      }
+
+      // Considérer comme succès si au moins un des deux a fonctionné
+      if (firebaseResult.status === 'fulfilled' || supabaseResult.status === 'fulfilled') {
+        setShowSuccess(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => setShowSuccess(false), 5000);
+      } else {
+        throw new Error('Échec de l\'envoi sur les deux plateformes');
+      }
     } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error);
       alert('Une erreur est survenue. Veuillez réessayer.');
