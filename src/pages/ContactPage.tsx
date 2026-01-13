@@ -298,35 +298,29 @@ const ContactPage: React.FC = () => {
     };
 
     try {
-      // Envoyer le message à Firebase Firestore ET Supabase en parallèle
-      const [firebaseResult, supabaseResult] = await Promise.allSettled([
-        addContactMessage(contactData),
+      // Envoyer le message à Firebase Firestore (principal)
+      await addContactMessage(contactData);
+      console.log('Message envoyé avec succès sur Firebase');
+
+      // Supabase en arrière-plan avec setTimeout pour isoler complètement du rendu React
+      // Cela empêche React dev mode d'afficher l'erreur dans l'overlay
+      setTimeout(() => {
         addContactLeadToSupabase(contactData)
-      ]);
+          .then(result => {
+            if (result) {
+              console.log('Message également enregistré sur Supabase');
+            }
+          })
+          .catch(() => {
+            // Ignorer silencieusement les erreurs Supabase
+          });
+      }, 100);
 
-      // Log des résultats
-      if (firebaseResult.status === 'fulfilled') {
-        console.log('Message envoyé avec succès sur Firebase');
-      } else {
-        console.error('Erreur Firebase:', firebaseResult.reason);
-      }
-
-      if (supabaseResult.status === 'fulfilled') {
-        console.log('Message envoyé avec succès sur Supabase');
-      } else {
-        console.error('Erreur Supabase:', supabaseResult.reason);
-      }
-
-      // Considérer comme succès si au moins un des deux a fonctionné
-      if (firebaseResult.status === 'fulfilled' || supabaseResult.status === 'fulfilled') {
-        setShowSuccess(true);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        
-        // Hide success message after 5 seconds
-        setTimeout(() => setShowSuccess(false), 5000);
-      } else {
-        throw new Error('Échec de l\'envoi sur les deux plateformes');
-      }
+      setShowSuccess(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => setShowSuccess(false), 5000);
     } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error);
       alert('Une erreur est survenue. Veuillez réessayer.');

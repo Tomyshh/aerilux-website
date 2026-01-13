@@ -79,7 +79,7 @@ const TechShowcase = styled.div`
 const TechVisualization = styled(motion.div)`
   position: relative;
   aspect-ratio: 16/10;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  background: #000000;
   border-radius: 30px;
   overflow: hidden;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
