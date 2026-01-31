@@ -327,6 +327,44 @@
       "features": {
         "title": "Key Features"
       }
+    },
+    "starterPack": {
+      "badge": "Pre-order - Limited Edition",
+      "title": "Aerilux Starter Pack",
+      "subtitle": "Everything you need to protect your space from pigeons. Simple installation, maximum efficiency.",
+      "deliveryTitle": "Delivery early 2027",
+      "deliverySubtitle": "Reserve now, be among the first to receive your Aerilux",
+      "priceLabel": "Launch price",
+      "price": "$1,200",
+      "priceCurrency": "USD",
+      "priceNote": "Special pre-order offer. Final retail price: $3,200 per unit. Secure payment, free shipping.",
+      "preorderButton": "Pre-order now",
+      "learnMoreButton": "Learn more",
+      "features": {
+        "complete": "Complete ready-to-install kit",
+        "warranty": "2-year warranty included",
+        "shipping": "Free shipping",
+        "support": "Priority support"
+      },
+      "includesTitle": "What's included in the Starter Pack",
+      "includes": {
+        "unit": {
+          "title": "Aerilux Pro Unit",
+          "description": "The main device with integrated AI, 360° sensors, and multi-modal deterrent system."
+        },
+        "mounting": {
+          "title": "Universal Mounting Kit",
+          "description": "Brackets and fixings for installation on any surface: wall, roof, or pole."
+        },
+        "solar": {
+          "title": "Solar Panel",
+          "description": "High-efficiency panel for complete autonomy, even in cloudy weather."
+        },
+        "app": {
+          "title": "Mobile Application",
+          "description": "Premium access to the Aerilux app for remote monitoring and control."
+        }
+      }
     }
   },
   "common": {
