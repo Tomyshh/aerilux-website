@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
+import { trackSelectContent } from '../services/analytics';
 
 const ConfirmationContainer = styled.div`
   min-height: 100vh;
@@ -196,10 +197,20 @@ const OrderConfirmationPage: React.FC = () => {
         </OrderDetails>
         
         <ActionButtons>
-          <PrimaryButton onClick={() => navigate('/')}>
+          <PrimaryButton
+            onClick={() => {
+              void trackSelectContent({ contentType: 'order_confirmation_continue_shopping', location: 'order_confirmation' });
+              navigate('/');
+            }}
+          >
             Continue Shopping
           </PrimaryButton>
-          <SecondaryButton onClick={() => navigate('/product')}>
+          <SecondaryButton
+            onClick={() => {
+              void trackSelectContent({ contentType: 'order_confirmation_view_product', location: 'order_confirmation' });
+              navigate('/product');
+            }}
+          >
             View Product
           </SecondaryButton>
         </ActionButtons>

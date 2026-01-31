@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { ANALYTICS_CURRENCY, trackEvent, type AnalyticsItem } from '../services/analytics';
 
 interface CartItem {
   planId: string;
@@ -18,6 +19,16 @@ interface UseCartReturn {
 }
 
 const CART_STORAGE_KEY = 'aerilux_cart';
+
+function cartItemToAnalyticsItem(item: CartItem): AnalyticsItem {
+  return {
+    item_id: item.planId,
+    item_name: item.planName,
+    price: item.price,
+    quantity: item.quantity,
+    item_category: 'plan',
+  };
+}
 
 export const useCart = (): UseCartReturn => {
   const [items, setItems] = useState<CartItem[]>(() => {
@@ -43,10 +54,34 @@ export const useCart = (): UseCartReturn => {
       
       return [...prevItems, { ...item, quantity: 1 }];
     });
+
+    void trackEvent('add_to_cart', {
+      currency: ANALYTICS_CURRENCY,
+      value: item.price,
+      items: [
+        {
+          item_id: item.planId,
+          item_name: item.planName,
+          price: item.price,
+          quantity: 1,
+          item_category: 'plan',
+        },
+      ],
+    });
   }, []);
 
   const removeFromCart = useCallback((planId: string) => {
-    setItems(prevItems => prevItems.filter(item => item.planId !== planId));
+    setItems(prevItems => {
+      const existing = prevItems.find(item => item.planId === planId);
+      if (existing) {
+        void trackEvent('remove_from_cart', {
+          currency: ANALYTICS_CURRENCY,
+          value: existing.price * existing.quantity,
+          items: [cartItemToAnalyticsItem(existing)],
+        });
+      }
+      return prevItems.filter(item => item.planId !== planId);
+    });
   }, []);
 
   const updateQuantity = useCallback((planId: string, quantity: number) => {
@@ -55,11 +90,29 @@ export const useCart = (): UseCartReturn => {
       return;
     }
     
-    setItems(prevItems =>
-      prevItems.map(item =>
+    setItems(prevItems => {
+      const existing = prevItems.find(item => item.planId === planId);
+      if (existing) {
+        const delta = quantity - existing.quantity;
+        if (delta !== 0) {
+          const eventName = delta > 0 ? 'add_to_cart' : 'remove_from_cart';
+          const qty = Math.abs(delta);
+          void trackEvent(eventName, {
+            currency: ANALYTICS_CURRENCY,
+            value: existing.price * qty,
+            items: [
+              {
+                ...cartItemToAnalyticsItem(existing),
+                quantity: qty,
+              },
+            ],
+          });
+        }
+      }
+      return prevItems.map(item =>
         item.planId === planId ? { ...item, quantity } : item
-      )
-    );
+      );
+    });
   }, [removeFromCart]);
 
   const clearCart = useCallback(() => {

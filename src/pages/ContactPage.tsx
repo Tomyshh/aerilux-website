@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { addContactMessage } from '../lib/firebase';
 import { addContactLeadToSupabase } from '../lib/supabase';
+import { trackEvent, trackSelectContent } from '../services/analytics';
 
 const ContactContainer = styled.div`
   min-height: 100vh;
@@ -289,6 +290,7 @@ const ContactPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    void trackSelectContent({ contentType: 'contact_submit_attempt', location: 'contact_page' });
 
     const contactData = {
       name: formData.name,
@@ -301,6 +303,9 @@ const ContactPage: React.FC = () => {
       // Envoyer le message à Firebase Firestore (principal)
       await addContactMessage(contactData);
       console.log('Message envoyé avec succès sur Firebase');
+      void trackEvent('generate_lead', {
+        method: 'contact_form',
+      });
 
       // Supabase en arrière-plan avec setTimeout pour isoler complètement du rendu React
       // Cela empêche React dev mode d'afficher l'erreur dans l'overlay

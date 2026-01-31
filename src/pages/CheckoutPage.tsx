@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { orderService } from '../services/api';
+import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
 
 const CheckoutPageContainer = styled.div`
   min-height: 100vh;
@@ -247,11 +248,49 @@ const CheckoutPage: React.FC = () => {
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 
+  const analyticsItems = useMemo(
+    () =>
+      items.map(i => ({
+        item_id: i.planId,
+        item_name: i.planName,
+        price: i.price,
+        quantity: i.quantity,
+        item_category: 'plan',
+      })),
+    [items]
+  );
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    void trackEvent('begin_checkout', {
+      currency: ANALYTICS_CURRENCY,
+      value: total,
+      items: analyticsItems,
+    });
+  }, [items.length, total, analyticsItems]);
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    void trackEvent('add_payment_info', {
+      currency: ANALYTICS_CURRENCY,
+      value: total,
+      payment_type: paymentMethod,
+      items: analyticsItems,
+    });
+  }, [paymentMethod, items.length, total, analyticsItems]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
 
     try {
+      void trackEvent('add_shipping_info', {
+        currency: ANALYTICS_CURRENCY,
+        value: total,
+        shipping_tier: 'free',
+        items: analyticsItems,
+      });
+
       // Simulate order processing
       await new Promise(resolve => setTimeout(resolve, 2000));
       
@@ -286,6 +325,15 @@ const CheckoutPage: React.FC = () => {
         },
       });
 
+      void trackEvent('purchase', {
+        transaction_id: order.id,
+        currency: ANALYTICS_CURRENCY,
+        value: total,
+        tax,
+        shipping,
+        items: analyticsItems,
+      });
+
       clearCart();
       navigate(`/order-confirmation/${order.id}`);
     } catch (error) {
@@ -304,7 +352,7 @@ const CheckoutPage: React.FC = () => {
       <Container>
         <PageTitle>Checkout</PageTitle>
         <CheckoutGrid>
-          <CheckoutForm onSubmit={handleSubmit}>
+          <CheckoutForm id="checkout-form" onSubmit={handleSubmit}>
             <FormSection>
               <SectionTitle>Shipping Information</SectionTitle>
               <FormGrid>
@@ -435,8 +483,14 @@ const CheckoutPage: React.FC = () => {
             
             <PlaceOrderButton
               type="submit"
+              form="checkout-form"
               disabled={isProcessing}
-              onClick={handleSubmit}
+              onClick={() => {
+                void trackSelectContent({
+                  contentType: 'checkout_place_order_click',
+                  location: 'checkout_page',
+                });
+              }}
             >
               {isProcessing ? 'Processing...' : 'Place Order'}
             </PlaceOrderButton>

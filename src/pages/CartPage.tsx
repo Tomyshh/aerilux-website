@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
+import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
 
 const CartPageContainer = styled.div`
   min-height: 100vh;
@@ -246,6 +247,27 @@ const CartPage: React.FC = () => {
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + shipping + tax;
 
+  const analyticsItems = useMemo(
+    () =>
+      items.map(i => ({
+        item_id: i.planId,
+        item_name: i.planName,
+        price: i.price,
+        quantity: i.quantity,
+        item_category: 'plan',
+      })),
+    [items]
+  );
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    void trackEvent('view_cart', {
+      currency: ANALYTICS_CURRENCY,
+      value: total,
+      items: analyticsItems,
+    });
+  }, [items.length, total, analyticsItems]);
+
   if (items.length === 0) {
     return (
       <CartPageContainer>
@@ -256,7 +278,15 @@ const CartPage: React.FC = () => {
               <ShoppingCart aria-hidden="true" />
             </EmptyCartIcon>
             <EmptyCartText>Your cart is empty</EmptyCartText>
-            <ContinueShoppingButton onClick={() => navigate('/')}>
+            <ContinueShoppingButton
+              onClick={() => {
+                void trackSelectContent({
+                  contentType: 'cart_continue_shopping',
+                  location: 'cart_page',
+                });
+                navigate('/');
+              }}
+            >
               Continue Shopping
             </ContinueShoppingButton>
           </EmptyCart>
@@ -321,7 +351,12 @@ const CartPage: React.FC = () => {
               <TotalValue>${total.toFixed(2)}</TotalValue>
             </TotalRow>
             
-            <CheckoutButton onClick={() => navigate('/checkout')}>
+            <CheckoutButton
+              onClick={() => {
+                void trackSelectContent({ contentType: 'cart_proceed_to_checkout_click', location: 'cart_page' });
+                navigate('/checkout');
+              }}
+            >
               Proceed to Checkout
             </CheckoutButton>
 

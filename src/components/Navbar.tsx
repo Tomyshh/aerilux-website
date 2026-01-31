@@ -7,6 +7,7 @@ import { ShoppingCart, Menu, X } from 'lucide-react';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 import { useCart } from '../hooks/useCart';
 import LanguageSwitcher from './LanguageSwitcher';
+import { trackSelectContent } from '../services/analytics';
 
 const Nav = styled(motion.nav)<{ $scrolled: boolean; $isHero: boolean }>`
   position: fixed;
@@ -312,10 +313,12 @@ const Navbar: React.FC = React.memo(() => {
   }), []);
 
   const handleNavigateToCart = useCallback(() => {
+    void trackSelectContent({ contentType: 'nav_cart_click', location: 'navbar' });
     navigate('/cart');
   }, [navigate]);
 
   const handleNavigateToProduct = useCallback(() => {
+    void trackSelectContent({ contentType: 'nav_order_now_click', location: 'navbar' });
     navigate('/product');
   }, [navigate]);
 
@@ -337,7 +340,12 @@ const Navbar: React.FC = React.memo(() => {
         transition={{ duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] }}
       >
         <NavContainer>
-          <Logo to="/">
+          <Logo
+            to="/"
+            onClick={() => {
+              void trackSelectContent({ contentType: 'nav_logo_click', location: 'navbar' });
+            }}
+          >
             <LogoImg 
               src={logoSolid} 
               alt="Aerilux Logo"
@@ -362,6 +370,14 @@ const Navbar: React.FC = React.memo(() => {
                 <StyledNavLink 
                   to={link.path}
                   $isActive={location.pathname === link.path}
+                  onClick={() => {
+                    void trackSelectContent({
+                      contentType: 'nav_link_click',
+                      itemId: link.path,
+                      itemName: String(link.label),
+                      location: 'navbar',
+                    });
+                  }}
                 >
                   {link.label}
                 </StyledNavLink>
@@ -427,7 +443,15 @@ const Navbar: React.FC = React.memo(() => {
                 variants={linkVariants}
                 initial="closed"
                 animate="open"
-                onClick={handleCloseMobileMenu}
+                onClick={() => {
+                  void trackSelectContent({
+                    contentType: 'nav_link_click_mobile',
+                    itemId: link.path,
+                    itemName: String(link.label),
+                    location: 'navbar_mobile',
+                  });
+                  handleCloseMobileMenu();
+                }}
               >
                 {link.label}
               </MobileNavLink>

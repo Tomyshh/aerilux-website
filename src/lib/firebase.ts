@@ -111,4 +111,4 @@ export const getContactMessages = async (limitCount: number = 50): Promise<Conta
   }
 };
 
-export { db };
+export { app, db };

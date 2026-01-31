@@ -4,6 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { X, ChevronLeft, ChevronRight, Package, Truck, Shield, Calendar } from 'lucide-react';
+import { useCart } from '../hooks/useCart';
+import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
+
+const PRODUCT_ITEM = {
+  item_id: 'aerilux-starter-pack',
+  item_name: 'Aerilux Starter Pack',
+  item_category: 'product',
+  price: 1200,
+} as const;
 
 const ProductPageContainer = styled.div`
   min-height: 100vh;
@@ -481,6 +490,7 @@ const ProductPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   const images = [
     '/product/pres1.jpeg',
@@ -492,11 +502,23 @@ const ProductPage: React.FC = () => {
 
   const handleImageSelect = useCallback((index: number) => {
     setSelectedImage(index);
+    void trackSelectContent({
+      contentType: 'product_image_select',
+      itemId: PRODUCT_ITEM.item_id,
+      itemName: `${PRODUCT_ITEM.item_name} - image_${index + 1}`,
+      location: 'product_page',
+    });
   }, []);
 
   const openLightbox = useCallback(() => {
     setLightboxOpen(true);
     document.body.style.overflow = 'hidden';
+    void trackSelectContent({
+      contentType: 'product_image_zoom',
+      itemId: PRODUCT_ITEM.item_id,
+      itemName: PRODUCT_ITEM.item_name,
+      location: 'product_page',
+    });
   }, []);
 
   const closeLightbox = useCallback(() => {
@@ -525,6 +547,15 @@ const ProductPage: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxOpen, closeLightbox, nextImage, prevImage]);
+
+  // GA4 ecommerce: view_item
+  useEffect(() => {
+    void trackEvent('view_item', {
+      currency: ANALYTICS_CURRENCY,
+      value: PRODUCT_ITEM.price,
+      items: [PRODUCT_ITEM],
+    });
+  }, []);
 
   const features = [
     { icon: <Package size={18} />, text: t('productPage.starterPack.features.complete') },
@@ -643,7 +674,14 @@ const ProductPage: React.FC = () => {
 
             <ButtonGroup>
               <PrimaryButton
-                onClick={() => navigate('/checkout')}
+                onClick={() => {
+                  addToCart({
+                    planId: PRODUCT_ITEM.item_id,
+                    planName: PRODUCT_ITEM.item_name,
+                    price: PRODUCT_ITEM.price,
+                  });
+                  navigate('/checkout');
+                }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -651,7 +689,15 @@ const ProductPage: React.FC = () => {
                 {t('productPage.starterPack.preorderButton')}
               </PrimaryButton>
               <SecondaryButton
-                onClick={() => navigate('/contact')}
+                onClick={() => {
+                  void trackSelectContent({
+                    contentType: 'product_learn_more',
+                    itemId: PRODUCT_ITEM.item_id,
+                    itemName: PRODUCT_ITEM.item_name,
+                    location: 'product_page',
+                  });
+                  navigate('/contact');
+                }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

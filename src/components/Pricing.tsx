@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Check, Lock, Target, MessageCircle, Zap } from 'lucide-react';
 import { RevealText } from './effects/AnimatedText';
 import GlassmorphicCard from './effects/GlassmorphicCard';
+import { trackSelectContent } from '../services/analytics';
 
 const PricingSection = styled.section`
   padding: 10rem 2rem;
@@ -332,6 +333,7 @@ const Pricing: React.FC = () => {
   };
 
   const handleContact = () => {
+    void trackSelectContent({ contentType: 'pricing_contact_sales_click', location: 'pricing' });
     navigate('/contact');
   };
 

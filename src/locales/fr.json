@@ -206,7 +206,15 @@
     "copyright": "© 2025 Aerilux. Tous droits réservés.",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
-    "legal": "Mentions légales"
+    "legal": "Mentions légales",
+    "cookies": "Préférences cookies"
+  },
+  "cookieConsent": {
+    "aria": "Préférences cookies",
+    "title": "Cookies",
+    "description": "Nous utilisons des cookies d’analytics pour comprendre le trafic et améliorer le site. Vous pouvez accepter ou refuser — votre choix sera enregistré.",
+    "accept": "Accepter",
+    "reject": "Refuser"
   },
   "contact": {
     "title": "Contactez-nous",

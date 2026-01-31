@@ -6,12 +6,14 @@ import './i18n/config';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
+import CookieConsent from './components/CookieConsent';
 import { 
   SmoothScroll, 
   PageTransition,
   ScrollProgress,
   ParticleBackground 
 } from './components/effects';
+import { trackPageView } from './services/analytics';
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -93,6 +95,16 @@ const AnimatedRoutes: React.FC = () => {
     };
   }, [location.pathname, location.hash]);
 
+  // Analytics: send SPA page_view on route change (after consent).
+  useEffect(() => {
+    const path = `${location.pathname}${location.search || ''}${location.hash || ''}`;
+    void trackPageView({
+      path,
+      title: document.title,
+      location: window.location.href,
+    });
+  }, [location.pathname, location.search, location.hash]);
+
   return (
     <AnimatePresence mode="wait">
       <PageTransition key={location.pathname}>
@@ -131,6 +143,7 @@ function App() {
             <MainContent>
               <AnimatedRoutes />
             </MainContent>
+            <CookieConsent />
             <Footer />
           </AppContainer>
         </SmoothScroll>

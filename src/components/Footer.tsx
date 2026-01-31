@@ -6,6 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import { useTranslation } from 'react-i18next';
 import logoSolid from '../utils/IconOnly_Transparent_NoBuffer.png';
 import { navigateToSection } from '../utils/navigation';
+import { openCookiePreferences, trackEvent, trackSelectContent } from '../services/analytics';
 
 const FooterSection = styled.footer`
   padding: 6rem 2rem 2rem;
@@ -216,6 +217,19 @@ const LegalLink = styled(Link)`
   }
 `;
 
+const LegalButton = styled.button`
+  color: #444444;
+  font-size: 0.9rem;
+  background: transparent;
+  padding: 0;
+  border: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #ffffff;
+  }
+`;
+
 const Newsletter = styled(motion.div)`
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -302,12 +316,28 @@ const Footer: React.FC = React.memo(() => {
   }), []);
 
   const handleCTAClick = useCallback(() => {
+    void trackSelectContent({ contentType: 'footer_cta_click', location: 'footer' });
     navigateToSection(navigate, '/contact');
   }, [navigate]);
 
   const handleLinkClick = useCallback((path: string, anchor?: string) => {
+    void trackSelectContent({
+      contentType: 'footer_link_click',
+      itemId: path,
+      itemName: anchor ? `${path}#${anchor}` : path,
+      location: 'footer',
+    });
     navigateToSection(navigate, path, anchor);
   }, [navigate]);
+
+  const handleNewsletterSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      void trackEvent('sign_up', { method: 'newsletter_footer' });
+      void trackSelectContent({ contentType: 'newsletter_submit', location: 'footer' });
+    },
+    []
+  );
 
   return (
     <FooterSection ref={ref}>
@@ -357,7 +387,7 @@ const Footer: React.FC = React.memo(() => {
             <NewsletterTitle>{t('footer.newsletter.title')}</NewsletterTitle>
             <NewsletterText>{t('footer.newsletter.description')}</NewsletterText>
           </NewsletterContent>
-          <NewsletterForm>
+          <NewsletterForm onSubmit={handleNewsletterSubmit}>
             <NewsletterInput placeholder={t('footer.newsletter.placeholder')} type="email" />
             <SubscribeButton type="submit">
               {t('footer.newsletter.button')}
@@ -552,6 +582,9 @@ const Footer: React.FC = React.memo(() => {
             <LegalLink to="/privacy">{t('footer.privacy')}</LegalLink>
             <LegalLink to="/terms">{t('footer.terms')}</LegalLink>
             <LegalLink to="/legal">{t('footer.legal')}</LegalLink>
+            <LegalButton type="button" onClick={openCookiePreferences}>
+              {t('footer.cookies')}
+            </LegalButton>
           </LegalLinks>
         </FooterBottom>
       </Container>
