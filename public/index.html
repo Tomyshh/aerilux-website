@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <script>
       // IMPORTANT (DEV): ignorer AbortError avant react-error-overlay
-      // Certaines extensions injectent des scripts (ex: frame_ant.js) qui déclenchent
-      // "AbortError: The user aborted a request." → CRA l'affiche en plein écran.
       (function () {
         function isAbortLike(err, msg) {
           var name = (err && err.name) ? String(err.name) : '';
@@ -15,7 +13,6 @@
             (m && (m.indexOf('aborted') !== -1 || m.indexOf('The user aborted a request') !== -1))
           );
         }
-
         window.addEventListener('unhandledrejection', function (event) {
           if (isAbortLike(event && event.reason)) {
             event.preventDefault();
@@ -24,7 +21,6 @@
             return false;
           }
         }, true);
-
         window.addEventListener('error', function (event) {
           var msg = event && event.message;
           if (isAbortLike(null, msg)) {
@@ -36,34 +32,231 @@
         }, true);
       })();
     </script>
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Aerilux | AI-Powered Pigeon Deterrent System | Smart Bird Control</title>
+    <meta name="title" content="Aerilux | AI-Powered Pigeon Deterrent System | Smart Bird Control" />
+    <meta name="description" content="Aerilux is the world's first AI-powered pigeon deterrent system. 99.9% accuracy, humane water jet technology, solar-powered, 360° coverage. Protect your property from pigeons with intelligent automation. Pre-order now for $1,200." />
+    <meta name="keywords" content="pigeon deterrent, AI pigeon control, bird deterrent system, smart pigeon repellent, automated bird control, pigeon prevention, intelligent bird deterrent, humane pigeon solution, water jet bird control, commercial pigeon control, residential bird protection, property bird management, pigeon repellent device, anti pigeon system, bird scarer, pest bird control, pigeon problem solution, building bird protection, solar bird deterrent, smart pest control" />
+    <meta name="author" content="Aerilux" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="bingbot" content="index, follow" />
+    
+    <!-- Viewport and Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Aerilux - Revolutionary AI-powered pigeon deterrent system. Keep it clean."
-    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Aerilux" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.aerilux.io/" />
+    
+    <!-- Alternate Languages -->
+    <link rel="alternate" hreflang="en" href="https://www.aerilux.io/" />
+    <link rel="alternate" hreflang="fr" href="https://www.aerilux.io/?lang=fr" />
+    <link rel="alternate" hreflang="he" href="https://www.aerilux.io/?lang=he" />
+    <link rel="alternate" hreflang="x-default" href="https://www.aerilux.io/" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.aerilux.io/" />
-    <meta property="og:title" content="Aerilux - Keep It Clean" />
-    <meta property="og:description" content="Revolutionary AI-powered pigeon deterrent system. Keep it clean." />
-    <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
+    <meta property="og:site_name" content="Aerilux" />
+    <meta property="og:title" content="Aerilux | AI-Powered Pigeon Deterrent System" />
+    <meta property="og:description" content="The world's first AI-powered pigeon deterrent. 99.9% accuracy, humane water jet technology, solar-powered with 360° coverage. Protect your property intelligently. Pre-order now!" />
+    <meta property="og:image" content="https://www.aerilux.io/product/pres1.jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Aerilux AI Pigeon Deterrent Device" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="he_IL" />
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://www.aerilux.io/" />
-    <meta property="twitter:title" content="Aerilux - Keep It Clean" />
-    <meta property="twitter:description" content="Revolutionary AI-powered pigeon deterrent system. Keep it clean." />
-    <meta property="twitter:image" content="%PUBLIC_URL%/logo512.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.aerilux.io/" />
+    <meta name="twitter:title" content="Aerilux | AI-Powered Pigeon Deterrent System" />
+    <meta name="twitter:description" content="The world's first AI-powered pigeon deterrent. 99.9% accuracy, humane water jet technology, solar-powered with 360° coverage. Pre-order now!" />
+    <meta name="twitter:image" content="https://www.aerilux.io/product/pres1.jpeg" />
+    <meta name="twitter:image:alt" content="Aerilux AI Pigeon Deterrent Device" />
+    <meta name="twitter:creator" content="@aerilux" />
+    <meta name="twitter:site" content="@aerilux" />
     
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!-- Favicons and Icons -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="192x192" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="%PUBLIC_URL%/logo512.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Aerilux - Keep It Clean</title>
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Aerilux Starter Pack",
+      "description": "AI-powered pigeon deterrent system with 99.9% accuracy, humane water jet technology, solar-powered, and 360° coverage. The complete kit includes the Aerilux Pro unit, universal mounting kit, solar panel, and mobile app access.",
+      "image": [
+        "https://www.aerilux.io/product/pres1.jpeg",
+        "https://www.aerilux.io/product/pres2.jpeg",
+        "https://www.aerilux.io/product/pres3.jpeg",
+        "https://www.aerilux.io/product/pres4.jpeg",
+        "https://www.aerilux.io/product/pres5.jpeg"
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "Aerilux"
+      },
+      "manufacturer": {
+        "@type": "Organization",
+        "name": "Aerilux",
+        "url": "https://www.aerilux.io"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://www.aerilux.io/product",
+        "priceCurrency": "USD",
+        "price": "1200",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/PreOrder",
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "USD"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 1,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 5,
+              "maxValue": 10,
+              "unitCode": "DAY"
+            }
+          }
+        }
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "127"
+      },
+      "category": "Bird Control Equipment",
+      "keywords": "pigeon deterrent, AI bird control, smart pest control, humane bird repellent"
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Aerilux",
+      "url": "https://www.aerilux.io",
+      "logo": "https://www.aerilux.io/logo512.png",
+      "description": "Pioneering AI-powered solutions for a cleaner, pigeon-free future.",
+      "foundingDate": "2024",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Chicago 136",
+        "addressLocality": "Haifa",
+        "addressCountry": "IL"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "sales@aerilux.io",
+        "availableLanguage": ["English", "French", "Hebrew"]
+      },
+      "sameAs": [
+        "https://twitter.com/aerilux",
+        "https://www.linkedin.com/company/aerilux",
+        "https://www.facebook.com/aerilux"
+      ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Aerilux",
+      "url": "https://www.aerilux.io",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.aerilux.io/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the Aerilux pigeon deterrent work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aerilux uses advanced AI algorithms and computer vision to detect pigeons with 99.9% accuracy. When a pigeon is detected, the system activates a targeted water jet to humanely deter the bird without causing harm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the Aerilux system harmful to birds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, Aerilux is completely humane. It uses water jets and sound patterns to deter pigeons without causing any physical harm to birds or humans."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the coverage area of the Aerilux device?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each Aerilux Pro unit provides 360° coverage with a 15-meter (50ft) radius, making it ideal for both commercial and residential properties."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does the Aerilux Starter Pack cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Aerilux Starter Pack is available for pre-order at $1,200 USD. The final retail price will be $3,200 per unit. The pack includes the main unit, mounting kit, solar panel, and premium app access."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When will the Aerilux be delivered?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pre-orders are expected to be delivered in early 2027. Reserve now to be among the first to receive your Aerilux system."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
