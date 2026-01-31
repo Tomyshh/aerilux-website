@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
-import { orderService } from '../services/api';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
+import { checkoutService } from '../services/checkout';
 
 const CheckoutPageContainer = styled.div`
   min-height: 100vh;
@@ -111,7 +111,7 @@ const Select = styled.select`
 
 const PaymentMethods = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 1rem;
   margin-bottom: 2rem;
 `;
@@ -239,9 +239,33 @@ const SecurityInfo = styled.div`
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
-  const { items, getTotalPrice, clearCart } = useCart();
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const { items, getTotalPrice } = useCart();
+  const [paymentMethod] = useState('payme');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: 'US',
+  });
+
+  const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
+  const [billingData, setBillingData] = useState({
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: 'US',
+  });
 
   const subtotal = getTotalPrice();
   const shipping = 0; // Free shipping
@@ -279,9 +303,24 @@ const CheckoutPage: React.FC = () => {
     });
   }, [paymentMethod, items.length, total, analyticsItems]);
 
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleBillingChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setBillingData(prev => ({ ...prev, [name]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
+    setErrorMessage(null);
 
     try {
       void trackEvent('add_shipping_info', {
@@ -291,53 +330,84 @@ const CheckoutPage: React.FC = () => {
         items: analyticsItems,
       });
 
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Create order
-      const order = await orderService.createOrder({
-        items: items.map(item => ({
-          productId: 'aerilux-pro',
-          planId: item.planId,
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        total,
+      const origin = window.location.origin;
+      const returnUrl = `${origin}/checkout/success`;
+      const cancelUrl = `${origin}/checkout/cancel`;
+
+      const payload = {
+        cart: {
+          items: items.map(item => ({
+            productId: 'aerilux-starter-pack',
+            planId: item.planId,
+            name: item.planName,
+            quantity: item.quantity,
+            unitPrice: item.price,
+            lineTotal: item.price * item.quantity,
+          })),
+        },
+        totals: {
+          subtotal,
+          shipping,
+          tax,
+          total,
+          currency: ANALYTICS_CURRENCY,
+        },
+        customer: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+        },
         shippingAddress: {
-          firstName: 'John',
-          lastName: 'Doe',
-          address1: '123 Main St',
-          city: 'New York',
-          state: 'NY',
-          postalCode: '10001',
-          country: 'US',
-          phone: '+1234567890',
+          address1: formData.address1,
+          address2: formData.address2 || undefined,
+          city: formData.city,
+          state: formData.state || undefined,
+          postalCode: formData.postalCode,
+          country: formData.country,
         },
-        billingAddress: {
-          firstName: 'John',
-          lastName: 'Doe',
-          address1: '123 Main St',
-          city: 'New York',
-          state: 'NY',
-          postalCode: '10001',
-          country: 'US',
-          phone: '+1234567890',
-        },
+        billingAddress: billingSameAsShipping
+          ? {
+              address1: formData.address1,
+              address2: formData.address2 || undefined,
+              city: formData.city,
+              state: formData.state || undefined,
+              postalCode: formData.postalCode,
+              country: formData.country,
+            }
+          : {
+              address1: billingData.address1,
+              address2: billingData.address2 || undefined,
+              city: billingData.city,
+              state: billingData.state || undefined,
+              postalCode: billingData.postalCode,
+              country: billingData.country,
+            },
+        returnUrl,
+        cancelUrl,
+      };
+
+      const data = await checkoutService.createPaymeSale(payload);
+      if (!data.checkoutUrl) {
+        throw new Error("PayMe n’a pas renvoyé de checkoutUrl");
+      }
+
+      localStorage.setItem('lastOrderId', data.orderId);
+      localStorage.setItem('lastOrderNumber', data.orderNumber);
+      if (data.paymeSaleId) localStorage.setItem('lastPaymeSaleId', data.paymeSaleId);
+
+      // IMPORTANT: ne pas envoyer l'événement GA4 "purchase" ici (le paiement n'est pas confirmé côté client).
+      void trackEvent('checkout_progress', {
+        step: 'redirect_to_payme',
+        order_id: data.orderId,
+        order_number: data.orderNumber,
       });
 
-      void trackEvent('purchase', {
-        transaction_id: order.id,
-        currency: ANALYTICS_CURRENCY,
-        value: total,
-        tax,
-        shipping,
-        items: analyticsItems,
-      });
-
-      clearCart();
-      navigate(`/order-confirmation/${order.id}`);
+      window.location.href = data.checkoutUrl;
     } catch (error) {
       console.error('Order failed:', error);
+      const msg = (error as any)?.message || 'Checkout error';
+      setErrorMessage(msg);
       setIsProcessing(false);
     }
   };
@@ -351,6 +421,20 @@ const CheckoutPage: React.FC = () => {
     <CheckoutPageContainer>
       <Container>
         <PageTitle>Checkout</PageTitle>
+        {errorMessage && (
+          <div
+            style={{
+              background: 'rgba(255, 59, 48, 0.12)',
+              border: '1px solid rgba(255, 59, 48, 0.35)',
+              color: '#ff6b6b',
+              padding: '1rem 1.25rem',
+              borderRadius: 12,
+              marginBottom: '1.5rem',
+            }}
+          >
+            {errorMessage}
+          </div>
+        )}
         <CheckoutGrid>
           <CheckoutForm id="checkout-form" onSubmit={handleSubmit}>
             <FormSection>
@@ -358,35 +442,83 @@ const CheckoutPage: React.FC = () => {
               <FormGrid>
                 <FormGroup>
                   <Label>First Name</Label>
-                  <Input type="text" placeholder="John" required />
+                  <Input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    placeholder="John"
+                    required
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label>Last Name</Label>
-                  <Input type="text" placeholder="Doe" required />
+                  <Input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    placeholder="Doe"
+                    required
+                  />
                 </FormGroup>
                 <FormGroup fullWidth>
                   <Label>Email</Label>
-                  <Input type="email" placeholder="john@example.com" required />
+                  <Input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="john@example.com"
+                    required
+                  />
                 </FormGroup>
                 <FormGroup fullWidth>
                   <Label>Phone</Label>
-                  <Input type="tel" placeholder="+1 (555) 123-4567" required />
+                  <Input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="+1 (555) 123-4567"
+                    required
+                  />
                 </FormGroup>
                 <FormGroup fullWidth>
                   <Label>Address</Label>
-                  <Input type="text" placeholder="123 Main Street" required />
+                  <Input
+                    type="text"
+                    name="address1"
+                    value={formData.address1}
+                    onChange={handleInputChange}
+                    placeholder="123 Main Street"
+                    required
+                  />
                 </FormGroup>
                 <FormGroup fullWidth>
                   <Label>Apartment, suite, etc. (optional)</Label>
-                  <Input type="text" placeholder="Apt 4B" />
+                  <Input
+                    type="text"
+                    name="address2"
+                    value={formData.address2}
+                    onChange={handleInputChange}
+                    placeholder="Apt 4B"
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label>City</Label>
-                  <Input type="text" placeholder="New York" required />
+                  <Input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    placeholder="New York"
+                    required
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label>State</Label>
-                  <Select required>
+                  <Select name="state" value={formData.state} onChange={handleInputChange} required>
                     <option value="">Select State</option>
                     <option value="NY">New York</option>
                     <option value="CA">California</option>
@@ -395,11 +527,18 @@ const CheckoutPage: React.FC = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label>ZIP Code</Label>
-                  <Input type="text" placeholder="10001" required />
+                  <Input
+                    type="text"
+                    name="postalCode"
+                    value={formData.postalCode}
+                    onChange={handleInputChange}
+                    placeholder="10001"
+                    required
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label>Country</Label>
-                  <Select required>
+                  <Select name="country" value={formData.country} onChange={handleInputChange} required>
                     <option value="US">United States</option>
                     <option value="CA">Canada</option>
                   </Select>
@@ -408,44 +547,90 @@ const CheckoutPage: React.FC = () => {
             </FormSection>
 
             <FormSection>
-              <SectionTitle>Payment Method</SectionTitle>
+              <SectionTitle>Payment</SectionTitle>
               <PaymentMethods>
                 <PaymentMethod
-                  selected={paymentMethod === 'card'}
-                  onClick={() => setPaymentMethod('card')}
+                  selected={paymentMethod === 'payme'}
                 >
-                  <PaymentIcon>💳</PaymentIcon>
-                  <PaymentLabel>Credit Card</PaymentLabel>
-                </PaymentMethod>
-                <PaymentMethod
-                  selected={paymentMethod === 'paypal'}
-                  onClick={() => setPaymentMethod('paypal')}
-                >
-                  <PaymentIcon>🅿️</PaymentIcon>
-                  <PaymentLabel>PayPal</PaymentLabel>
-                </PaymentMethod>
-                <PaymentMethod
-                  selected={paymentMethod === 'apple'}
-                  onClick={() => setPaymentMethod('apple')}
-                >
-                  <PaymentIcon>🍎</PaymentIcon>
-                  <PaymentLabel>Apple Pay</PaymentLabel>
+                  <PaymentIcon>🔒</PaymentIcon>
+                  <PaymentLabel>PayMe (secure checkout)</PaymentLabel>
                 </PaymentMethod>
               </PaymentMethods>
+            </FormSection>
 
-              {paymentMethod === 'card' && (
+            <FormSection>
+              <SectionTitle>Billing Address</SectionTitle>
+              <div style={{ marginBottom: '1rem', color: '#cccccc' }}>
+                <label style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                  <input
+                    type="checkbox"
+                    checked={billingSameAsShipping}
+                    onChange={(e) => setBillingSameAsShipping(e.target.checked)}
+                  />
+                  Same as shipping address
+                </label>
+              </div>
+
+              {!billingSameAsShipping && (
                 <FormGrid>
                   <FormGroup fullWidth>
-                    <Label>Card Number</Label>
-                    <Input type="text" placeholder="1234 5678 9012 3456" required />
+                    <Label>Address</Label>
+                    <Input
+                      type="text"
+                      name="address1"
+                      value={billingData.address1}
+                      onChange={handleBillingChange}
+                      placeholder="123 Main Street"
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup fullWidth>
+                    <Label>Apartment, suite, etc. (optional)</Label>
+                    <Input
+                      type="text"
+                      name="address2"
+                      value={billingData.address2}
+                      onChange={handleBillingChange}
+                      placeholder="Apt 4B"
+                    />
                   </FormGroup>
                   <FormGroup>
-                    <Label>Expiry Date</Label>
-                    <Input type="text" placeholder="MM/YY" required />
+                    <Label>City</Label>
+                    <Input
+                      type="text"
+                      name="city"
+                      value={billingData.city}
+                      onChange={handleBillingChange}
+                      placeholder="New York"
+                      required
+                    />
                   </FormGroup>
                   <FormGroup>
-                    <Label>CVV</Label>
-                    <Input type="text" placeholder="123" required />
+                    <Label>State</Label>
+                    <Select name="state" value={billingData.state} onChange={handleBillingChange} required>
+                      <option value="">Select State</option>
+                      <option value="NY">New York</option>
+                      <option value="CA">California</option>
+                      <option value="TX">Texas</option>
+                    </Select>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>ZIP Code</Label>
+                    <Input
+                      type="text"
+                      name="postalCode"
+                      value={billingData.postalCode}
+                      onChange={handleBillingChange}
+                      placeholder="10001"
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Country</Label>
+                    <Select name="country" value={billingData.country} onChange={handleBillingChange} required>
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                    </Select>
                   </FormGroup>
                 </FormGrid>
               )}
@@ -497,7 +682,7 @@ const CheckoutPage: React.FC = () => {
 
             <SecurityInfo>
               <span>🔒</span>
-              <span>Your payment information is secure and encrypted</span>
+              <span>You will be redirected to PayMe to complete the payment.</span>
             </SecurityInfo>
           </OrderSummary>
         </CheckoutGrid>

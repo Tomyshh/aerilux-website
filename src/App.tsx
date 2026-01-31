@@ -19,6 +19,8 @@ import { trackPageView } from './services/analytics';
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ProductPage = lazy(() => import('./pages/ProductPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const CheckoutSuccessPage = lazy(() => import('./pages/CheckoutSuccessPage'));
+const CheckoutCancelPage = lazy(() => import('./pages/CheckoutCancelPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const CartPage = lazy(() => import('./pages/CartPage'));
@@ -114,6 +116,8 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/product" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+            <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
             <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
