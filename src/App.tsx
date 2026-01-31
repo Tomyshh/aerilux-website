@@ -1,11 +1,10 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import './i18n/config';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import PinLock from './components/PinLock';
 import ErrorBoundary from './components/ErrorBoundary';
 import { 
   SmoothScroll, 
@@ -117,28 +116,6 @@ const AnimatedRoutes: React.FC = () => {
 };
 
 function App() {
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
-    // Vérifier si le site a déjà été déverrouillé dans cette session
-    const unlocked = sessionStorage.getItem('aerilux_unlocked');
-    return unlocked === 'true';
-  });
-
-  useEffect(() => {
-    // Si déverrouillé, sauvegarder dans sessionStorage
-    if (isUnlocked) {
-      sessionStorage.setItem('aerilux_unlocked', 'true');
-    }
-  }, [isUnlocked]);
-
-  const handleUnlock = () => {
-    setIsUnlocked(true);
-  };
-
-  // Si le site n'est pas déverrouillé, afficher le PinLock
-  if (!isUnlocked) {
-    return <PinLock onSuccess={handleUnlock} />;
-  }
-
   return (
     <ErrorBoundary>
       <Router>
