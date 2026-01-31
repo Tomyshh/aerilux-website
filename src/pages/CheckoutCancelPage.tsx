@@ -61,7 +61,7 @@ const CheckoutCancelPage: React.FC = () => {
 
   const orderNumber = useMemo(() => {
     try {
-      return localStorage.getItem('lastOrderNumber');
+      return localStorage.getItem('orderNumber') || localStorage.getItem('lastOrderNumber');
     } catch {
       return null;
     }

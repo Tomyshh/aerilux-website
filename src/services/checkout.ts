@@ -1,45 +1,26 @@
+export type CheckoutPriceResponse = { price: number; currency: string };
+
 export type PaymeCreateSalePayload = {
-  cart: {
-    items: Array<{
-      productId: string;
-      planId: string;
-      name: string;
-      quantity: number;
-      unitPrice: number;
-      lineTotal: number;
-    }>;
-  };
-  totals: {
-    subtotal: number;
-    shipping: number;
-    tax: number;
-    total: number;
-    currency: string;
-  };
   customer: {
     firstName: string;
     lastName: string;
     email: string;
     phone: string;
-  };
-  shippingAddress: {
-    address1: string;
+    address: string;
     address2?: string;
     city: string;
     state?: string;
-    postalCode: string;
+    zipCode: string;
     country: string;
   };
-  billingAddress?: {
-    address1: string;
-    address2?: string;
-    city: string;
-    state?: string;
-    postalCode: string;
-    country: string;
-  };
+  items: Array<{
+    name: string;
+    sku: string;
+    quantity: number;
+  }>;
   returnUrl: string;
   cancelUrl: string;
+  metadata?: Record<string, unknown>;
 };
 
 export type PaymeCreateSaleResponse = {
@@ -62,6 +43,21 @@ function getBackendUrl(): string {
 }
 
 export const checkoutService = {
+  getPrice: async (): Promise<CheckoutPriceResponse> => {
+    const base = getBackendUrl();
+    const res = await fetch(`${base}/checkout/price`, { method: 'GET' });
+    const data = (await res.json().catch(() => ({}))) as Partial<CheckoutPriceResponse> & {
+      message?: string;
+    };
+    if (!res.ok) {
+      throw new Error(data?.message || 'Price fetch error');
+    }
+    if (typeof data.price !== 'number' || !data.currency) {
+      throw new Error('Invalid price response');
+    }
+    return { price: data.price, currency: data.currency };
+  },
+
   createPaymeSale: async (
     payload: PaymeCreateSalePayload
   ): Promise<PaymeCreateSaleResponse> => {

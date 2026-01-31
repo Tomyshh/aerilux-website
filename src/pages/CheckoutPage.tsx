@@ -239,7 +239,7 @@ const SecurityInfo = styled.div`
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
-  const { items, getTotalPrice } = useCart();
+  const { items } = useCart();
   const [paymentMethod] = useState('payme');
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -249,72 +249,69 @@ const CheckoutPage: React.FC = () => {
     lastName: '',
     email: '',
     phone: '',
-    address1: '',
+    address: '',
     address2: '',
     city: '',
     state: '',
-    postalCode: '',
+    zipCode: '',
     country: 'US',
   });
 
-  const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
-  const [billingData, setBillingData] = useState({
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    postalCode: '',
-    country: 'US',
-  });
+  const [unitPrice, setUnitPrice] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<string>(ANALYTICS_CURRENCY);
 
-  const subtotal = getTotalPrice();
-  const shipping = 0; // Free shipping
-  const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
+  useEffect(() => {
+    void (async () => {
+      try {
+        const p = await checkoutService.getPrice();
+        setUnitPrice(p.price);
+        setCurrency(p.currency || ANALYTICS_CURRENCY);
+      } catch {
+        // ignore
+      }
+    })();
+  }, []);
+
+  const qty = items.reduce((sum, i) => sum + i.quantity, 0);
+  const subtotal = unitPrice != null ? unitPrice * qty : 0;
+  const total = subtotal;
 
   const analyticsItems = useMemo(
     () =>
       items.map(i => ({
-        item_id: i.planId,
-        item_name: i.planName,
-        price: i.price,
+        item_id: i.sku,
+        item_name: i.name,
+        ...(unitPrice != null ? { price: unitPrice } : {}),
         quantity: i.quantity,
-        item_category: 'plan',
+        item_category: 'product',
       })),
-    [items]
+    [items, unitPrice]
   );
 
   useEffect(() => {
     if (items.length === 0) return;
     void trackEvent('begin_checkout', {
-      currency: ANALYTICS_CURRENCY,
-      value: total,
+      currency,
+      value: unitPrice != null ? total : undefined,
       items: analyticsItems,
     });
-  }, [items.length, total, analyticsItems]);
+  }, [items.length, total, analyticsItems, currency, unitPrice]);
 
   useEffect(() => {
     if (items.length === 0) return;
     void trackEvent('add_payment_info', {
-      currency: ANALYTICS_CURRENCY,
-      value: total,
+      currency,
+      value: unitPrice != null ? total : undefined,
       payment_type: paymentMethod,
       items: analyticsItems,
     });
-  }, [paymentMethod, items.length, total, analyticsItems]);
+  }, [paymentMethod, items.length, total, analyticsItems, currency, unitPrice]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleBillingChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setBillingData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -324,8 +321,8 @@ const CheckoutPage: React.FC = () => {
 
     try {
       void trackEvent('add_shipping_info', {
-        currency: ANALYTICS_CURRENCY,
-        value: total,
+        currency,
+        value: unitPrice != null ? total : undefined,
         shipping_tier: 'free',
         items: analyticsItems,
       });
@@ -335,56 +332,26 @@ const CheckoutPage: React.FC = () => {
       const cancelUrl = `${origin}/checkout/cancel`;
 
       const payload = {
-        cart: {
-          items: items.map(item => ({
-            productId: 'aerilux-starter-pack',
-            planId: item.planId,
-            name: item.planName,
-            quantity: item.quantity,
-            unitPrice: item.price,
-            lineTotal: item.price * item.quantity,
-          })),
-        },
-        totals: {
-          subtotal,
-          shipping,
-          tax,
-          total,
-          currency: ANALYTICS_CURRENCY,
-        },
         customer: {
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,
           phone: formData.phone,
-        },
-        shippingAddress: {
-          address1: formData.address1,
+          address: formData.address,
           address2: formData.address2 || undefined,
           city: formData.city,
           state: formData.state || undefined,
-          postalCode: formData.postalCode,
+          zipCode: formData.zipCode,
           country: formData.country,
         },
-        billingAddress: billingSameAsShipping
-          ? {
-              address1: formData.address1,
-              address2: formData.address2 || undefined,
-              city: formData.city,
-              state: formData.state || undefined,
-              postalCode: formData.postalCode,
-              country: formData.country,
-            }
-          : {
-              address1: billingData.address1,
-              address2: billingData.address2 || undefined,
-              city: billingData.city,
-              state: billingData.state || undefined,
-              postalCode: billingData.postalCode,
-              country: billingData.country,
-            },
+        items: items.map(i => ({
+          name: 'Aerilux Starter Pack',
+          sku: i.sku,
+          quantity: i.quantity,
+        })),
         returnUrl,
         cancelUrl,
+        metadata: { source: 'website' },
       };
 
       const data = await checkoutService.createPaymeSale(payload);
@@ -392,6 +359,9 @@ const CheckoutPage: React.FC = () => {
         throw new Error("PayMe n’a pas renvoyé de checkoutUrl");
       }
 
+      // Supporte les 2 clés (anciennes + celles demandées).
+      localStorage.setItem('orderId', data.orderId);
+      localStorage.setItem('orderNumber', data.orderNumber);
       localStorage.setItem('lastOrderId', data.orderId);
       localStorage.setItem('lastOrderNumber', data.orderNumber);
       if (data.paymeSaleId) localStorage.setItem('lastPaymeSaleId', data.paymeSaleId);
@@ -484,12 +454,12 @@ const CheckoutPage: React.FC = () => {
                     required
                   />
                 </FormGroup>
-                <FormGroup fullWidth>
-                  <Label>Address</Label>
+            <FormGroup fullWidth>
+              <Label>Address</Label>
                   <Input
                     type="text"
-                    name="address1"
-                    value={formData.address1}
+                name="address"
+                value={formData.address}
                     onChange={handleInputChange}
                     placeholder="123 Main Street"
                     required
@@ -529,8 +499,8 @@ const CheckoutPage: React.FC = () => {
                   <Label>ZIP Code</Label>
                   <Input
                     type="text"
-                    name="postalCode"
-                    value={formData.postalCode}
+                name="zipCode"
+                value={formData.zipCode}
                     onChange={handleInputChange}
                     placeholder="10001"
                     required
@@ -558,112 +528,29 @@ const CheckoutPage: React.FC = () => {
               </PaymentMethods>
             </FormSection>
 
-            <FormSection>
-              <SectionTitle>Billing Address</SectionTitle>
-              <div style={{ marginBottom: '1rem', color: '#cccccc' }}>
-                <label style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                  <input
-                    type="checkbox"
-                    checked={billingSameAsShipping}
-                    onChange={(e) => setBillingSameAsShipping(e.target.checked)}
-                  />
-                  Same as shipping address
-                </label>
-              </div>
-
-              {!billingSameAsShipping && (
-                <FormGrid>
-                  <FormGroup fullWidth>
-                    <Label>Address</Label>
-                    <Input
-                      type="text"
-                      name="address1"
-                      value={billingData.address1}
-                      onChange={handleBillingChange}
-                      placeholder="123 Main Street"
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup fullWidth>
-                    <Label>Apartment, suite, etc. (optional)</Label>
-                    <Input
-                      type="text"
-                      name="address2"
-                      value={billingData.address2}
-                      onChange={handleBillingChange}
-                      placeholder="Apt 4B"
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>City</Label>
-                    <Input
-                      type="text"
-                      name="city"
-                      value={billingData.city}
-                      onChange={handleBillingChange}
-                      placeholder="New York"
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>State</Label>
-                    <Select name="state" value={billingData.state} onChange={handleBillingChange} required>
-                      <option value="">Select State</option>
-                      <option value="NY">New York</option>
-                      <option value="CA">California</option>
-                      <option value="TX">Texas</option>
-                    </Select>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>ZIP Code</Label>
-                    <Input
-                      type="text"
-                      name="postalCode"
-                      value={billingData.postalCode}
-                      onChange={handleBillingChange}
-                      placeholder="10001"
-                      required
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>Country</Label>
-                    <Select name="country" value={billingData.country} onChange={handleBillingChange} required>
-                      <option value="US">United States</option>
-                      <option value="CA">Canada</option>
-                    </Select>
-                  </FormGroup>
-                </FormGrid>
-              )}
-            </FormSection>
           </CheckoutForm>
 
           <OrderSummary>
             <SectionTitle>Order Summary</SectionTitle>
             {items.map((item) => (
-              <SummaryItem key={item.planId}>
+              <SummaryItem key={item.sku}>
                 <ItemInfo>
-                  <ItemName>{item.planName}</ItemName>
+                  <ItemName>{item.name}</ItemName>
                   <ItemQuantity>Qty: {item.quantity}</ItemQuantity>
                 </ItemInfo>
-                <ItemPrice>${(item.price * item.quantity).toFixed(2)}</ItemPrice>
+                <ItemPrice>
+                  {unitPrice != null ? `${currency} ${(unitPrice * item.quantity).toFixed(2)}` : '—'}
+                </ItemPrice>
               </SummaryItem>
             ))}
             
             <SummaryRow>
               <SummaryLabel>Subtotal</SummaryLabel>
-              <SummaryValue>${subtotal.toFixed(2)}</SummaryValue>
-            </SummaryRow>
-            <SummaryRow>
-              <SummaryLabel>Shipping</SummaryLabel>
-              <SummaryValue>FREE</SummaryValue>
-            </SummaryRow>
-            <SummaryRow>
-              <SummaryLabel>Tax</SummaryLabel>
-              <SummaryValue>${tax.toFixed(2)}</SummaryValue>
+              <SummaryValue>{unitPrice != null ? `${currency} ${subtotal.toFixed(2)}` : '—'}</SummaryValue>
             </SummaryRow>
             <TotalRow>
               <TotalLabel>Total</TotalLabel>
-              <TotalValue>${total.toFixed(2)}</TotalValue>
+              <TotalValue>{unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}</TotalValue>
             </TotalRow>
             
             <PlaceOrderButton

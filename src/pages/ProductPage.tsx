@@ -6,12 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { X, ChevronLeft, ChevronRight, Package, Truck, Shield, Calendar } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
+import { checkoutService } from '../services/checkout';
 
 const PRODUCT_ITEM = {
-  item_id: 'aerilux-starter-pack',
+  item_id: 'AER-STARTER',
   item_name: 'Aerilux Starter Pack',
   item_category: 'product',
-  price: 1200,
 } as const;
 
 const ProductPageContainer = styled.div`
@@ -491,6 +491,20 @@ const ProductPage: React.FC = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [price, setPrice] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<string>(ANALYTICS_CURRENCY);
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const p = await checkoutService.getPrice();
+        setPrice(p.price);
+        setCurrency(p.currency || ANALYTICS_CURRENCY);
+      } catch {
+        // ignore (UI affichera sans prix)
+      }
+    })();
+  }, []);
 
   const images = [
     '/product/pres1.jpeg',
@@ -551,11 +565,16 @@ const ProductPage: React.FC = () => {
   // GA4 ecommerce: view_item
   useEffect(() => {
     void trackEvent('view_item', {
-      currency: ANALYTICS_CURRENCY,
-      value: PRODUCT_ITEM.price,
-      items: [PRODUCT_ITEM],
+      currency,
+      value: price ?? undefined,
+      items: [
+        {
+          ...PRODUCT_ITEM,
+          ...(price != null ? { price } : {}),
+        },
+      ],
     });
-  }, []);
+  }, [price, currency]);
 
   const features = [
     { icon: <Package size={18} />, text: t('productPage.starterPack.features.complete') },
@@ -676,9 +695,8 @@ const ProductPage: React.FC = () => {
               <PrimaryButton
                 onClick={() => {
                   addToCart({
-                    planId: PRODUCT_ITEM.item_id,
-                    planName: PRODUCT_ITEM.item_name,
-                    price: PRODUCT_ITEM.price,
+                    sku: PRODUCT_ITEM.item_id,
+                    name: PRODUCT_ITEM.item_name,
                   });
                   navigate('/checkout');
                 }}

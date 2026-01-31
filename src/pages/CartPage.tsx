@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
+import { checkoutService } from '../services/checkout';
 
 const CartPageContainer = styled.div`
   min-height: 100vh;
@@ -240,33 +241,46 @@ const PromoInput = styled.input`
 
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
-  const { items, updateQuantity, removeFromCart, getTotalPrice, getTotalItems } = useCart();
+  const { items, updateQuantity, removeFromCart, getTotalItems } = useCart();
 
-  const subtotal = getTotalPrice();
-  const shipping = 0; // Free shipping
-  const tax = subtotal * 0.08; // 8% tax
-  const total = subtotal + shipping + tax;
+  const [unitPrice, setUnitPrice] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<string>(ANALYTICS_CURRENCY);
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const p = await checkoutService.getPrice();
+        setUnitPrice(p.price);
+        setCurrency(p.currency || ANALYTICS_CURRENCY);
+      } catch {
+        // ignore
+      }
+    })();
+  }, []);
+
+  const subtotal = unitPrice != null ? unitPrice * getTotalItems() : 0;
+  const total = subtotal;
 
   const analyticsItems = useMemo(
     () =>
       items.map(i => ({
-        item_id: i.planId,
-        item_name: i.planName,
-        price: i.price,
+        item_id: i.sku,
+        item_name: i.name,
+        ...(unitPrice != null ? { price: unitPrice } : {}),
         quantity: i.quantity,
-        item_category: 'plan',
+        item_category: 'product',
       })),
-    [items]
+    [items, unitPrice]
   );
 
   useEffect(() => {
     if (items.length === 0) return;
     void trackEvent('view_cart', {
-      currency: ANALYTICS_CURRENCY,
-      value: total,
+      currency,
+      value: unitPrice != null ? total : undefined,
       items: analyticsItems,
     });
-  }, [items.length, total, analyticsItems]);
+  }, [items.length, total, analyticsItems, currency, unitPrice]);
 
   if (items.length === 0) {
     return (
@@ -303,30 +317,34 @@ const CartPage: React.FC = () => {
           <CartItems>
             {items.map((item) => (
               <CartItem
-                key={item.planId}
+                key={item.sku}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
               >
                 <ItemImage>PRODUCT</ItemImage>
                 <ItemDetails>
-                  <ItemName>{item.planName}</ItemName>
-                  <ItemPrice>${item.price}</ItemPrice>
+                  <ItemName>{item.name}</ItemName>
+                  <ItemPrice>
+                    {unitPrice != null ? `${currency} ${unitPrice.toFixed(2)}` : '—'}
+                  </ItemPrice>
                   <QuantityControls>
-                    <QuantityButton onClick={() => updateQuantity(item.planId, item.quantity - 1)}>
+                    <QuantityButton onClick={() => updateQuantity(item.sku, item.quantity - 1)}>
                       -
                     </QuantityButton>
                     <Quantity>{item.quantity}</Quantity>
-                    <QuantityButton onClick={() => updateQuantity(item.planId, item.quantity + 1)}>
+                    <QuantityButton onClick={() => updateQuantity(item.sku, item.quantity + 1)}>
                       +
                     </QuantityButton>
                   </QuantityControls>
-                  <RemoveButton onClick={() => removeFromCart(item.planId)}>
+                  <RemoveButton onClick={() => removeFromCart(item.sku)}>
                     Remove
                   </RemoveButton>
                 </ItemDetails>
                 <ItemTotal>
-                  <ItemTotalPrice>${(item.price * item.quantity).toFixed(2)}</ItemTotalPrice>
+                  <ItemTotalPrice>
+                    {unitPrice != null ? `${currency} ${(unitPrice * item.quantity).toFixed(2)}` : '—'}
+                  </ItemTotalPrice>
                 </ItemTotal>
               </CartItem>
             ))}
@@ -336,19 +354,11 @@ const CartPage: React.FC = () => {
             <SummaryTitle>Order Summary</SummaryTitle>
             <SummaryRow>
               <SummaryLabel>Subtotal</SummaryLabel>
-              <SummaryValue>${subtotal.toFixed(2)}</SummaryValue>
-            </SummaryRow>
-            <SummaryRow>
-              <SummaryLabel>Shipping</SummaryLabel>
-              <SummaryValue>FREE</SummaryValue>
-            </SummaryRow>
-            <SummaryRow>
-              <SummaryLabel>Tax</SummaryLabel>
-              <SummaryValue>${tax.toFixed(2)}</SummaryValue>
+              <SummaryValue>{unitPrice != null ? `${currency} ${subtotal.toFixed(2)}` : '—'}</SummaryValue>
             </SummaryRow>
             <TotalRow>
               <TotalLabel>Total</TotalLabel>
-              <TotalValue>${total.toFixed(2)}</TotalValue>
+              <TotalValue>{unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}</TotalValue>
             </TotalRow>
             
             <CheckoutButton
