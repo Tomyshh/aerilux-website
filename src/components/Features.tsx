@@ -7,27 +7,15 @@ import { RevealText } from './effects/AnimatedText';
 import { Brain, Shield, Zap, Smartphone, CloudRain, BadgeDollarSign } from 'lucide-react';
 
 const FeaturesSection = styled.section`
-  padding: 10rem 2rem;
+  padding: 8rem 2rem 12rem;
   background: #000000;
   color: #ffffff;
   position: relative;
   overflow: hidden;
 `;
 
-// Même "tache floue" que la section Hero (même couleur & opacité)
-const GlowOrb = styled(motion.div)`
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(59, 158, 255, 0.12) 0%, transparent 60%);
-  filter: blur(60px);
-  z-index: 0;
-  will-change: transform;
-`;
-
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
@@ -35,40 +23,39 @@ const Container = styled.div`
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 6rem;
+  margin-bottom: 5rem;
 `;
 
 const SectionTitle = styled(motion.h2)`
-  font-size: 4rem;
-  font-weight: 900;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 3.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: -0.04em;
+  color: #ffffff;
   
   @media (max-width: 768px) {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 `;
 
 const SectionSubtitle = styled(motion.p)`
-  font-size: 1.3rem;
-  color: #999999;
-  max-width: 600px;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 500px;
   margin: 0 auto;
-  line-height: 1.8;
+  line-height: 1.6;
+  font-weight: 400;
 `;
 
-const FeaturesGrid = styled(motion.div)`
+// Bento Grid Layout
+const BentoGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  overflow: visible;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 1rem;
   
-  @media (max-width: 992px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(6, 1fr);
   }
   
   @media (max-width: 600px) {
@@ -76,124 +63,139 @@ const FeaturesGrid = styled(motion.div)`
   }
 `;
 
-const FeatureCardWrapper = styled(motion.div)`
-  height: 100%;
-  overflow: visible;
-`;
+interface BentoItemProps {
+  $gridColumn?: string;
+  $gridColumnTablet?: string;
+  $isLarge?: boolean;
+  $accentColor?: string;
+}
 
-const FeatureCard = styled(motion.div)`
-  height: 100%;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 2.5rem 2rem;
+const BentoItem = styled(motion.div)<BentoItemProps>`
+  grid-column: ${props => props.$gridColumn || 'span 4'};
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: ${props => props.$isLarge ? '2.5rem' : '2rem'};
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
+  min-height: ${props => props.$isLarge ? '280px' : '220px'};
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 50% 0%,
+      ${props => props.$accentColor || 'rgba(59, 158, 255, 0.08)'} 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    grid-column: ${props => props.$gridColumnTablet || 'span 3'};
+    min-height: 200px;
+  }
+  
+  @media (max-width: 600px) {
+    grid-column: span 1;
+    min-height: 180px;
   }
 `;
 
-const FeatureContent = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  position: relative;
-  overflow: visible;
-`;
-
-const IconWrapper = styled(motion.div)`
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 2rem;
-  background: rgba(59, 158, 255, 0.15);
-  border: 1px solid rgba(59, 158, 255, 0.3);
-  border-radius: 24px;
+const IconContainer = styled(motion.div)<{ $color?: string }>`
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: ${props => props.$color || 'rgba(59, 158, 255, 0.1)'};
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #3B9EFF;
-  box-shadow: 0 20px 40px rgba(59, 158, 255, 0.15);
+  margin-bottom: 1.5rem;
   position: relative;
-  overflow: hidden;
-  z-index: 1;
-
+  
   svg {
-    width: 34px;
-    height: 34px;
-    stroke-width: 1.8;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(59, 158, 255, 0.3),
-      transparent
-    );
-    animation: iconShine 3s infinite;
-  }
-  
-  @keyframes iconShine {
-    0% { left: -100%; }
-    50%, 100% { left: 100%; }
+    width: 22px;
+    height: 22px;
+    color: ${props => {
+      if (props.$color?.includes('255, 158')) return '#FFB347';
+      if (props.$color?.includes('158, 255')) return '#6EE7B7';
+      if (props.$color?.includes('168, 85')) return '#A855F7';
+      if (props.$color?.includes('251, 113')) return '#FB7185';
+      if (props.$color?.includes('56, 189')) return '#38BDF8';
+      return '#3B9EFF';
+    }};
+    stroke-width: 1.5;
   }
 `;
 
-const FeatureTitle = styled.h3`
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
+const FeatureLabel = styled.span`
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.75rem;
+`;
+
+const FeatureTitle = styled.h3<{ $isLarge?: boolean }>`
+  font-size: ${props => props.$isLarge ? '1.5rem' : '1.2rem'};
+  font-weight: 600;
   color: #ffffff;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
 `;
 
 const FeatureDescription = styled.p`
-  font-size: 1rem;
-  color: #999999;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.6;
   flex: 1;
-  position: relative;
-  z-index: 1;
 `;
 
-const FeatureNumber = styled(motion.span)`
+const Stat = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-top: auto;
+  padding-top: 1.5rem;
+`;
+
+const StatNumber = styled.span`
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+`;
+
+const StatLabel = styled.span`
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+`;
+
+const FloatingOrb = styled(motion.div)<{ $color: string; $size: number }>`
   position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 5.5rem;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.03);
-  line-height: 1;
+  width: ${props => props.$size}px;
+  height: ${props => props.$size}px;
+  border-radius: 50%;
+  background: ${props => props.$color};
+  filter: blur(${props => props.$size * 0.6}px);
+  opacity: 0.4;
   pointer-events: none;
-  transform: translate(15%, -15%);
-  white-space: nowrap;
-  z-index: 0;
 `;
 
 const Features: React.FC = React.memo(() => {
@@ -203,90 +205,31 @@ const Features: React.FC = React.memo(() => {
     triggerOnce: true,
   });
 
-  const features = useMemo(() => [
-    {
-      icon: <Brain aria-hidden="true" />,
-      title: t('features.aiDetection.title'),
-      description: t('features.aiDetection.description'),
-    },
-    {
-      icon: <Shield aria-hidden="true" />,
-      title: t('features.humane.title'),
-      description: t('features.humane.description'),
-    },
-    {
-      icon: <Zap aria-hidden="true" />,
-      title: t('features.energyEfficient.title'),
-      description: t('features.energyEfficient.description'),
-    },
-    {
-      icon: <Smartphone aria-hidden="true" />,
-      title: t('features.smartControl.title'),
-      description: t('features.smartControl.description'),
-    },
-    {
-      icon: <CloudRain aria-hidden="true" />,
-      title: t('features.weatherResistant.title'),
-      description: t('features.weatherResistant.description'),
-    },
-    {
-      icon: <BadgeDollarSign aria-hidden="true" />,
-      title: t('features.costEffective.title'),
-      description: t('features.costEffective.description'),
-    },
-  ], [t]);
-
   const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
+        staggerChildren: 0.08,
+        delayChildren: 0.2,
       },
     },
   }), []);
 
   const itemVariants = useMemo(() => ({
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        duration: 0.6,
-        ease: [0.6, -0.05, 0.01, 0.99],
+        duration: 0.5,
+        ease: [0.25, 0.1, 0.25, 1],
       },
     },
   }), []);
 
   return (
     <FeaturesSection id="features">
-      <GlowOrb
-        style={{ top: '-25%', left: '-10%' }}
-        animate={{
-          x: [0, 70, 0],
-          y: [0, 40, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-      />
-      <GlowOrb
-        style={{ bottom: '-30%', right: '-15%' }}
-        animate={{
-          x: [0, -60, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-      />
-      
       <Container ref={ref}>
         <SectionHeader>
           <RevealText delay={0}>
@@ -295,34 +238,143 @@ const Features: React.FC = React.memo(() => {
             </SectionTitle>
           </RevealText>
           <SectionSubtitle
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             {t('features.subtitle')}
           </SectionSubtitle>
         </SectionHeader>
 
-        <FeaturesGrid
+        <BentoGrid
           variants={containerVariants}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
         >
-          {features.map((feature, index) => (
-            <FeatureCardWrapper key={index} variants={itemVariants}>
-              <FeatureCard>
-                <FeatureContent>
-                  <FeatureNumber>{String(index + 1).padStart(2, '0')}</FeatureNumber>
-                  <IconWrapper>
-                    {feature.icon}
-                  </IconWrapper>
-                  <FeatureTitle>{feature.title}</FeatureTitle>
-                  <FeatureDescription>{feature.description}</FeatureDescription>
-                </FeatureContent>
-              </FeatureCard>
-            </FeatureCardWrapper>
-          ))}
-        </FeaturesGrid>
+          {/* AI Detection - Large card */}
+          <BentoItem 
+            variants={itemVariants}
+            $gridColumn="span 5"
+            $gridColumnTablet="span 4"
+            $isLarge
+            $accentColor="rgba(59, 158, 255, 0.1)"
+          >
+            <FloatingOrb 
+              $color="rgba(59, 158, 255, 0.3)" 
+              $size={120}
+              style={{ top: -40, right: -30 }}
+              animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <IconContainer $color="rgba(59, 158, 255, 0.12)">
+              <Brain aria-hidden="true" />
+            </IconContainer>
+            <FeatureLabel>Intelligence</FeatureLabel>
+            <FeatureTitle $isLarge>{t('features.aiDetection.title')}</FeatureTitle>
+            <FeatureDescription>{t('features.aiDetection.description')}</FeatureDescription>
+            <Stat>
+              <StatNumber>99.9</StatNumber>
+              <StatLabel>% précision</StatLabel>
+            </Stat>
+          </BentoItem>
+
+          {/* Humane Solution */}
+          <BentoItem 
+            variants={itemVariants}
+            $gridColumn="span 4"
+            $gridColumnTablet="span 4"
+            $accentColor="rgba(110, 231, 183, 0.1)"
+          >
+            <IconContainer $color="rgba(158, 255, 158, 0.12)">
+              <Shield aria-hidden="true" />
+            </IconContainer>
+            <FeatureLabel>Éthique</FeatureLabel>
+            <FeatureTitle>{t('features.humane.title')}</FeatureTitle>
+            <FeatureDescription>{t('features.humane.description')}</FeatureDescription>
+          </BentoItem>
+
+          {/* Energy Efficient */}
+          <BentoItem 
+            variants={itemVariants}
+            $gridColumn="span 3"
+            $gridColumnTablet="span 4"
+            $accentColor="rgba(255, 179, 71, 0.1)"
+          >
+            <FloatingOrb 
+              $color="rgba(255, 179, 71, 0.25)" 
+              $size={80}
+              style={{ bottom: -20, left: -20 }}
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <IconContainer $color="rgba(255, 158, 68, 0.12)">
+              <Zap aria-hidden="true" />
+            </IconContainer>
+            <FeatureLabel>Autonome</FeatureLabel>
+            <FeatureTitle>{t('features.energyEfficient.title')}</FeatureTitle>
+            <FeatureDescription>{t('features.energyEfficient.description')}</FeatureDescription>
+          </BentoItem>
+
+          {/* Smart Control */}
+          <BentoItem 
+            variants={itemVariants}
+            $gridColumn="span 4"
+            $gridColumnTablet="span 6"
+            $accentColor="rgba(168, 85, 247, 0.1)"
+          >
+            <IconContainer $color="rgba(168, 85, 247, 0.12)">
+              <Smartphone aria-hidden="true" />
+            </IconContainer>
+            <FeatureLabel>Connecté</FeatureLabel>
+            <FeatureTitle>{t('features.smartControl.title')}</FeatureTitle>
+            <FeatureDescription>{t('features.smartControl.description')}</FeatureDescription>
+          </BentoItem>
+
+          {/* Weather Resistant */}
+          <BentoItem 
+            variants={itemVariants}
+            $gridColumn="span 4"
+            $gridColumnTablet="span 6"
+            $accentColor="rgba(56, 189, 248, 0.1)"
+          >
+            <IconContainer $color="rgba(56, 189, 248, 0.12)">
+              <CloudRain aria-hidden="true" />
+            </IconContainer>
+            <FeatureLabel>Robuste</FeatureLabel>
+            <FeatureTitle>{t('features.weatherResistant.title')}</FeatureTitle>
+            <FeatureDescription>{t('features.weatherResistant.description')}</FeatureDescription>
+            <Stat>
+              <StatNumber>IP67</StatNumber>
+              <StatLabel>certifié</StatLabel>
+            </Stat>
+          </BentoItem>
+
+          {/* Cost Effective - Wide card */}
+          <BentoItem 
+            variants={itemVariants}
+            $gridColumn="span 4"
+            $gridColumnTablet="span 6"
+            $accentColor="rgba(251, 113, 133, 0.1)"
+          >
+            <FloatingOrb 
+              $color="rgba(251, 113, 133, 0.2)" 
+              $size={100}
+              style={{ top: 20, right: -30 }}
+              animate={{ x: [0, 10, 0], y: [0, -10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <IconContainer $color="rgba(251, 113, 133, 0.12)">
+              <BadgeDollarSign aria-hidden="true" />
+            </IconContainer>
+            <FeatureLabel>Économique</FeatureLabel>
+            <FeatureTitle>{t('features.costEffective.title')}</FeatureTitle>
+            <FeatureDescription>{t('features.costEffective.description')}</FeatureDescription>
+            <Stat>
+              <StatNumber>&lt;6</StatNumber>
+              <StatLabel>mois de ROI</StatLabel>
+            </Stat>
+          </BentoItem>
+        </BentoGrid>
       </Container>
     </FeaturesSection>
   );
