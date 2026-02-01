@@ -110,15 +110,16 @@ const ReadOnlyInput = styled(Input)`
 
 const HostedFieldContainer = styled.div`
   width: 100%;
-  min-height: 36px;
+  height: 44px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 10px;
-  padding: 0.35rem 0.8rem;
+  padding: 0 0.8rem;
   color: #ffffff;
   position: relative;
   cursor: text;
   transition: all 0.2s ease;
+  overflow: hidden;
 
   /* PayMe Hosted Fields injecte un iframe. On force sa taille pour garantir le focus/click. */
   & iframe {
@@ -446,33 +447,32 @@ const CheckoutPage: React.FC = () => {
 
     try {
       const fields = paymeInstance.hostedFields();
-      const hfStyle = {
-        base: {
-          color: '#ffffff',
-          caretColor: '#ffffff',
-          fontSize: '16px',
-          fontWeight: '500',
-          fontFamily: 'inherit',
-          '::placeholder': { color: 'rgba(255,255,255,0.35)' },
+      // PayMe Hosted Fields: `create(field, options)` accepte `styles` (docs PayMe).
+      const createOptions = (placeholder: string) => ({
+        placeholder,
+        styles: {
+          base: {
+            color: '#ffffff',
+            'font-size': '16px',
+            'letter-spacing': '0.02em',
+            '::placeholder': { color: 'rgba(255,255,255,0.35)' },
+          },
+          invalid: { color: 'rgba(255,107,107,0.95)' },
+          valid: { color: '#ffffff' },
         },
-        invalid: {
-          color: 'rgba(255,107,107,0.95)',
-          caretColor: '#ffffff',
-        },
-      };
+      });
 
-      const safeCreate = (fieldType: any) => {
-        // Certaines versions de PayMe acceptent un 2e paramètre (style). Si ce n’est pas le cas, on fallback.
+      const safeCreate = (fieldType: any, placeholder: string) => {
         try {
-          return (fields as any).create(fieldType, { style: hfStyle });
+          return (fields as any).create(fieldType, createOptions(placeholder));
         } catch {
           return fields.create(fieldType);
         }
       };
 
-      const cardNumber = safeCreate(PayMe.fields.NUMBER);
-      const expiration = safeCreate(PayMe.fields.EXPIRATION);
-      const cvc = safeCreate(PayMe.fields.CVC);
+      const cardNumber = safeCreate(PayMe.fields.NUMBER, 'XXXX XXXX XXXX XXXX');
+      const expiration = safeCreate(PayMe.fields.EXPIRATION, 'MM/YY');
+      const cvc = safeCreate(PayMe.fields.CVC, '123');
 
       cardNumber.mount('#card-number-container');
       expiration.mount('#expiration-container');
