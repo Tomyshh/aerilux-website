@@ -85,6 +85,8 @@ const Input = styled.input`
   border-radius: 10px;
   padding: 0.7rem 0.9rem;
   color: #ffffff;
+  caret-color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
   font-size: 0.95rem;
   transition: all 0.2s ease;
   
@@ -444,9 +446,33 @@ const CheckoutPage: React.FC = () => {
 
     try {
       const fields = paymeInstance.hostedFields();
-      const cardNumber = fields.create(PayMe.fields.NUMBER);
-      const expiration = fields.create(PayMe.fields.EXPIRATION);
-      const cvc = fields.create(PayMe.fields.CVC);
+      const hfStyle = {
+        base: {
+          color: '#ffffff',
+          caretColor: '#ffffff',
+          fontSize: '16px',
+          fontWeight: '500',
+          fontFamily: 'inherit',
+          '::placeholder': { color: 'rgba(255,255,255,0.35)' },
+        },
+        invalid: {
+          color: 'rgba(255,107,107,0.95)',
+          caretColor: '#ffffff',
+        },
+      };
+
+      const safeCreate = (fieldType: any) => {
+        // Certaines versions de PayMe acceptent un 2e paramètre (style). Si ce n’est pas le cas, on fallback.
+        try {
+          return (fields as any).create(fieldType, { style: hfStyle });
+        } catch {
+          return fields.create(fieldType);
+        }
+      };
+
+      const cardNumber = safeCreate(PayMe.fields.NUMBER);
+      const expiration = safeCreate(PayMe.fields.EXPIRATION);
+      const cvc = safeCreate(PayMe.fields.CVC);
 
       cardNumber.mount('#card-number-container');
       expiration.mount('#expiration-container');
