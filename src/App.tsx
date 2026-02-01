@@ -15,6 +15,7 @@ import {
 } from './components/effects';
 import { trackPageView } from './services/analytics';
 import { AppLoader } from './components/AppLoader';
+import { ToastProvider } from './components/ToastProvider';
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -142,20 +143,22 @@ function App() {
     <ErrorBoundary>
       <Router>
         <SmoothScroll>
-          <AppContainer>
-            {/* Scroll progress indicator */}
-            <ScrollProgress />
-            
-            {/* Particle background */}
-            <ParticleBackground variant="connections" />
-            
-            <Navbar />
-            <MainContent>
-              <AnimatedRoutes />
-            </MainContent>
-            <CookieConsent />
-            <Footer />
-          </AppContainer>
+          <ToastProvider>
+            <AppContainer>
+              {/* Scroll progress indicator */}
+              <ScrollProgress />
+              
+              {/* Particle background */}
+              <ParticleBackground variant="connections" />
+              
+              <Navbar />
+              <MainContent>
+                <AnimatedRoutes />
+              </MainContent>
+              <CookieConsent />
+              <Footer />
+            </AppContainer>
+          </ToastProvider>
         </SmoothScroll>
       </Router>
     </ErrorBoundary>

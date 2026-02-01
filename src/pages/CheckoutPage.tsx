@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
 import { checkoutService } from '../services/checkout';
+import { ProcessingOverlay } from '../components/ProcessingOverlay';
+import { useToast } from '../components/ToastProvider';
 
 const CheckoutPageContainer = styled.div`
   min-height: 100vh;
@@ -86,6 +88,11 @@ const Input = styled.input`
   &::placeholder {
     color: #666666;
   }
+`;
+
+const ReadOnlyInput = styled(Input)`
+  opacity: 0.85;
+  cursor: not-allowed;
 `;
 
 const HostedFieldContainer = styled.div`
@@ -274,16 +281,10 @@ function loadPayMeHostedFieldsScript(): Promise<void> {
   });
 }
 
-function mapCountry(codeOrName: string): string {
-  const v = (codeOrName || '').trim();
-  if (v.toUpperCase() === 'US') return 'United States';
-  if (v.toUpperCase() === 'CA') return 'Canada';
-  return v;
-}
-
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { items } = useCart();
+  const toast = useToast();
   const [paymentMethod] = useState('payme');
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -298,9 +299,9 @@ const CheckoutPage: React.FC = () => {
     address: '',
     address2: '',
     city: '',
-    state: '',
     zipCode: '',
-    country: 'US',
+    // Pour le moment, vente uniquement en Israël
+    country: 'Israel',
   });
 
   const [unitPrice, setUnitPrice] = useState<number | null>(null);
@@ -483,9 +484,8 @@ const CheckoutPage: React.FC = () => {
           address: formData.address,
           address2: formData.address2 || undefined,
           city: formData.city,
-          state: formData.state || undefined,
           zipCode: formData.zipCode,
-          country: mapCountry(formData.country),
+          country: 'Israel',
         },
         items: items.map(i => ({
           name: 'Aerilux Starter Pack',
@@ -514,15 +514,18 @@ const CheckoutPage: React.FC = () => {
       });
 
       if (data.status === 'paid') {
+        toast.success('Paiement confirmé. Merci pour votre commande.');
         navigate('/checkout/success');
         return;
       }
       if (data.checkoutUrl) {
+        toast.success('Commande créée. Redirection vers PayMe…');
         window.location.href = data.checkoutUrl;
         return;
       }
 
       // Fallback: paiement en attente (webhook) → même page de “confirmation en cours”
+      toast.info('Commande créée. Validation du paiement en cours…');
       navigate('/checkout/success');
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -572,6 +575,7 @@ const CheckoutPage: React.FC = () => {
 
       if (!msg) msg = 'Checkout error';
       setErrorMessage(msg);
+      toast.error(msg);
       setIsProcessing(false);
     }
   };
@@ -585,6 +589,11 @@ const CheckoutPage: React.FC = () => {
     <CheckoutPageContainer>
       <Container>
         <PageTitle>Checkout</PageTitle>
+        <ProcessingOverlay
+          open={isProcessing}
+          title="Traitement du paiement"
+          subtitle="Nous sécurisons la transaction et préparons la redirection…"
+        />
         {errorMessage && (
           <div
             style={{
@@ -681,15 +690,6 @@ const CheckoutPage: React.FC = () => {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>State</Label>
-                  <Select name="state" value={formData.state} onChange={handleInputChange} required>
-                    <option value="">Select State</option>
-                    <option value="NY">New York</option>
-                    <option value="CA">California</option>
-                    <option value="TX">Texas</option>
-                  </Select>
-                </FormGroup>
-                <FormGroup>
                   <Label>ZIP Code</Label>
                   <Input
                     type="text"
@@ -702,10 +702,7 @@ const CheckoutPage: React.FC = () => {
                 </FormGroup>
                 <FormGroup>
                   <Label>Country</Label>
-                  <Select name="country" value={formData.country} onChange={handleInputChange} required>
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                  </Select>
+                  <ReadOnlyInput type="text" value="Israel" disabled />
                 </FormGroup>
               </FormGrid>
             </FormSection>
