@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -494,6 +494,19 @@ const ProductPage: React.FC = () => {
   const [price, setPrice] = useState<number | null>(null);
   const [currency, setCurrency] = useState<string>(ANALYTICS_CURRENCY);
 
+  const formattedPrice = useMemo(() => {
+    if (price == null) return null;
+    try {
+      return new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency,
+        maximumFractionDigits: 0,
+      }).format(price);
+    } catch {
+      return `${currency} ${price}`;
+    }
+  }, [price, currency]);
+
   useEffect(() => {
     void (async () => {
       try {
@@ -683,8 +696,10 @@ const ProductPage: React.FC = () => {
             >
               <PricingLabel>{t('productPage.starterPack.priceLabel')}</PricingLabel>
               <PriceContainer>
-                <Price>{t('productPage.starterPack.price')}</Price>
-                <PriceNote>{t('productPage.starterPack.priceCurrency')}</PriceNote>
+                <Price>{formattedPrice ?? '—'}</Price>
+                {!formattedPrice && (
+                  <PriceNote>{t('productPage.starterPack.priceCurrency')}</PriceNote>
+                )}
               </PriceContainer>
               <PricingDescription>
                 {t('productPage.starterPack.priceNote')}
