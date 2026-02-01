@@ -832,6 +832,20 @@ const CheckoutPage: React.FC = () => {
                   <HostedFieldContainer id="cvc-container" />
                 </FormGroup>
               </FormGrid>
+
+              <PlaceOrderButton
+                type="submit"
+                disabled={isProcessing}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                style={{ marginTop: '1.5rem' }}
+              >
+                {isProcessing ? 'Processing…' : 'Place Order'}
+              </PlaceOrderButton>
+              <SecurityNote>
+                <span>🔒</span>
+                <span>Secure payment via PayMe</span>
+              </SecurityNote>
             </FormSection>
           </CheckoutForm>
 
