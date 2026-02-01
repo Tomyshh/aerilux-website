@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
@@ -19,37 +19,47 @@ const Container = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  font-size: 3rem;
+  font-size: clamp(2rem, 5vw, 2.8rem);
   font-weight: 800;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.02em;
 `;
 
 const CheckoutGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 3rem;
+  grid-template-columns: 1fr 380px;
+  gap: 2.5rem;
+  align-items: start;
+  
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const CheckoutForm = styled.form``;
 
-const FormSection = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 2rem;
-  margin-bottom: 2rem;
+const FormSection = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: -0.01em;
 `;
 
 const FormGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 0.9rem;
   
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -60,327 +70,261 @@ const FormGroup = styled.div<{ fullWidth?: boolean }>`
 
 const Label = styled.label`
   display: block;
-  font-size: 0.9rem;
-  color: #999999;
-  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 `;
 
 const Input = styled.input`
   width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 10px;
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 0.9rem;
   color: #ffffff;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
   
   &:focus {
     outline: none;
-    border-color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(59, 158, 255, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(59, 158, 255, 0.12);
   }
   
   &::placeholder {
-    color: #666666;
+    color: rgba(255, 255, 255, 0.3);
   }
 `;
 
 const ReadOnlyInput = styled(Input)`
-  opacity: 0.85;
+  opacity: 0.7;
   cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.03);
 `;
 
 const HostedFieldContainer = styled.div`
   width: 100%;
-  min-height: 44px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 42px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 10px;
-  padding: 0.6rem 0.9rem;
+  padding: 0.55rem 0.9rem;
   color: #ffffff;
   display: flex;
   align-items: center;
-`;
-
-const PaymentMethods = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-bottom: 2rem;
-`;
-
-const PaymentMethod = styled(motion.div)<{ selected: boolean }>`
-  padding: 1.5rem;
-  background: ${props => props.selected ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)'};
-  border: 2px solid ${props => props.selected ? '#ffffff' : 'transparent'};
-  border-radius: 15px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
+  &:focus-within {
+    border-color: rgba(59, 158, 255, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(59, 158, 255, 0.12);
   }
 `;
 
-const PaymentIcon = styled.div`
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-`;
-
-const PaymentLabel = styled.p`
+const PaymentBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(59, 158, 255, 0.08);
+  border: 1px solid rgba(59, 158, 255, 0.18);
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
   font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
 `;
 
-const OrderSummary = styled.div`
-  background: rgba(255, 255, 255, 0.05);
+const OrderSummaryCard = styled(motion.div)`
+  position: sticky;
+  top: 100px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
-  padding: 2rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 `;
 
-const SummaryItem = styled.div`
+const SummaryTitle = styled.h2`
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: rgba(255, 255, 255, 0.95);
+`;
+
+const SummaryItemCard = styled.div`
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  
+  &:last-of-type {
+    border-bottom: none;
+  }
+`;
+
+const ItemHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-`;
-
-const ItemInfo = styled.div`
-  flex: 1;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
 `;
 
 const ItemName = styled.p`
   font-weight: 600;
-  margin-bottom: 0.25rem;
-`;
-
-const ItemQuantity = styled.p`
-  font-size: 0.9rem;
-  color: #999999;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.92);
 `;
 
 const ItemPrice = styled.p`
-  font-weight: 600;
-`;
-
-const SummaryRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-`;
-
-const SummaryLabel = styled.span`
-  color: #999999;
-`;
-
-const SummaryValue = styled.span`
-  font-weight: 600;
-`;
-
-const TotalRow = styled(SummaryRow)`
-  border-bottom: none;
-  border-top: 2px solid rgba(255, 255, 255, 0.2);
-  margin-top: 1rem;
-  padding-top: 1.5rem;
-`;
-
-const TotalLabel = styled.span`
-  font-size: 1.25rem;
-  font-weight: 700;
-`;
-
-const TotalValue = styled.span`
-  font-size: 1.5rem;
-  font-weight: 800;
-`;
-
-const PlaceOrderButton = styled(motion.button)`
-  width: 100%;
-  background-color: #ffffff;
-  color: #000000;
-  padding: 1.25rem 2rem;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-top: 1.5rem;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
-  }
-  
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const SecurityInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #999999;
-`;
-
-const FloatingSummaryButton = styled(motion.button)`
-  position: fixed;
-  right: 20px;
-  bottom: 22px;
-  z-index: 9997;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 999px;
-  background: rgba(10, 10, 10, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
-  max-width: min(420px, calc(100vw - 40px));
-  overflow: hidden;
-
-  &:hover {
-    background: rgba(15, 15, 15, 0.78);
-    border-color: rgba(255, 255, 255, 0.22);
-  }
-`;
-
-const FloatingTitle = styled.div`
   font-weight: 700;
   font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.92);
-  white-space: nowrap;
-`;
-
-const FloatingMeta = styled.div`
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: #ffffff;
-  white-space: nowrap;
-`;
-
-const SummaryBackdrop = styled(motion.div)`
-  position: fixed;
-  inset: 0;
-  z-index: 9997;
-  background: rgba(0, 0, 0, 0.62);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-`;
-
-const SummaryDrawer = styled(motion.aside)`
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  bottom: 18px;
-  z-index: 9998;
-  width: min(440px, calc(100vw - 36px));
-  border-radius: 22px;
-  overflow: hidden;
-`;
-
-const SummaryHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 18px 18px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-`;
-
-const SummaryHeaderTitle = styled.div`
-  font-size: 1.15rem;
-  font-weight: 900;
   color: #ffffff;
 `;
 
-const SummaryClose = styled.button`
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
-  padding: 8px 10px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.95);
-  }
-`;
-
-const SummaryBody = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SummaryScroll = styled.div`
-  flex: 1 1 auto;
-  overflow: auto;
-  padding: 14px 18px 18px;
-`;
-
-const ItemControls = styled.div`
+const QuantityRow = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
 `;
 
 const QtyButton = styled(motion.button)`
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-  font-weight: 900;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 700;
   font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.18);
   }
 
   &:disabled {
-    opacity: 0.45;
+    opacity: 0.35;
     cursor: not-allowed;
   }
 `;
 
-const QtyText = styled.div`
-  min-width: 28px;
+const QtyValue = styled.span`
+  min-width: 24px;
   text-align: center;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
 `;
 
-const RemoveMini = styled.button`
-  margin-left: 10px;
+const RemoveLink = styled.button`
   background: transparent;
-  color: rgba(255, 59, 48, 0.9);
-  border: 1px solid rgba(255, 59, 48, 0.25);
-  border-radius: 12px;
-  padding: 6px 10px;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
+  border: none;
+  color: rgba(255, 59, 48, 0.75);
+  font-size: 0.8rem;
+  margin-left: auto;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
 
   &:hover {
-    background: rgba(255, 59, 48, 0.10);
-    border-color: rgba(255, 59, 48, 0.35);
+    color: rgba(255, 59, 48, 1);
+    background: rgba(255, 59, 48, 0.08);
   }
+`;
+
+const Divider = styled.div`
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 1rem 0;
+`;
+
+const SummaryRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+`;
+
+const SummaryLabel = styled.span`
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+`;
+
+const SummaryValue = styled.span`
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+`;
+
+const TotalRow = styled(SummaryRow)`
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+`;
+
+const TotalLabel = styled.span`
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+`;
+
+const TotalValue = styled.span`
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+`;
+
+const PlaceOrderButton = styled(motion.button)`
+  width: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #e8e8e8 100%);
+  color: #000000;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 1.25rem;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.22);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+const SecurityNote = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+`;
+
+const ErrorBanner = styled(motion.div)`
+  background: rgba(255, 59, 48, 0.08);
+  border: 1px solid rgba(255, 59, 48, 0.22);
+  color: rgba(255, 107, 107, 0.95);
+  padding: 0.9rem 1.1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
 `;
 
 function loadPayMeHostedFieldsScript(): Promise<void> {
@@ -417,7 +361,6 @@ const CheckoutPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [paymeInstance, setPaymeInstance] = useState<PayMeInstance | null>(null);
   const [paymeReady, setPaymeReady] = useState(false);
-  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -428,7 +371,6 @@ const CheckoutPage: React.FC = () => {
     address2: '',
     city: '',
     zipCode: '',
-    // Pour le moment, vente uniquement en Israël
     country: 'Israel',
   });
 
@@ -505,7 +447,7 @@ const CheckoutPage: React.FC = () => {
       setPaymeReady(true);
     } catch (e) {
       setPaymeReady(false);
-      setErrorMessage((e as any)?.message || 'PayMe: impossible d’initialiser les champs carte');
+      setErrorMessage((e as any)?.message || 'PayMe: impossible d\'initialiser les champs carte');
     }
   }, [paymeInstance]);
 
@@ -573,7 +515,6 @@ const CheckoutPage: React.FC = () => {
         throw new Error('Prix indisponible, veuillez réessayer dans un instant.');
       }
 
-      // 1) Tokenisation via PayMe Hosted Fields (aucune donnée carte ne transite chez nous)
       const tokenizeResult = await paymeInstance.tokenize({
         payerFirstName: formData.firstName,
         payerLastName: formData.lastName,
@@ -586,15 +527,12 @@ const CheckoutPage: React.FC = () => {
         },
       });
 
-      // IMPORTANT: selon la version PayMe, le token peut être exposé sous différents noms.
-      // On supporte token / buyer_key / buyerKey pour éviter un body sans buyerToken (JSON.stringify omet undefined).
       const buyerToken =
         (tokenizeResult as any)?.token ||
         (tokenizeResult as any)?.buyer_key ||
         (tokenizeResult as any)?.buyerKey;
 
       if (!tokenizeResult || tokenizeResult.type !== 'tokenize-success' || !buyerToken) {
-        // Aide debug: visible dans DevTools > Console
         // eslint-disable-next-line no-console
         console.error('PayMe tokenize failed:', tokenizeResult);
         throw new Error('PayMe tokenization failed');
@@ -625,14 +563,12 @@ const CheckoutPage: React.FC = () => {
 
       const data = await checkoutService.createPaymeSale(payload);
 
-      // Supporte les 2 clés (anciennes + celles demandées).
       localStorage.setItem('orderId', data.orderId);
       localStorage.setItem('orderNumber', data.orderNumber);
       localStorage.setItem('lastOrderId', data.orderId);
       localStorage.setItem('lastOrderNumber', data.orderNumber);
       if (data.paymeSaleId) localStorage.setItem('lastPaymeSaleId', data.paymeSaleId);
 
-      // IMPORTANT: ne pas envoyer l'événement GA4 "purchase" ici (le paiement n'est pas confirmé côté client).
       void trackEvent('checkout_progress', {
         step: data.status === 'paid' ? 'paid' : data.checkoutUrl ? 'redirect_to_payme' : 'pending',
         order_id: data.orderId,
@@ -650,7 +586,6 @@ const CheckoutPage: React.FC = () => {
         return;
       }
 
-      // Fallback: paiement en attente (webhook) → même page de “confirmation en cours”
       toast.info('Commande créée. Validation du paiement en cours…');
       navigate('/checkout/success');
     } catch (error) {
@@ -660,7 +595,6 @@ const CheckoutPage: React.FC = () => {
       const err = error as any;
       let msg: string | undefined = err?.message;
 
-      // PayMe JSAPI peut rejeter avec un objet (sans .message), ex: { type: 'tokenize-error', errors: {...} }
       if (!msg && (err?.type === 'tokenize-error' || err?.validationError)) {
         const errors = err?.errors;
         const labelForField = (key: string) => {
@@ -718,26 +652,24 @@ const CheckoutPage: React.FC = () => {
         <ProcessingOverlay
           open={isProcessing}
           title="Traitement du paiement"
-          subtitle="Nous sécurisons la transaction et préparons la redirection…"
+          subtitle="Nous sécurisons la transaction…"
         />
         {errorMessage && (
-          <div
-            style={{
-              background: 'rgba(255, 59, 48, 0.12)',
-              border: '1px solid rgba(255, 59, 48, 0.35)',
-              color: '#ff6b6b',
-              padding: '1rem 1.25rem',
-              borderRadius: 12,
-              marginBottom: '1.5rem',
-            }}
+          <ErrorBanner
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
           >
             {errorMessage}
-          </div>
+          </ErrorBanner>
         )}
         <CheckoutGrid>
           <CheckoutForm id="checkout-form" onSubmit={handleSubmit}>
-            <FormSection>
-              <SectionTitle>Shipping Information</SectionTitle>
+            <FormSection
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <SectionTitle>Shipping</SectionTitle>
               <FormGrid>
                 <FormGroup>
                   <Label>First Name</Label>
@@ -779,23 +711,23 @@ const CheckoutPage: React.FC = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="+1 (555) 123-4567"
-                    required
-                  />
-                </FormGroup>
-            <FormGroup fullWidth>
-              <Label>Address</Label>
-                  <Input
-                    type="text"
-                name="address"
-                value={formData.address}
-                    onChange={handleInputChange}
-                    placeholder="123 Main Street"
+                    placeholder="+972 50 123 4567"
                     required
                   />
                 </FormGroup>
                 <FormGroup fullWidth>
-                  <Label>Apartment, suite, etc. (optional)</Label>
+                  <Label>Address</Label>
+                  <Input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    placeholder="123 Herzl Street"
+                    required
+                  />
+                </FormGroup>
+                <FormGroup fullWidth>
+                  <Label>Apt / Suite (optional)</Label>
                   <Input
                     type="text"
                     name="address2"
@@ -811,7 +743,7 @@ const CheckoutPage: React.FC = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    placeholder="New York"
+                    placeholder="Tel Aviv"
                     required
                   />
                 </FormGroup>
@@ -819,10 +751,10 @@ const CheckoutPage: React.FC = () => {
                   <Label>ZIP Code</Label>
                   <Input
                     type="text"
-                name="zipCode"
-                value={formData.zipCode}
+                    name="zipCode"
+                    value={formData.zipCode}
                     onChange={handleInputChange}
-                    placeholder="10001"
+                    placeholder="6100000"
                     required
                   />
                 </FormGroup>
@@ -833,20 +765,19 @@ const CheckoutPage: React.FC = () => {
               </FormGrid>
             </FormSection>
 
-            <FormSection>
+            <FormSection
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
               <SectionTitle>Payment</SectionTitle>
-              <PaymentMethods>
-                <PaymentMethod
-                  selected={paymentMethod === 'payme'}
-                >
-                  <PaymentIcon>🔒</PaymentIcon>
-                  <PaymentLabel>PayMe (secure checkout)</PaymentLabel>
-                </PaymentMethod>
-              </PaymentMethods>
-
+              <PaymentBadge>
+                <span>🔒</span>
+                <span>Secure checkout via PayMe</span>
+              </PaymentBadge>
               <FormGrid>
                 <FormGroup fullWidth>
-                  <Label>Card number</Label>
+                  <Label>Card Number</Label>
                   <HostedFieldContainer id="card-number-container" />
                 </FormGroup>
                 <FormGroup>
@@ -860,124 +791,89 @@ const CheckoutPage: React.FC = () => {
               </FormGrid>
             </FormSection>
           </CheckoutForm>
+
+          <OrderSummaryCard
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.15 }}
+          >
+            <SummaryTitle>Order Summary</SummaryTitle>
+            
+            {items.map((item) => (
+              <SummaryItemCard key={item.sku}>
+                <ItemHeader>
+                  <ItemName>{item.name}</ItemName>
+                  <ItemPrice>
+                    {unitPrice != null ? `${currency} ${(unitPrice * item.quantity).toFixed(2)}` : '—'}
+                  </ItemPrice>
+                </ItemHeader>
+                <QuantityRow>
+                  <QtyButton
+                    type="button"
+                    onClick={() => updateQuantity(item.sku, item.quantity - 1)}
+                    whileTap={{ scale: 0.92 }}
+                    disabled={item.quantity <= 1}
+                    aria-label="Diminuer"
+                  >
+                    −
+                  </QtyButton>
+                  <QtyValue>{item.quantity}</QtyValue>
+                  <QtyButton
+                    type="button"
+                    onClick={() => updateQuantity(item.sku, item.quantity + 1)}
+                    whileTap={{ scale: 0.92 }}
+                    aria-label="Augmenter"
+                  >
+                    +
+                  </QtyButton>
+                  <RemoveLink type="button" onClick={() => removeFromCart(item.sku)}>
+                    Remove
+                  </RemoveLink>
+                </QuantityRow>
+              </SummaryItemCard>
+            ))}
+
+            <Divider />
+
+            <SummaryRow>
+              <SummaryLabel>Subtotal</SummaryLabel>
+              <SummaryValue>
+                {unitPrice != null ? `${currency} ${subtotal.toFixed(2)}` : '—'}
+              </SummaryValue>
+            </SummaryRow>
+
+            <TotalRow>
+              <TotalLabel>Total</TotalLabel>
+              <TotalValue>
+                {unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}
+              </TotalValue>
+            </TotalRow>
+
+            <PlaceOrderButton
+              type="submit"
+              form="checkout-form"
+              disabled={isProcessing}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              onClick={() => {
+                void trackSelectContent({
+                  contentType: 'checkout_place_order_click',
+                  location: 'checkout_page',
+                });
+              }}
+            >
+              {isProcessing ? 'Processing…' : 'Place Order'}
+            </PlaceOrderButton>
+
+            <SecurityNote>
+              <span>🔒</span>
+              <span>Secure payment via PayMe</span>
+            </SecurityNote>
+          </OrderSummaryCard>
         </CheckoutGrid>
       </Container>
-
-      <FloatingSummaryButton
-        type="button"
-        onClick={() => setIsSummaryOpen(true)}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        aria-label="Ouvrir le récapitulatif de commande"
-      >
-        <FloatingTitle>Order summary • {qty} item{qty > 1 ? 's' : ''}</FloatingTitle>
-        <FloatingMeta>{unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}</FloatingMeta>
-      </FloatingSummaryButton>
-
-      <AnimatePresence>
-        {isSummaryOpen && (
-          <>
-            <SummaryBackdrop
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsSummaryOpen(false)}
-            />
-            <SummaryDrawer
-              initial={{ x: 24, opacity: 0, scale: 0.99 }}
-              animate={{ x: 0, opacity: 1, scale: 1 }}
-              exit={{ x: 18, opacity: 0, scale: 0.99 }}
-              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              aria-label="Order summary"
-            >
-              <OrderSummary>
-                <SummaryBody>
-                  <SummaryHeader>
-                    <SummaryHeaderTitle>Order Summary</SummaryHeaderTitle>
-                    <SummaryClose type="button" onClick={() => setIsSummaryOpen(false)}>
-                      Fermer
-                    </SummaryClose>
-                  </SummaryHeader>
-
-                  <SummaryScroll>
-                    {items.map((item) => (
-                      <div key={item.sku} style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                        <SummaryItem style={{ padding: 0, borderBottom: 'none' }}>
-                          <ItemInfo>
-                            <ItemName>{item.name}</ItemName>
-                            <ItemQuantity>
-                              <ItemControls>
-                                <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem' }}>Qty</span>
-                                <QtyButton
-                                  type="button"
-                                  onClick={() => updateQuantity(item.sku, item.quantity - 1)}
-                                  whileTap={{ scale: 0.95 }}
-                                  disabled={item.quantity <= 1}
-                                  aria-label="Diminuer la quantité"
-                                >
-                                  −
-                                </QtyButton>
-                                <QtyText>{item.quantity}</QtyText>
-                                <QtyButton
-                                  type="button"
-                                  onClick={() => updateQuantity(item.sku, item.quantity + 1)}
-                                  whileTap={{ scale: 0.95 }}
-                                  aria-label="Augmenter la quantité"
-                                >
-                                  +
-                                </QtyButton>
-                                <RemoveMini type="button" onClick={() => removeFromCart(item.sku)}>
-                                  Retirer
-                                </RemoveMini>
-                              </ItemControls>
-                            </ItemQuantity>
-                          </ItemInfo>
-                          <ItemPrice>
-                            {unitPrice != null ? `${currency} ${(unitPrice * item.quantity).toFixed(2)}` : '—'}
-                          </ItemPrice>
-                        </SummaryItem>
-                      </div>
-                    ))}
-
-                    <SummaryRow>
-                      <SummaryLabel>Subtotal</SummaryLabel>
-                      <SummaryValue>
-                        {unitPrice != null ? `${currency} ${subtotal.toFixed(2)}` : '—'}
-                      </SummaryValue>
-                    </SummaryRow>
-                    <TotalRow>
-                      <TotalLabel>Total</TotalLabel>
-                      <TotalValue>{unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}</TotalValue>
-                    </TotalRow>
-
-                    <PlaceOrderButton
-                      type="submit"
-                      form="checkout-form"
-                      disabled={isProcessing}
-                      onClick={() => {
-                        void trackSelectContent({
-                          contentType: 'checkout_place_order_click',
-                          location: 'checkout_page',
-                        });
-                        setIsSummaryOpen(false);
-                      }}
-                    >
-                      {isProcessing ? 'Processing...' : 'Place Order'}
-                    </PlaceOrderButton>
-
-                    <SecurityInfo>
-                      <span>🔒</span>
-                      <span>You will be redirected to PayMe to complete the payment.</span>
-                    </SecurityInfo>
-                  </SummaryScroll>
-                </SummaryBody>
-              </OrderSummary>
-            </SummaryDrawer>
-          </>
-        )}
-      </AnimatePresence>
     </CheckoutPageContainer>
   );
 };
 
-export default CheckoutPage; 
+export default CheckoutPage;
