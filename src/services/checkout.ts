@@ -103,7 +103,14 @@ function buildHttpErrorMessage(args: {
 export const checkoutService = {
   getPrice: async (): Promise<CheckoutPriceResponse> => {
     const base = getBackendUrl();
-    const res = await fetch(`${base}/checkout/price`, { method: 'GET' });
+    const url = `${base}/checkout/price`;
+    let res: Response;
+    try {
+      res = await fetch(url, { method: 'GET' });
+    } catch (e) {
+      const msg = (e as any)?.message || String(e);
+      throw new Error(`Price fetch error (réseau/CORS) sur ${url} — ${msg}`);
+    }
     const body = await readResponseBodySafe(res);
     const data = (body.json ?? {}) as Partial<CheckoutPriceResponse> & { message?: string };
     if (!res.ok) {
@@ -125,11 +132,18 @@ export const checkoutService = {
     payload: PaymeCreateSalePayload
   ): Promise<PaymeCreateSaleResponse> => {
     const base = getBackendUrl();
-    const res = await fetch(`${base}/checkout/payme/create-sale`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    const url = `${base}/checkout/payme/create-sale`;
+    let res: Response;
+    try {
+      res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch (e) {
+      const msg = (e as any)?.message || String(e);
+      throw new Error(`Checkout error (réseau/CORS) sur ${url} — ${msg}`);
+    }
 
     const body = await readResponseBodySafe(res);
     const data = (body.json ?? {}) as PaymeCreateSaleResponse;
