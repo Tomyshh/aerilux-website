@@ -78,10 +78,10 @@ const Label = styled.label`
   letter-spacing: 0.04em;
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ $hasError?: boolean }>`
   width: 100%;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid ${props => props.$hasError ? 'rgba(255, 59, 48, 0.6)' : 'rgba(255, 255, 255, 0.10)'};
   border-radius: 10px;
   padding: 0.7rem 0.9rem;
   color: #ffffff;
@@ -92,13 +92,14 @@ const Input = styled.input`
   
   &:focus {
     outline: none;
-    border-color: rgba(59, 158, 255, 0.5);
+    border-color: ${props => props.$hasError ? 'rgba(255, 59, 48, 0.8)' : 'rgba(59, 158, 255, 0.5)'};
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 3px rgba(59, 158, 255, 0.12);
+    box-shadow: 0 0 0 3px ${props => props.$hasError ? 'rgba(255, 59, 48, 0.15)' : 'rgba(59, 158, 255, 0.12)'};
   }
   
   &::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.22);
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.22);
   }
 `;
 
@@ -385,6 +386,23 @@ const CheckoutPage: React.FC = () => {
     country: 'Israel',
   });
 
+  // Gestion des champs touchés pour la validation
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setTouched(prev => ({ ...prev, [e.target.name]: true }));
+  };
+
+  // Validation simple pour les champs obligatoires
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isFieldEmpty = (value: string) => !value.trim();
+
+  const getFieldError = (name: string, value: string): boolean => {
+    if (!touched[name]) return false;
+    if (name === 'email') return !isValidEmail(value);
+    return isFieldEmpty(value);
+  };
+
   const [unitPrice, setUnitPrice] = useState<number | null>(null);
   const [currency, setCurrency] = useState<string>(ANALYTICS_CURRENCY);
 
@@ -455,7 +473,7 @@ const CheckoutPage: React.FC = () => {
             color: '#ffffff',
             'font-size': '16px',
             'letter-spacing': '0.02em',
-            '::placeholder': { color: 'rgba(255,255,255,0.35)' },
+            '::placeholder': { color: 'rgba(255,255,255,0.22)' },
           },
           // On garde le texte en blanc même si invalide (UX souhaitée).
           invalid: { color: '#ffffff' },
@@ -714,6 +732,8 @@ const CheckoutPage: React.FC = () => {
                     autoComplete="shipping given-name"
                     value={formData.firstName}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    $hasError={getFieldError('firstName', formData.firstName)}
                     placeholder="John"
                     required
                   />
@@ -726,6 +746,8 @@ const CheckoutPage: React.FC = () => {
                     autoComplete="shipping family-name"
                     value={formData.lastName}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    $hasError={getFieldError('lastName', formData.lastName)}
                     placeholder="Doe"
                     required
                   />
@@ -738,6 +760,8 @@ const CheckoutPage: React.FC = () => {
                     autoComplete="shipping email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    $hasError={getFieldError('email', formData.email)}
                     placeholder="john@example.com"
                     required
                   />
@@ -750,6 +774,8 @@ const CheckoutPage: React.FC = () => {
                     autoComplete="shipping tel"
                     value={formData.phone}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    $hasError={getFieldError('phone', formData.phone)}
                     placeholder="+972 50 123 4567"
                     required
                   />
@@ -762,6 +788,8 @@ const CheckoutPage: React.FC = () => {
                     autoComplete="shipping street-address"
                     value={formData.address}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    $hasError={getFieldError('address', formData.address)}
                     placeholder="123 Herzl Street"
                     required
                   />
@@ -785,6 +813,8 @@ const CheckoutPage: React.FC = () => {
                     autoComplete="shipping address-level2"
                     value={formData.city}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    $hasError={getFieldError('city', formData.city)}
                     placeholder="Tel Aviv"
                     required
                   />
@@ -797,6 +827,8 @@ const CheckoutPage: React.FC = () => {
                     autoComplete="shipping postal-code"
                     value={formData.zipCode}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    $hasError={getFieldError('zipCode', formData.zipCode)}
                     placeholder="6100000"
                     required
                   />
