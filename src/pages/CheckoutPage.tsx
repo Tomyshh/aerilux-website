@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
@@ -26,12 +26,8 @@ const PageTitle = styled.h1`
 
 const CheckoutGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 1fr;
   gap: 3rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
 const CheckoutForm = styled.form``;
@@ -97,11 +93,11 @@ const ReadOnlyInput = styled(Input)`
 
 const HostedFieldContainer = styled.div`
   width: 100%;
-  min-height: 48px;
+  min-height: 44px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 0.9rem;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -138,12 +134,9 @@ const PaymentLabel = styled.p`
 `;
 
 const OrderSummary = styled.div`
-  position: sticky;
-  top: 100px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   padding: 2rem;
-  height: fit-content;
 `;
 
 const SummaryItem = styled.div`
@@ -212,7 +205,7 @@ const PlaceOrderButton = styled(motion.button)`
   border-radius: 50px;
   font-weight: 600;
   font-size: 1.1rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   transition: all 0.3s ease;
   
   &:hover {
@@ -233,6 +226,161 @@ const SecurityInfo = styled.div`
   margin-top: 1rem;
   font-size: 0.9rem;
   color: #999999;
+`;
+
+const FloatingSummaryButton = styled(motion.button)`
+  position: fixed;
+  right: 20px;
+  bottom: 22px;
+  z-index: 9997;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  max-width: min(420px, calc(100vw - 40px));
+  overflow: hidden;
+
+  &:hover {
+    background: rgba(15, 15, 15, 0.78);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+`;
+
+const FloatingTitle = styled.div`
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+`;
+
+const FloatingMeta = styled.div`
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #ffffff;
+  white-space: nowrap;
+`;
+
+const SummaryBackdrop = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+`;
+
+const SummaryDrawer = styled(motion.aside)`
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9998;
+  width: min(440px, calc(100vw - 36px));
+  border-radius: 22px;
+  overflow: hidden;
+`;
+
+const SummaryHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+`;
+
+const SummaryHeaderTitle = styled.div`
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+`;
+
+const SummaryClose = styled.button`
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.95);
+  }
+`;
+
+const SummaryBody = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SummaryScroll = styled.div`
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 14px 18px 18px;
+`;
+
+const ItemControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const QtyButton = styled(motion.button)`
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+`;
+
+const QtyText = styled.div`
+  min-width: 28px;
+  text-align: center;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.92);
+`;
+
+const RemoveMini = styled.button`
+  margin-left: 10px;
+  background: transparent;
+  color: rgba(255, 59, 48, 0.9);
+  border: 1px solid rgba(255, 59, 48, 0.25);
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 59, 48, 0.10);
+    border-color: rgba(255, 59, 48, 0.35);
+  }
 `;
 
 function loadPayMeHostedFieldsScript(): Promise<void> {
@@ -262,13 +410,14 @@ function loadPayMeHostedFieldsScript(): Promise<void> {
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
-  const { items } = useCart();
+  const { items, updateQuantity, removeFromCart } = useCart();
   const toast = useToast();
   const [paymentMethod] = useState('payme');
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [paymeInstance, setPaymeInstance] = useState<PayMeInstance | null>(null);
   const [paymeReady, setPaymeReady] = useState(false);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -710,53 +859,123 @@ const CheckoutPage: React.FC = () => {
                 </FormGroup>
               </FormGrid>
             </FormSection>
-
           </CheckoutForm>
-
-          <OrderSummary>
-            <SectionTitle>Order Summary</SectionTitle>
-            {items.map((item) => (
-              <SummaryItem key={item.sku}>
-                <ItemInfo>
-                  <ItemName>{item.name}</ItemName>
-                  <ItemQuantity>Qty: {item.quantity}</ItemQuantity>
-                </ItemInfo>
-                <ItemPrice>
-                  {unitPrice != null ? `${currency} ${(unitPrice * item.quantity).toFixed(2)}` : '—'}
-                </ItemPrice>
-              </SummaryItem>
-            ))}
-            
-            <SummaryRow>
-              <SummaryLabel>Subtotal</SummaryLabel>
-              <SummaryValue>{unitPrice != null ? `${currency} ${subtotal.toFixed(2)}` : '—'}</SummaryValue>
-            </SummaryRow>
-            <TotalRow>
-              <TotalLabel>Total</TotalLabel>
-              <TotalValue>{unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}</TotalValue>
-            </TotalRow>
-            
-            <PlaceOrderButton
-              type="submit"
-              form="checkout-form"
-              disabled={isProcessing}
-              onClick={() => {
-                void trackSelectContent({
-                  contentType: 'checkout_place_order_click',
-                  location: 'checkout_page',
-                });
-              }}
-            >
-              {isProcessing ? 'Processing...' : 'Place Order'}
-            </PlaceOrderButton>
-
-            <SecurityInfo>
-              <span>🔒</span>
-              <span>You will be redirected to PayMe to complete the payment.</span>
-            </SecurityInfo>
-          </OrderSummary>
         </CheckoutGrid>
       </Container>
+
+      <FloatingSummaryButton
+        type="button"
+        onClick={() => setIsSummaryOpen(true)}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        aria-label="Ouvrir le récapitulatif de commande"
+      >
+        <FloatingTitle>Order summary • {qty} item{qty > 1 ? 's' : ''}</FloatingTitle>
+        <FloatingMeta>{unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}</FloatingMeta>
+      </FloatingSummaryButton>
+
+      <AnimatePresence>
+        {isSummaryOpen && (
+          <>
+            <SummaryBackdrop
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsSummaryOpen(false)}
+            />
+            <SummaryDrawer
+              initial={{ x: 24, opacity: 0, scale: 0.99 }}
+              animate={{ x: 0, opacity: 1, scale: 1 }}
+              exit={{ x: 18, opacity: 0, scale: 0.99 }}
+              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              aria-label="Order summary"
+            >
+              <OrderSummary>
+                <SummaryBody>
+                  <SummaryHeader>
+                    <SummaryHeaderTitle>Order Summary</SummaryHeaderTitle>
+                    <SummaryClose type="button" onClick={() => setIsSummaryOpen(false)}>
+                      Fermer
+                    </SummaryClose>
+                  </SummaryHeader>
+
+                  <SummaryScroll>
+                    {items.map((item) => (
+                      <div key={item.sku} style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                        <SummaryItem style={{ padding: 0, borderBottom: 'none' }}>
+                          <ItemInfo>
+                            <ItemName>{item.name}</ItemName>
+                            <ItemQuantity>
+                              <ItemControls>
+                                <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem' }}>Qty</span>
+                                <QtyButton
+                                  type="button"
+                                  onClick={() => updateQuantity(item.sku, item.quantity - 1)}
+                                  whileTap={{ scale: 0.95 }}
+                                  disabled={item.quantity <= 1}
+                                  aria-label="Diminuer la quantité"
+                                >
+                                  −
+                                </QtyButton>
+                                <QtyText>{item.quantity}</QtyText>
+                                <QtyButton
+                                  type="button"
+                                  onClick={() => updateQuantity(item.sku, item.quantity + 1)}
+                                  whileTap={{ scale: 0.95 }}
+                                  aria-label="Augmenter la quantité"
+                                >
+                                  +
+                                </QtyButton>
+                                <RemoveMini type="button" onClick={() => removeFromCart(item.sku)}>
+                                  Retirer
+                                </RemoveMini>
+                              </ItemControls>
+                            </ItemQuantity>
+                          </ItemInfo>
+                          <ItemPrice>
+                            {unitPrice != null ? `${currency} ${(unitPrice * item.quantity).toFixed(2)}` : '—'}
+                          </ItemPrice>
+                        </SummaryItem>
+                      </div>
+                    ))}
+
+                    <SummaryRow>
+                      <SummaryLabel>Subtotal</SummaryLabel>
+                      <SummaryValue>
+                        {unitPrice != null ? `${currency} ${subtotal.toFixed(2)}` : '—'}
+                      </SummaryValue>
+                    </SummaryRow>
+                    <TotalRow>
+                      <TotalLabel>Total</TotalLabel>
+                      <TotalValue>{unitPrice != null ? `${currency} ${total.toFixed(2)}` : '—'}</TotalValue>
+                    </TotalRow>
+
+                    <PlaceOrderButton
+                      type="submit"
+                      form="checkout-form"
+                      disabled={isProcessing}
+                      onClick={() => {
+                        void trackSelectContent({
+                          contentType: 'checkout_place_order_click',
+                          location: 'checkout_page',
+                        });
+                        setIsSummaryOpen(false);
+                      }}
+                    >
+                      {isProcessing ? 'Processing...' : 'Place Order'}
+                    </PlaceOrderButton>
+
+                    <SecurityInfo>
+                      <span>🔒</span>
+                      <span>You will be redirected to PayMe to complete the payment.</span>
+                    </SecurityInfo>
+                  </SummaryScroll>
+                </SummaryBody>
+              </OrderSummary>
+            </SummaryDrawer>
+          </>
+        )}
+      </AnimatePresence>
     </CheckoutPageContainer>
   );
 };
