@@ -88,6 +88,18 @@ const Input = styled.input`
   }
 `;
 
+const HostedFieldContainer = styled.div`
+  width: 100%;
+  min-height: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+`;
+
 const Select = styled.select`
   width: 100%;
   background: rgba(255, 255, 255, 0.1);
@@ -237,12 +249,46 @@ const SecurityInfo = styled.div`
   color: #999999;
 `;
 
+function loadPayMeHostedFieldsScript(): Promise<void> {
+  const src = 'https://cdn.paymeservice.com/hf/v1/hostedfields.js';
+  const existing = document.querySelector<HTMLScriptElement>('script[data-payme-hostedfields="true"]');
+  if (existing) {
+    if ((existing as any).__loaded) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      existing.addEventListener('load', () => resolve(), { once: true });
+      existing.addEventListener('error', () => reject(new Error('PayMe script load failed')), { once: true });
+    });
+  }
+
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.dataset.paymeHostedfields = 'true';
+    s.onload = () => {
+      (s as any).__loaded = true;
+      resolve();
+    };
+    s.onerror = () => reject(new Error('PayMe script load failed'));
+    document.head.appendChild(s);
+  });
+}
+
+function mapCountry(codeOrName: string): string {
+  const v = (codeOrName || '').trim();
+  if (v.toUpperCase() === 'US') return 'United States';
+  if (v.toUpperCase() === 'CA') return 'Canada';
+  return v;
+}
+
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { items } = useCart();
   const [paymentMethod] = useState('payme');
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [paymeInstance, setPaymeInstance] = useState<PayMeInstance | null>(null);
+  const [paymeReady, setPaymeReady] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -271,6 +317,68 @@ const CheckoutPage: React.FC = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        await loadPayMeHostedFieldsScript();
+        if (cancelled) return;
+
+        const apiKey = process.env.REACT_APP_PAYME_API_KEY;
+        if (!apiKey) {
+          setPaymeReady(false);
+          setErrorMessage('PayMe: API key manquante (REACT_APP_PAYME_API_KEY)');
+          return;
+        }
+
+        const testMode =
+          (process.env.REACT_APP_PAYME_TEST_MODE || '').toLowerCase() === 'true' ||
+          process.env.NODE_ENV !== 'production';
+
+        const PayMe = window.PayMe;
+        if (!PayMe) {
+          setPaymeReady(false);
+          setErrorMessage('PayMe: script chargé mais PayMe indisponible');
+          return;
+        }
+
+        const instance = await PayMe.create(apiKey, { testMode });
+        if (cancelled) return;
+        setPaymeInstance(instance);
+      } catch (e) {
+        if (cancelled) return;
+        setPaymeReady(false);
+        setErrorMessage((e as any)?.message || 'PayMe: impossible de charger le module de paiement');
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!paymeInstance) return;
+    const PayMe = window.PayMe;
+    if (!PayMe) return;
+
+    try {
+      const fields = paymeInstance.hostedFields();
+      const cardNumber = fields.create(PayMe.fields.NUMBER);
+      const expiration = fields.create(PayMe.fields.EXPIRATION);
+      const cvc = fields.create(PayMe.fields.CVC);
+
+      cardNumber.mount('#card-number-container');
+      expiration.mount('#expiration-container');
+      cvc.mount('#cvc-container');
+
+      setPaymeReady(true);
+    } catch (e) {
+      setPaymeReady(false);
+      setErrorMessage((e as any)?.message || 'PayMe: impossible d’initialiser les champs carte');
+    }
+  }, [paymeInstance]);
 
   const qty = items.reduce((sum, i) => sum + i.quantity, 0);
   const subtotal = unitPrice != null ? unitPrice * qty : 0;
@@ -331,7 +439,42 @@ const CheckoutPage: React.FC = () => {
       const returnUrl = `${origin}/checkout/success`;
       const cancelUrl = `${origin}/checkout/cancel`;
 
+      if (!paymeInstance || !paymeReady) {
+        throw new Error('PayMe: champs de carte non prêts');
+      }
+      if (unitPrice == null) {
+        throw new Error('Prix indisponible, veuillez réessayer dans un instant.');
+      }
+
+      // 1) Tokenisation via PayMe Hosted Fields (aucune donnée carte ne transite chez nous)
+      const tokenizeResult = await paymeInstance.tokenize({
+        payerFirstName: formData.firstName,
+        payerLastName: formData.lastName,
+        payerEmail: formData.email,
+        payerPhone: formData.phone,
+        payerSocialId: '',
+        total: {
+          label: 'Aerilux Starter Pack',
+          amount: { currency: currency || ANALYTICS_CURRENCY, value: String(total) },
+        },
+      });
+
+      // IMPORTANT: selon la version PayMe, le token peut être exposé sous différents noms.
+      // On supporte token / buyer_key / buyerKey pour éviter un body sans buyerToken (JSON.stringify omet undefined).
+      const buyerToken =
+        (tokenizeResult as any)?.token ||
+        (tokenizeResult as any)?.buyer_key ||
+        (tokenizeResult as any)?.buyerKey;
+
+      if (!tokenizeResult || tokenizeResult.type !== 'tokenize-success' || !buyerToken) {
+        // Aide debug: visible dans DevTools > Console
+        // eslint-disable-next-line no-console
+        console.error('PayMe tokenize failed:', tokenizeResult);
+        throw new Error('PayMe tokenization failed');
+      }
+
       const payload = {
+        buyerToken,
         customer: {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -342,7 +485,7 @@ const CheckoutPage: React.FC = () => {
           city: formData.city,
           state: formData.state || undefined,
           zipCode: formData.zipCode,
-          country: formData.country,
+          country: mapCountry(formData.country),
         },
         items: items.map(i => ({
           name: 'Aerilux Starter Pack',
@@ -355,9 +498,6 @@ const CheckoutPage: React.FC = () => {
       };
 
       const data = await checkoutService.createPaymeSale(payload);
-      if (!data.checkoutUrl) {
-        throw new Error("PayMe n’a pas renvoyé de checkoutUrl");
-      }
 
       // Supporte les 2 clés (anciennes + celles demandées).
       localStorage.setItem('orderId', data.orderId);
@@ -368,12 +508,22 @@ const CheckoutPage: React.FC = () => {
 
       // IMPORTANT: ne pas envoyer l'événement GA4 "purchase" ici (le paiement n'est pas confirmé côté client).
       void trackEvent('checkout_progress', {
-        step: 'redirect_to_payme',
+        step: data.status === 'paid' ? 'paid' : data.checkoutUrl ? 'redirect_to_payme' : 'pending',
         order_id: data.orderId,
         order_number: data.orderNumber,
       });
 
-      window.location.href = data.checkoutUrl;
+      if (data.status === 'paid') {
+        navigate('/checkout/success');
+        return;
+      }
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+
+      // Fallback: paiement en attente (webhook) → même page de “confirmation en cours”
+      navigate('/checkout/success');
     } catch (error) {
       console.error('Order failed:', error);
       const msg = (error as any)?.message || 'Checkout error';
@@ -526,6 +676,21 @@ const CheckoutPage: React.FC = () => {
                   <PaymentLabel>PayMe (secure checkout)</PaymentLabel>
                 </PaymentMethod>
               </PaymentMethods>
+
+              <FormGrid>
+                <FormGroup fullWidth>
+                  <Label>Card number</Label>
+                  <HostedFieldContainer id="card-number-container" />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Expiration</Label>
+                  <HostedFieldContainer id="expiration-container" />
+                </FormGroup>
+                <FormGroup>
+                  <Label>CVC</Label>
+                  <HostedFieldContainer id="cvc-container" />
+                </FormGroup>
+              </FormGrid>
             </FormSection>
 
           </CheckoutForm>

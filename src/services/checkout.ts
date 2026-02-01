@@ -1,11 +1,13 @@
 export type CheckoutPriceResponse = { price: number; currency: string };
 
 export type PaymeCreateSalePayload = {
+  buyerToken: string;
   customer: {
     firstName: string;
     lastName: string;
     email: string;
     phone: string;
+    socialId?: string;
     address: string;
     address2?: string;
     city: string;
@@ -15,8 +17,8 @@ export type PaymeCreateSalePayload = {
   };
   items: Array<{
     name: string;
-    sku: string;
     quantity: number;
+    sku?: string;
   }>;
   returnUrl: string;
   cancelUrl: string;
@@ -26,8 +28,13 @@ export type PaymeCreateSalePayload = {
 export type PaymeCreateSaleResponse = {
   orderId: string;
   orderNumber: string;
-  checkoutUrl?: string;
   paymeSaleId?: string;
+  status?: 'paid' | 'pending' | string;
+  price?: number;
+  total?: number;
+  currency?: string;
+  checkoutUrl?: string | null;
+  payme?: unknown;
   code?: string;
   message?: string;
 };
