@@ -108,11 +108,11 @@ const ReadOnlyInput = styled(Input)`
 
 const HostedFieldContainer = styled.div`
   width: 100%;
-  min-height: 42px;
+  height: 38px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 10px;
-  padding: 0.55rem 0.9rem;
+  padding: 0 0.9rem;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -676,6 +676,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="firstName"
+                    autoComplete="given-name"
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="John"
@@ -687,6 +688,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="lastName"
+                    autoComplete="family-name"
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Doe"
@@ -698,6 +700,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="email"
                     name="email"
+                    autoComplete="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="john@example.com"
@@ -709,6 +712,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="tel"
                     name="phone"
+                    autoComplete="tel"
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="+972 50 123 4567"
@@ -720,6 +724,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="address"
+                    autoComplete="street-address"
                     value={formData.address}
                     onChange={handleInputChange}
                     placeholder="123 Herzl Street"
@@ -731,6 +736,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="address2"
+                    autoComplete="address-line2"
                     value={formData.address2}
                     onChange={handleInputChange}
                     placeholder="Apt 4B"
@@ -741,6 +747,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="city"
+                    autoComplete="address-level2"
                     value={formData.city}
                     onChange={handleInputChange}
                     placeholder="Tel Aviv"
@@ -752,6 +759,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="zipCode"
+                    autoComplete="postal-code"
                     value={formData.zipCode}
                     onChange={handleInputChange}
                     placeholder="6100000"
