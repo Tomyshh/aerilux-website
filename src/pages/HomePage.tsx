@@ -4,7 +4,6 @@ import Features from '../components/Features';
 import InAction from '../components/InAction';
 import Product from '../components/Product';
 import Technology from '../components/Technology';
-import Pricing from '../components/Pricing';
 import PigeonGame from '../components/PigeonGame';
 
 const HomePage: React.FC = () => {
@@ -15,7 +14,6 @@ const HomePage: React.FC = () => {
       <InAction />
       <Product />
       <Technology />
-      <Pricing />
       <PigeonGame />
     </>
   );
