@@ -108,15 +108,23 @@ const ReadOnlyInput = styled(Input)`
 
 const HostedFieldContainer = styled.div`
   width: 100%;
-  height: 38px;
+  min-height: 36px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 10px;
-  padding: 0 0.9rem;
+  padding: 0.35rem 0.8rem;
   color: #ffffff;
-  display: flex;
-  align-items: center;
+  position: relative;
+  cursor: text;
   transition: all 0.2s ease;
+
+  /* PayMe Hosted Fields injecte un iframe. On force sa taille pour garantir le focus/click. */
+  & iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: 0 !important;
+    display: block;
+  }
   
   &:focus-within {
     border-color: rgba(59, 158, 255, 0.5);
@@ -663,7 +671,7 @@ const CheckoutPage: React.FC = () => {
           </ErrorBanner>
         )}
         <CheckoutGrid>
-          <CheckoutForm id="checkout-form" onSubmit={handleSubmit}>
+          <CheckoutForm id="checkout-form" onSubmit={handleSubmit} autoComplete="on">
             <FormSection
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -676,7 +684,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="firstName"
-                    autoComplete="given-name"
+                    autoComplete="shipping given-name"
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="John"
@@ -688,7 +696,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="lastName"
-                    autoComplete="family-name"
+                    autoComplete="shipping family-name"
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Doe"
@@ -700,7 +708,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="email"
                     name="email"
-                    autoComplete="email"
+                    autoComplete="shipping email"
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="john@example.com"
@@ -712,7 +720,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="tel"
                     name="phone"
-                    autoComplete="tel"
+                    autoComplete="shipping tel"
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="+972 50 123 4567"
@@ -724,7 +732,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="address"
-                    autoComplete="street-address"
+                    autoComplete="shipping street-address"
                     value={formData.address}
                     onChange={handleInputChange}
                     placeholder="123 Herzl Street"
@@ -736,7 +744,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="address2"
-                    autoComplete="address-line2"
+                    autoComplete="shipping address-line2"
                     value={formData.address2}
                     onChange={handleInputChange}
                     placeholder="Apt 4B"
@@ -747,7 +755,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="city"
-                    autoComplete="address-level2"
+                    autoComplete="shipping address-level2"
                     value={formData.city}
                     onChange={handleInputChange}
                     placeholder="Tel Aviv"
@@ -759,7 +767,7 @@ const CheckoutPage: React.FC = () => {
                   <Input
                     type="text"
                     name="zipCode"
-                    autoComplete="postal-code"
+                    autoComplete="shipping postal-code"
                     value={formData.zipCode}
                     onChange={handleInputChange}
                     placeholder="6100000"
