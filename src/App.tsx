@@ -14,6 +14,7 @@ import {
   ParticleBackground 
 } from './components/effects';
 import { trackPageView } from './services/analytics';
+import { AppLoader } from './components/AppLoader';
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -52,7 +53,6 @@ const LoadingFallback = styled.div`
   justify-content: center;
   min-height: 60vh;
   color: #ffffff;
-  font-size: 1.2rem;
 `;
 
 // Animated Routes component for page transitions
@@ -110,7 +110,13 @@ const AnimatedRoutes: React.FC = () => {
   return (
     <AnimatePresence mode="wait">
       <PageTransition key={location.pathname}>
-        <Suspense fallback={<LoadingFallback>Loading...</LoadingFallback>}>
+        <Suspense
+          fallback={
+            <LoadingFallback>
+              <AppLoader />
+            </LoadingFallback>
+          }
+        >
           <Routes location={location}>
             <Route path="/" element={<HomePage />} />
             <Route path="/product" element={<ProductPage />} />

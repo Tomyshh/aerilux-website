@@ -91,6 +91,16 @@ const ItemImage = styled.div`
   justify-content: center;
   color: #333333;
   font-weight: 600;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+`;
+
+const ItemImageImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.01);
 `;
 
 const ItemDetails = styled.div``;
@@ -239,6 +249,15 @@ const PromoInput = styled.input`
   }
 `;
 
+function getProductImageSrc(sku: string): string {
+  // Pour l’instant, le panier ne contient qu’un produit (Starter Pack).
+  // On pointe vers une image statique dans /public/product.
+  if (sku === 'AER-STARTER' || sku.toLowerCase().includes('starter')) {
+    return '/product/pres1.jpeg';
+  }
+  return '/product/pres1.jpeg';
+}
+
 const CartPage: React.FC = () => {
   const navigate = useNavigate();
   const { items, updateQuantity, removeFromCart, getTotalItems } = useCart();
@@ -322,7 +341,9 @@ const CartPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
               >
-                <ItemImage>PRODUCT</ItemImage>
+                <ItemImage>
+                  <ItemImageImg src={getProductImageSrc(item.sku)} alt={item.name} loading="lazy" />
+                </ItemImage>
                 <ItemDetails>
                   <ItemName>{item.name}</ItemName>
                   <ItemPrice>
