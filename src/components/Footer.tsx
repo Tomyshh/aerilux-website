@@ -33,67 +33,6 @@ const Container = styled.div`
   z-index: 1;
 `;
 
-const FooterTop = styled(motion.div)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 4rem;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 2rem;
-    text-align: center;
-  }
-`;
-
-const CTAText = styled.h3`
-  font-size: 2.5rem;
-  font-weight: 800;
-  max-width: 500px;
-  background: linear-gradient(135deg, #ffffff 0%, #666666 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  
-  @media (max-width: 768px) {
-    font-size: 1.8rem;
-  }
-`;
-
-const CTAButton = styled(motion.button)`
-  background: #3B9EFF;
-  color: #000000;
-  padding: 1.2rem 3rem;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 10px 40px rgba(59, 158, 255, 0.3);
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.4),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-  
-  &:hover::before {
-    left: 100%;
-  }
-`;
-
 const FooterContent = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -315,11 +254,6 @@ const Footer: React.FC = React.memo(() => {
     },
   }), []);
 
-  const handleCTAClick = useCallback(() => {
-    void trackSelectContent({ contentType: 'footer_cta_click', location: 'footer' });
-    navigateToSection(navigate, '/contact');
-  }, [navigate]);
-
   const handleLinkClick = useCallback((path: string, anchor?: string) => {
     void trackSelectContent({
       contentType: 'footer_link_click',
@@ -367,17 +301,6 @@ const Footer: React.FC = React.memo(() => {
       />
       
       <Container>
-        <FooterTop
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <CTAText>{t('footer.cta.title')}</CTAText>
-          <CTAButton onClick={handleCTAClick}>
-            {t('footer.cta.button')}
-          </CTAButton>
-        </FooterTop>
-
         <Newsletter
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
