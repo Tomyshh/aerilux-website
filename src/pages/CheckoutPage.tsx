@@ -457,7 +457,8 @@ const CheckoutPage: React.FC = () => {
             'letter-spacing': '0.02em',
             '::placeholder': { color: 'rgba(255,255,255,0.35)' },
           },
-          invalid: { color: 'rgba(255,107,107,0.95)' },
+          // On garde le texte en blanc même si invalide (UX souhaitée).
+          invalid: { color: '#ffffff' },
           valid: { color: '#ffffff' },
         },
       });
