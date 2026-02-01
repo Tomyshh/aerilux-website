@@ -10,7 +10,7 @@ interface CartItem {
 
 interface UseCartReturn {
   items: CartItem[];
-  addToCart: (item: Omit<CartItem, 'quantity'>) => void;
+  addToCart: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void;
   removeFromCart: (sku: string) => void;
   updateQuantity: (sku: string, quantity: number) => void;
   clearCart: () => void;
@@ -37,21 +37,38 @@ export const useCart = (): UseCartReturn => {
     try {
       const parsed = JSON.parse(storedCart) as any[];
       if (!Array.isArray(parsed)) return [];
-      return parsed
+      const normalized = parsed
         .map((x: any) => {
           if (x?.sku && x?.name && typeof x?.quantity === 'number') {
             return { sku: String(x.sku), name: String(x.name), quantity: Number(x.quantity) } as CartItem;
           }
           if (x?.planId && x?.planName && typeof x?.quantity === 'number') {
+            const planName = String(x.planName);
+            // Migration: certains anciens items ont un planId variable → on normalise sur un SKU stable.
+            const maybeStarter =
+              planName.toLowerCase().includes('starter') || planName.toLowerCase().includes('aerilux');
             return {
-              sku: String(x.planId),
-              name: String(x.planName),
+              sku: maybeStarter ? 'AER-STARTER' : String(x.planId),
+              name: planName,
               quantity: Number(x.quantity),
             } as CartItem;
           }
           return null;
         })
         .filter(Boolean) as CartItem[];
+
+      // Fusionner d'éventuels doublons (même SKU) issus d'anciens formats.
+      const merged = new Map<string, CartItem>();
+      for (const it of normalized) {
+        const key = it.sku;
+        const prev = merged.get(key);
+        if (!prev) {
+          merged.set(key, { ...it, quantity: Math.max(1, Number(it.quantity) || 1) });
+        } else {
+          merged.set(key, { ...prev, quantity: prev.quantity + Math.max(1, Number(it.quantity) || 1) });
+        }
+      }
+      return Array.from(merged.values());
     } catch {
       return [];
     }
@@ -61,19 +78,20 @@ export const useCart = (): UseCartReturn => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
-  const addToCart = useCallback((item: Omit<CartItem, 'quantity'>) => {
+  const addToCart = useCallback((item: Omit<CartItem, 'quantity'>, quantity: number = 1) => {
+    const qtyToAdd = Math.max(1, Math.floor(Number(quantity) || 1));
     setItems(prevItems => {
       const existingItem = prevItems.find(i => i.sku === item.sku);
       
       if (existingItem) {
         return prevItems.map(i =>
           i.sku === item.sku
-            ? { ...i, quantity: i.quantity + 1 }
+            ? { ...i, quantity: i.quantity + qtyToAdd }
             : i
         );
       }
       
-      return [...prevItems, { ...item, quantity: 1 }];
+      return [...prevItems, { ...item, quantity: qtyToAdd }];
     });
 
     void (async () => {
@@ -81,13 +99,13 @@ export const useCart = (): UseCartReturn => {
         const price = await checkoutService.getPrice();
         void trackEvent('add_to_cart', {
           currency: price.currency || ANALYTICS_CURRENCY,
-          value: price.price,
+          value: price.price * qtyToAdd,
           items: [
             {
               item_id: item.sku,
               item_name: item.name,
               price: price.price,
-              quantity: 1,
+              quantity: qtyToAdd,
               item_category: 'product',
             },
           ],
@@ -99,7 +117,7 @@ export const useCart = (): UseCartReturn => {
             {
               item_id: item.sku,
               item_name: item.name,
-              quantity: 1,
+              quantity: qtyToAdd,
               item_category: 'product',
             },
           ],

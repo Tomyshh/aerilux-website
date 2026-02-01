@@ -7,6 +7,7 @@ import { X, ChevronLeft, ChevronRight, Package, Truck, Shield, Calendar } from '
 import { useCart } from '../hooks/useCart';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
 import { checkoutService } from '../services/checkout';
+import { useToast } from '../components/ToastProvider';
 
 const PRODUCT_ITEM = {
   item_id: 'AER-STARTER',
@@ -485,14 +486,69 @@ const IncludesCard = styled(motion.div)`
   }
 `;
 
+const QuantityRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+`;
+
+const QuantityLabel = styled.div`
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+`;
+
+const QuantityControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const QtyButton = styled(motion.button)`
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+`;
+
+const QtyValue = styled.div`
+  min-width: 46px;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+`;
+
 const ProductPage: React.FC = () => {
   const { t } = useTranslation();
   const [selectedImage, setSelectedImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const toast = useToast();
   const [price, setPrice] = useState<number | null>(null);
   const [currency, setCurrency] = useState<string>(ANALYTICS_CURRENCY);
+  const [quantity, setQuantity] = useState<number>(1);
 
   const formattedPrice = useMemo(() => {
     if (price == null) return null;
@@ -704,15 +760,43 @@ const ProductPage: React.FC = () => {
               <PricingDescription>
                 {t('productPage.starterPack.priceNote')}
               </PricingDescription>
+
+              <QuantityRow>
+                <QuantityLabel>Quantité</QuantityLabel>
+                <QuantityControls>
+                  <QtyButton
+                    type="button"
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={quantity <= 1}
+                    aria-label="Diminuer la quantité"
+                  >
+                    −
+                  </QtyButton>
+                  <QtyValue>{quantity}</QtyValue>
+                  <QtyButton
+                    type="button"
+                    onClick={() => setQuantity(q => Math.min(99, q + 1))}
+                    whileTap={{ scale: 0.95 }}
+                    aria-label="Augmenter la quantité"
+                  >
+                    +
+                  </QtyButton>
+                </QuantityControls>
+              </QuantityRow>
             </PricingCard>
 
             <ButtonGroup>
               <PrimaryButton
                 onClick={() => {
-                  addToCart({
-                    sku: PRODUCT_ITEM.item_id,
-                    name: PRODUCT_ITEM.item_name,
-                  });
+                  addToCart(
+                    {
+                      sku: PRODUCT_ITEM.item_id,
+                      name: PRODUCT_ITEM.item_name,
+                    },
+                    quantity
+                  );
+                  toast.success(`Ajouté au panier (x${quantity}).`);
                   navigate('/checkout');
                 }}
                 whileHover={{ scale: 1.02 }}

@@ -107,27 +107,6 @@ const HostedFieldContainer = styled.div`
   align-items: center;
 `;
 
-const Select = styled.select`
-  width: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  color: #ffffff;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  
-  &:focus {
-    outline: none;
-    border-color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
-  }
-  
-  option {
-    background: #000000;
-  }
-`;
-
 const PaymentMethods = styled.div`
   display: grid;
   grid-template-columns: 1fr;
@@ -416,9 +395,7 @@ const CheckoutPage: React.FC = () => {
     });
   }, [paymentMethod, items.length, total, analyticsItems, currency, unitPrice]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
