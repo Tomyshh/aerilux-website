@@ -525,8 +525,52 @@ const CheckoutPage: React.FC = () => {
       // Fallback: paiement en attente (webhook) → même page de “confirmation en cours”
       navigate('/checkout/success');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Order failed:', error);
-      const msg = (error as any)?.message || 'Checkout error';
+
+      const err = error as any;
+      let msg: string | undefined = err?.message;
+
+      // PayMe JSAPI peut rejeter avec un objet (sans .message), ex: { type: 'tokenize-error', errors: {...} }
+      if (!msg && (err?.type === 'tokenize-error' || err?.validationError)) {
+        const errors = err?.errors;
+        const labelForField = (key: string) => {
+          switch (key) {
+            case 'cardNumber':
+              return 'Numéro de carte';
+            case 'cardExpiration':
+            case 'expiration':
+              return 'Expiration';
+            case 'cvc':
+              return 'CVC';
+            case 'payerFirstName':
+              return 'Prénom';
+            case 'payerLastName':
+              return 'Nom';
+            case 'payerEmail':
+              return 'Email';
+            case 'payerPhone':
+              return 'Téléphone';
+            case 'payerSocialId':
+              return 'ID';
+            default:
+              return key;
+          }
+        };
+
+        if (errors && typeof errors === 'object') {
+          const parts = Object.entries(errors)
+            .slice(0, 6)
+            .map(([k, v]) => `${labelForField(String(k))}: ${String(v)}`);
+          msg = parts.length
+            ? `PayMe: formulaire invalide — ${parts.join(' • ')}`
+            : 'PayMe: formulaire invalide (champs carte ou infos manquantes)';
+        } else {
+          msg = 'PayMe: formulaire invalide (champs carte ou infos manquantes)';
+        }
+      }
+
+      if (!msg) msg = 'Checkout error';
       setErrorMessage(msg);
       setIsProcessing(false);
     }
