@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const TermsContainer = styled.div`
   min-height: 100vh;
@@ -129,6 +130,11 @@ const SubTitle = styled.h3`
 
 const TermsPage: React.FC = () => {
   const { t } = useTranslation();
+  usePageMeta(
+    'Terms of Service',
+    'Aerilux terms of service: conditions for using our website and purchasing the AI-powered pigeon deterrent system.',
+    { canonicalPath: '/terms' }
+  );
 
   return (
     <TermsContainer>

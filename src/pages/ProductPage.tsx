@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { X, ChevronLeft, ChevronRight, Package, Truck, Shield, Calendar } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { ANALYTICS_CURRENCY, trackEvent, trackSelectContent } from '../services/analytics';
 import { checkoutService } from '../services/checkout';
 import { useToast } from '../components/ToastProvider';
@@ -541,6 +542,11 @@ const QtyValue = styled.div`
 
 const ProductPage: React.FC = () => {
   const { t } = useTranslation();
+  usePageMeta(
+    'Aerilux Starter Pack',
+    'Pre-order the Aerilux Starter Pack: AI-powered pigeon deterrent with 99.9% accuracy, solar-powered, 360° coverage. $1,200. Includes unit, mounting kit, solar panel & app.',
+    { canonicalPath: '/product' }
+  );
   const [selectedImage, setSelectedImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const navigate = useNavigate();

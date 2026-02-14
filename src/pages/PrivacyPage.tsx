@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const PrivacyContainer = styled.div`
   min-height: 100vh;
@@ -129,6 +130,11 @@ const SubTitle = styled.h3`
 
 const PrivacyPage: React.FC = () => {
   const { t } = useTranslation();
+  usePageMeta(
+    'Privacy Policy',
+    'Aerilux privacy policy: how we collect, use, and protect your data when you use our website and AI pigeon deterrent products.',
+    { canonicalPath: '/privacy' }
+  );
 
   return (
     <PrivacyContainer>

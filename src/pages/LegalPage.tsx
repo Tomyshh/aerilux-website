@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const LegalContainer = styled.div`
   min-height: 100vh;
@@ -129,6 +130,11 @@ const SubTitle = styled.h3`
 
 const LegalPage: React.FC = () => {
   const { t } = useTranslation();
+  usePageMeta(
+    'Legal',
+    'Aerilux legal information and company details. Registered address and legal mentions.',
+    { canonicalPath: '/legal' }
+  );
 
   return (
     <LegalContainer>

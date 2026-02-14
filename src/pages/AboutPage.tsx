@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useTranslation } from 'react-i18next';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const AboutContainer = styled.div`
   min-height: 100vh;
@@ -192,6 +193,11 @@ const MemberRole = styled.p`
 
 const AboutPage: React.FC = () => {
   const { t } = useTranslation();
+  usePageMeta(
+    'About Us',
+    'Discover Aerilux: the team behind the world\'s first AI-powered pigeon deterrent. Our mission, technology, and commitment to humane bird control.',
+    { canonicalPath: '/about' }
+  );
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: true,

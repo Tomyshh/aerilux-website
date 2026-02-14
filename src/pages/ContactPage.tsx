@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { addContactMessage } from '../lib/firebase';
 import { addContactLeadToSupabase } from '../lib/supabase';
 import { trackEvent, trackSelectContent } from '../services/analytics';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 const ContactContainer = styled.div`
   min-height: 100vh;
@@ -271,6 +272,11 @@ const ListItem = styled.li`
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation();
+  usePageMeta(
+    'Contact',
+    'Get in touch with Aerilux. Questions about our AI pigeon deterrent? Pre-orders, partnerships, or support — we\'re here to help.',
+    { canonicalPath: '/contact' }
+  );
   const [formData, setFormData] = useState({
     name: '',
     email: '',
